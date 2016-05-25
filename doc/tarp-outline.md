@@ -12,7 +12,7 @@ when it is hashed prior to signing.
 # Hash functions
 
 A cryptographic hash function is used at various points in the
-protocol, represented from here on as `HASH(data)`. The function used
+protocol, represented from here on as `HASH` or `HASH(data)`. The function used
 must be specified in a header in the signed request (as described
 below). The function used must be chosen from the following list. Each
 conforming implementation must support at least one of the functions
@@ -36,3 +36,12 @@ algorithms as invalid.
 
  - ED_25519
 
+# Signed data
+
+The following data are included in the signature of a request:
+
+ - Hash function identifier.
+ - Digital signature algorithm identifier.
+ - Request date.
+ - Key ID.
+ - The HASH of the canonical request.
