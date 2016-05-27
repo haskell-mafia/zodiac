@@ -45,8 +45,10 @@ the form `header_name + ':' + header_values + '\n'`.
  - `header_name` is the header name with all ASCII letters converted
    to lowercase.
  - `header_values` is a comma-separated list of values associated with
-   a header, in the order the values appear in the request.
- - FIXME: do we care about whitespace in the header values?
+   a header, in the order the values appear in the request,
+   transformed such that a) leading and trailing whitespace is
+   stripped; and b) any remaining contiguous strings of spaces are
+   replaced by a single space.
 
 ## Hash of the request payload
 
