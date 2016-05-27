@@ -1,12 +1,16 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Zodiac.Request(
-    toCanonicalRequest
+    fromCanonicalRequest
+  , toCanonicalRequest
   ) where
 
+import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BSL
 import qualified Data.CaseInsensitive as CI
+import           Data.Default.Class (def)
 import           Data.List.NonEmpty (NonEmpty(..))
+import qualified Data.List.NonEmpty as NE
 import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as M
 import           Data.Semigroup ((<>))
@@ -31,6 +35,24 @@ toCanonicalRequest r =
   payload <- reqCPayload r
   headers <- reqCHeaders r
   pure $ CRequest method uri qs headers payload
+
+fromCanonicalRequest :: CRequest -> Request
+fromCanonicalRequest (CRequest m u qs hs p) =
+  def {
+    HC.method = renderCMethod m
+  , HC.path = unCURI u
+  , HC.queryString = unCQueryString qs
+  , HC.requestHeaders = hs'
+  , HC.requestBody = HC.RequestBodyBS (unCPayload p)
+  }
+  where
+    hs' =
+      M.elems $ M.mapWithKey renderHeader hs
+
+    renderHeader (CHeaderName hn) vs =
+      let hn' = CI.mk $ T.encodeUtf8 hn
+          hvs = BS.intercalate "," . NE.toList $ unCHeaderValue <$> vs in
+      (hn', hvs)
 
 -- | This will not include Content-Length or Transfer-Encoding as these are
 -- set automatically by http-client. If at some point these need to be included
