@@ -9,9 +9,8 @@ import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BSL
 import qualified Data.CaseInsensitive as CI
 import           Data.Default.Class (def)
-import           Data.List.NonEmpty (NonEmpty(..))
+import           Data.List.NonEmpty (nonEmpty)
 import qualified Data.List.NonEmpty as NE
-import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as M
 import           Data.Semigroup ((<>))
 import qualified Data.Text as T
@@ -47,7 +46,7 @@ fromCanonicalRequest (CRequest m u qs hs p) =
   }
   where
     hs' =
-      M.elems $ M.mapWithKey renderHeader hs
+      M.elems . M.mapWithKey renderHeader $ unCHeaders hs
 
     renderHeader (CHeaderName hn) vs =
       let hn' = CI.mk $ T.encodeUtf8 hn
@@ -58,16 +57,45 @@ fromCanonicalRequest (CRequest m u qs hs p) =
 -- set automatically by http-client. If at some point these need to be included
 -- in the signature, they can be set here explicitly and http-client will not
 -- override them.
-reqCHeaders :: Request -> Either RequestError (Map CHeaderName (NonEmpty CHeaderValue))
+reqCHeaders :: Request -> Either RequestError CHeaders
 reqCHeaders r =
   case HC.requestHeaders r of
     [] -> Left NoRequestHeaders
-    hs -> foldM updateHeaderMap M.empty hs
+    hs -> fmap CHeaders $ foldM updateHeaderMap M.empty hs
   where
     updateHeaderMap acc (hn, hv) = do
       hn' <- fmap (CHeaderName . T.toLower) .
         first (const (HeaderNameInvalidUTF8 $ CI.original hn)) . T.decodeUtf8' $ CI.original hn
-      pure $ M.insertWith (<>) hn' (pure $ CHeaderValue hv) acc
+      pure $ M.insertWith (<>) hn' (renderValues hv) acc
+
+    renderValues hv =
+      -- split on comma
+      let hvs = fmap (CHeaderValue . trimHeader) $ BS.split 0x2c hv in
+      case nonEmpty hvs of
+        -- Empty header value -> singleton empty header value.
+        Nothing -> pure $ CHeaderValue ""
+        -- One or more -> trim and return comma-separated values.
+        Just xs -> xs
+
+    -- Remove leading and trailing spaces, replace all internal strings
+    -- of spaces with a single space.
+    trimHeader h =
+      let gps = foldSpace <$> BS.group h in
+      trimTrailing . trimLeading $ BS.concat gps
+
+    trimTrailing bs = case BS.unsnoc bs of
+      Nothing -> ""
+      Just (xs, 0x20) -> xs
+      Just (xs, y) -> BS.snoc xs y
+
+    trimLeading bs = case BS.uncons bs of
+      Nothing -> ""
+      Just (0x20, xs) -> xs
+      Just (y, xs) -> BS.cons y xs
+
+    foldSpace h = case BS.head h of
+      0x20 -> BS.singleton 0x20
+      _ -> h
 
 reqCMethod :: Request -> Either RequestError CMethod
 reqCMethod r =

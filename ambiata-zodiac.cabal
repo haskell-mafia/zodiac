@@ -52,9 +52,15 @@ test-suite test
 
   build-depends:
                        base                            >= 3          && < 5
+                     , QuickCheck                      >= 2.8.2      && < 2.9
                      , ambiata-disorder-core
                      , ambiata-disorder-corpus
                      , ambiata-p
                      , ambiata-zodiac
-                     , QuickCheck                      >= 2.8.2      && < 2.9
+                     , bytestring                      >= 0.10.4     && < 0.10.7
+                     , containers                      == 0.5.*
                      , quickcheck-instances            == 0.3.*
+                     , semigroups                      >= 0.16       && < 0.19
+                     , text                            == 1.2.*
+                     , transformers                    >= 0.4        && < 0.6
+
