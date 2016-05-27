@@ -9,6 +9,7 @@ module Zodiac.Data.Request(
   , CPayload(..)
   , CRequest(..)
   , CURI(..)
+  , parseCMethod
   , renderCMethod
   ) where
 
@@ -32,7 +33,7 @@ data CMethod =
   | PUT
   | DELETE
   | TRACE
-  deriving (Eq, Show, Generic)
+  deriving (Eq, Show, Generic, Enum, Bounded)
 
 instance NFData CMethod where rnf = genericRnf
 
@@ -44,6 +45,16 @@ renderCMethod POST = "POST"
 renderCMethod PUT = "PUT"
 renderCMethod DELETE = "DELETE"
 renderCMethod TRACE = "TRACE"
+
+parseCMethod :: ByteString -> Maybe' CMethod
+parseCMethod "OPTIONS" = Just' OPTIONS
+parseCMethod "GET" = Just' GET
+parseCMethod "HEAD" = Just' HEAD
+parseCMethod "POST" = Just' POST
+parseCMethod "PUT" = Just' PUT
+parseCMethod "DELETE" = Just' DELETE
+parseCMethod "TRACE" = Just' TRACE
+parseCMethod _ = Nothing'
 
 -- | The bit from the last character of the host part of the URL to either
 -- the ? beginning the query string or the end of the URL.
