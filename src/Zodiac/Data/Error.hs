@@ -18,6 +18,9 @@ import           P
 data RequestError =
     InvalidHTTPMethod ByteString
   | UnsupportedPayloadType
+  | NoRequestHeaders
+  | HeaderNameInvalidUTF8 ByteString
+  | URIInvalidUTF8 ByteString
   deriving (Eq, Show, Generic)
 
 renderRequestError :: RequestError -> Text
@@ -27,5 +30,15 @@ renderRequestError (InvalidHTTPMethod m) = T.unwords [
   ]
 renderRequestError UnsupportedPayloadType =
   "unsupported request payload type"
+renderRequestError NoRequestHeaders =
+  "request has no headers, require at least a HOST header"
+renderRequestError (HeaderNameInvalidUTF8 bs) = T.unwords [
+    "header name not valid UTF-8:"
+  , T.pack (show bs)
+  ]
+renderRequestError (URIInvalidUTF8 bs) = T.unwords [
+    "URI not valid UTF-8:"
+  , T.pack (show bs)
+  ]
 
 instance NFData RequestError where rnf = genericRnf
