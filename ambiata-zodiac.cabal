@@ -14,7 +14,13 @@ library
   build-depends:
                        base                            >= 3          && < 5
                      , ambiata-p
+                     , ambiata-tinfoil
                      , ambiata-x-eithert
+                     , bytestring                      >= 0.10.4     && < 0.10.7
+                     , containers                      == 0.5.*
+                     , deepseq-generics                == 0.2.0.*
+                     , semigroups                      >= 0.16       && < 0.19
+                     , text                            == 1.2.*
                      , transformers                    >= 0.4        && < 0.6
 
   ghc-options:
@@ -26,6 +32,8 @@ library
   exposed-modules:
                        Paths_ambiata_zodiac
                        Zodiac
+                       Zodiac.Data
+                       Zodiac.Data.Request
 
 test-suite test
   type:                exitcode-stdio-1.0
