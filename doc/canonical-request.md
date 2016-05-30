@@ -41,6 +41,8 @@ parameter in the query string shall be URL-encoded.
 The headers field is a sorted (by header name) list of HTTP headers in
 the form `header_name + ':' + header_values + '\n'`.
 
+There must be at least one header in a canonical request, the "host" header.
+
  - `+` denotes concatenation.
  - `header_name` is the header name with all ASCII letters converted
    to lowercase.
