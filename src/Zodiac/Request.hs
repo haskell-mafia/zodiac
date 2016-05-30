@@ -3,8 +3,10 @@
 module Zodiac.Request(
     fromCanonicalRequest
   , toCanonicalRequest
+  , trimSpaces
   ) where
 
+import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BSL
 import qualified Data.CaseInsensitive as CI
@@ -70,19 +72,20 @@ reqCHeaders r =
 
     renderValues hv =
       -- split on comma
-      let hvs = fmap (CHeaderValue . trimHeader) $ BS.split 0x2c hv in
+      let hvs = fmap (CHeaderValue . trimSpaces) $ BS.split 0x2c hv in
       case nonEmpty hvs of
         -- Empty header value -> singleton empty header value.
         Nothing -> pure $ CHeaderValue ""
         -- One or more -> trim and return comma-separated values.
         Just xs -> xs
 
-    -- Remove leading and trailing spaces, replace all internal strings
-    -- of spaces with a single space.
-    trimHeader h =
-      let gps = foldSpace <$> BS.group h in
-      trimTrailing . trimLeading $ BS.concat gps
-
+-- | Remove leading and trailing spaces, replace all internal strings
+-- of spaces with a single space.
+trimSpaces :: ByteString -> ByteString
+trimSpaces x =
+  let gps = foldSpace <$> BS.group x in
+  trimTrailing . trimLeading $ BS.concat gps
+  where
     trimTrailing bs = case BS.unsnoc bs of
       Nothing -> ""
       Just (xs, 0x20) -> xs
@@ -93,9 +96,9 @@ reqCHeaders r =
       Just (0x20, xs) -> xs
       Just (y, xs) -> BS.cons y xs
 
-    foldSpace h = case BS.head h of
+    foldSpace bs = case BS.head bs of
       0x20 -> BS.singleton 0x20
-      _ -> h
+      _ -> bs
 
 reqCMethod :: Request -> Either RequestError CMethod
 reqCMethod r =
