@@ -15,7 +15,7 @@ import           Disorder.Corpus (muppets)
 
 import           P
 
-import           Zodiac.Data.Request
+import           Zodiac.Data
 
 import           Test.QuickCheck
 
@@ -62,3 +62,6 @@ instance Arbitrary CRequest where
     <*> arbitrary
     <*> arbitrary
     <*> arbitrary
+
+instance Arbitrary Protocol where
+  arbitrary = elements [minBound..maxBound]
