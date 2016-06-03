@@ -1,9 +1,9 @@
 name:                  ambiata-zodiac-http-client
 version:               0.0.1
-license:               AllRightsReserved
+license:               Apache-2.0
 author:                Ambiata <info@ambiata.com>
 maintainer:            Ambiata <info@ambiata.com>
-copyright:             (c) 2015 Ambiata.
+copyright:             (c) 2016 Ambiata.
 synopsis:              ambiata-zodiac-http-client
 category:              System
 cabal-version:         >= 1.8
