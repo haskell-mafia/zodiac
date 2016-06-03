@@ -17,12 +17,14 @@ module Zodiac.Data.Request(
   , renderCMethod
   , renderCQueryString
   , renderCURI
+  , renderTimestampDate
   ) where
 
 import           Control.DeepSeq.Generics (genericRnf)
 
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
+import qualified Data.ByteString.Char8 as BSC
 import qualified Data.List as L
 import           Data.List.NonEmpty (NonEmpty)
 import qualified Data.List.NonEmpty as NE
@@ -31,6 +33,7 @@ import qualified Data.Map.Strict as M
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import           Data.Time.Clock (UTCTime)
+import           Data.Time.Format (defaultTimeLocale, formatTime, iso8601DateFormat)
 
 import           GHC.Generics (Generic)
 
@@ -171,6 +174,13 @@ newtype RequestTimestamp =
   RequestTimestamp {
     unRequestTimestamp :: UTCTime
   } deriving (Eq, Generic)
+
+-- | Render just the date part in ISO-8601 format.
+renderTimestampDate :: RequestTimestamp -> ByteString
+renderTimestampDate (RequestTimestamp ts) =
+  let fmt = iso8601DateFormat Nothing
+      str = formatTime defaultTimeLocale fmt ts in
+  BSC.pack str
 
 instance NFData RequestTimestamp where rnf = genericRnf
 
