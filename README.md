@@ -31,7 +31,7 @@ In particular, any operation which may be sensitive to timing attacks
 # Example usage
 
 ```haskell
-signRequest :: Request -> KeyId -> SecretKey -> SignedRequest
+signRequest :: KeyId -> SymmetricKey -> RequestTimestamp -> RequestExpiry -> Request -> MAC
 
-verifyRequest :: SignedRequest -> KeyId -> SecretKey -> IO (Either VerificationError Verified)
+verifyRequest :: Request -> MAC -> SymmetricKey -> IO (Either VerificationError Verified)
 ```
