@@ -41,6 +41,7 @@ library
                        Zodiac.Data.Error
                        Zodiac.Data.Protocol
                        Zodiac.Data.Request
+                       Zodiac.MAC
                        Zodiac.Request
 
 test-suite test
