@@ -16,6 +16,8 @@ adversary in a privileged position on the network.
    preventing them from reaching Bob entirely).
  - Insert arbitrary delay into response delivery times (including
    preventing them from reaching Alice entirely).
+ - Cause messages from Alice to be received multiple times by Bob
+   inside the timing window Alice specified when making the request.
  - Add arbitrary headers to Alice's message which are not in the
    `Signed-Headers` list.
  - Modify Bob's responses arbitrarily.
@@ -32,8 +34,8 @@ authenticate the message".
    when none existed and removing a request payload entirely.
  - Modify any of the headers Alice has signed without removing them
    from the list of signed headers.
- - Cause a message sent once by Alice to be received two or more times
-   by Bob.
+ - Cause a message sent once by Alice to be received by Bob outside
+   the timing window Alice specified when making the request.
 
 # Things which should be done by the transport security layer (TLS)
 
