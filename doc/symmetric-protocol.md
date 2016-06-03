@@ -13,7 +13,7 @@ which is constructed as described [here](canonical-request.md).
 The following data is included in the request's signature:
 
  - Algorithm.
- - Request date.
+ - Request timestamp.
  - Key ID.
  - The SHA256 hash of the canonical request.
 
@@ -23,7 +23,19 @@ The signing key is derived from the secret key via an iterated chain
 of SHA256 hashes, as follows:
 
 ```haskell
-let dateKey = hmacSHA256 ("zodiac-begin" + k) date
+let dateKey = hmacSHA256 ("TSRPv1-begin" + k) date
     idKey = hmacSHA256 dateKey keyID
-    signingKey = hmacSHA256 idKey "zodiac-end"
+    signingKey = hmacSHA256 idKey "TSRPv1-end"
 ```
+
+# Authentication headers
+
+The following headers are added to a request before it is signed:
+
+ - `X-Zodiac-Protocol`: "TSRPv1"
+ - `X-Zodiac-HashAlgorithm`: "SHA-256"
+ - `X-Zodiac-KeyId`: key ID.
+ - `X-Zodiac-Timestamp`: ISO 8601-formatted date and time of the request.
+ - `X-Zodiac-Expires`: number of seconds from the request timestamp
+   for the request to be valid.
+ - `X-Zodiac-SignedHeaders`: list of headers included in the signature.
