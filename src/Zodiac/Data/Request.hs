@@ -10,6 +10,8 @@ module Zodiac.Data.Request(
   , CPayload(..)
   , CRequest(..)
   , CURI(..)
+  , RequestExpiry(..)
+  , RequestTimestamp(..)
   , parseCMethod
   , renderCHeaders
   , renderCMethod
@@ -28,6 +30,7 @@ import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as M
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
+import           Data.Time.Clock (UTCTime)
 
 import           GHC.Generics (Generic)
 
@@ -162,3 +165,20 @@ instance Eq CRequest where
             ks1 == ks2
           , vs1 == vs2
           ]
+
+-- | Time at which the request is made.
+newtype RequestTimestamp =
+  RequestTimestamp {
+    unRequestTimestamp :: UTCTime
+  } deriving (Eq, Generic)
+
+instance NFData RequestTimestamp where rnf = genericRnf
+
+-- | Number of seconds for a request to be considered valid - after
+-- this time, an application server will discard it.
+newtype RequestExpiry =
+  RequestExpiry {
+    unRequestExpiry :: Int
+  } deriving (Eq, Show, Generic)
+
+instance NFData RequestExpiry where rnf = genericRnf
