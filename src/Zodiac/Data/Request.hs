@@ -3,6 +3,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 module Zodiac.Data.Request(
     CHeaderName(..)
+  , CHeaders(..)
   , CHeaderValue(..)
   , CMethod(..)
   , CQueryString(..)
@@ -16,8 +17,11 @@ module Zodiac.Data.Request(
 import           Control.DeepSeq.Generics (genericRnf)
 
 import           Data.ByteString (ByteString)
+import qualified Data.List as L
 import           Data.List.NonEmpty (NonEmpty)
+import qualified Data.List.NonEmpty as NE
 import           Data.Map.Strict (Map)
+import qualified Data.Map.Strict as M
 
 import           GHC.Generics (Generic)
 
@@ -84,9 +88,16 @@ instance NFData CHeaderName where rnf = genericRnf
 newtype CHeaderValue =
   CHeaderValue {
     unCHeaderValue :: ByteString
-  } deriving (Eq, Show, Generic)
+  } deriving (Eq, Show, Generic, Ord)
 
 instance NFData CHeaderValue where rnf = genericRnf
+
+newtype CHeaders =
+  CHeaders {
+    unCHeaders :: Map CHeaderName (NonEmpty CHeaderValue)
+  } deriving (Eq, Show, Generic)
+
+instance NFData CHeaders where rnf = genericRnf
 
 -- | Body of request.
 newtype CPayload =
@@ -104,8 +115,28 @@ data CRequest =
     , crURI :: !CURI
     , crQueryString :: !CQueryString
     -- | HOST header always required.
-    , crHeaders :: !(Map CHeaderName (NonEmpty CHeaderValue))
+    , crHeaders :: !CHeaders
     , crPayload :: !CPayload
-    } deriving (Eq, Show, Generic)
+    } deriving (Show, Generic)
 
 instance NFData CRequest where rnf = genericRnf
+
+instance Eq CRequest where
+  (CRequest m1 uri1 qs1 hs1 p1) == (CRequest m2 uri2 qs2 hs2 p2) =
+    and [
+        m1 == m2
+      , uri1 == uri2
+      , qs1 == qs2
+      , hs1 `headerEq` hs2
+      , p1 == p2
+      ]
+    where
+      headerEq (CHeaders h1) (CHeaders h2) =
+        let ks1 = M.keys h1
+            ks2 = M.keys h2
+            vs1 = L.sort (NE.sort <$> M.elems h1)
+            vs2 = L.sort (NE.sort <$> M.elems h2) in
+        and [
+            ks1 == ks2
+          , vs1 == vs2
+          ]

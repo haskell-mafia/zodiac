@@ -17,8 +17,11 @@ library
                      , ambiata-tinfoil
                      , ambiata-x-eithert
                      , bytestring                      >= 0.10.4     && < 0.10.7
+                     , case-insensitive                == 1.2.*
                      , containers                      == 0.5.*
+                     , data-default-class              == 0.0.*
                      , deepseq-generics                == 0.2.0.*
+                     , http-client                     == 0.4.18.*
                      , semigroups                      >= 0.16       && < 0.19
                      , text                            == 1.2.*
                      , transformers                    >= 0.4        && < 0.6
@@ -33,7 +36,9 @@ library
                        Paths_ambiata_zodiac
                        Zodiac
                        Zodiac.Data
+                       Zodiac.Data.Error
                        Zodiac.Data.Request
+                       Zodiac.Request
 
 test-suite test
   type:                exitcode-stdio-1.0
@@ -47,9 +52,15 @@ test-suite test
 
   build-depends:
                        base                            >= 3          && < 5
+                     , QuickCheck                      >= 2.8.2      && < 2.9
                      , ambiata-disorder-core
                      , ambiata-disorder-corpus
                      , ambiata-p
                      , ambiata-zodiac
-                     , QuickCheck                      >= 2.8.2      && < 2.9
+                     , bytestring                      >= 0.10.4     && < 0.10.7
+                     , containers                      == 0.5.*
                      , quickcheck-instances            == 0.3.*
+                     , semigroups                      >= 0.16       && < 0.19
+                     , text                            == 1.2.*
+                     , transformers                    >= 0.4        && < 0.6
+
