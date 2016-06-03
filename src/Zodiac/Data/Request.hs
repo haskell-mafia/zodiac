@@ -11,17 +11,23 @@ module Zodiac.Data.Request(
   , CRequest(..)
   , CURI(..)
   , parseCMethod
+  , renderCHeaders
   , renderCMethod
+  , renderCQueryString
+  , renderCURI
   ) where
 
 import           Control.DeepSeq.Generics (genericRnf)
 
 import           Data.ByteString (ByteString)
+import qualified Data.ByteString as BS
 import qualified Data.List as L
 import           Data.List.NonEmpty (NonEmpty)
 import qualified Data.List.NonEmpty as NE
 import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as M
+import qualified Data.Text as T
+import qualified Data.Text.Encoding as T
 
 import           GHC.Generics (Generic)
 
@@ -69,6 +75,9 @@ newtype CURI =
 
 instance NFData CURI where rnf = genericRnf
 
+renderCURI :: CURI -> ByteString
+renderCURI = unCURI
+
 -- | From the ? (not inclusive) to the end of the URL.
 newtype CQueryString =
   CQueryString {
@@ -76,6 +85,9 @@ newtype CQueryString =
   } deriving (Eq, Show, Generic)
 
 instance NFData CQueryString where rnf = genericRnf
+
+renderCQueryString :: CQueryString -> ByteString
+renderCQueryString = unCQueryString
 
 -- | Header name. The canonical form is lowercase, but that's done on render.
 newtype CHeaderName =
@@ -98,6 +110,16 @@ newtype CHeaders =
   } deriving (Eq, Show, Generic)
 
 instance NFData CHeaders where rnf = genericRnf
+
+renderCHeaders :: CHeaders -> ByteString
+renderCHeaders (CHeaders hs) =
+  let hassocs = sortOn fst $ M.assocs hs
+      hs' = (uncurry renderHeader) <$> hassocs in
+  BS.intercalate "\n" hs'
+  where
+    renderHeader hn hvs =
+      let hn' = T.encodeUtf8 . T.toLower $ unCHeaderName hn in
+      BS.concat $ [hn', ":", BS.intercalate "," (NE.toList $ unCHeaderValue <$> hvs)]
 
 -- | Body of request.
 newtype CPayload =
