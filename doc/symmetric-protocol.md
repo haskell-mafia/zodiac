@@ -14,6 +14,7 @@ The following data is included in the request's signature:
 
  - Algorithm.
  - Request timestamp.
+ - Request expiry.
  - Key ID.
  - The SHA256 hash of the canonical request.
 
