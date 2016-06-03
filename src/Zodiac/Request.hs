@@ -2,6 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Zodiac.Request(
     fromCanonicalRequest
+  , renderCRequest
   , toCanonicalRequest
   , trimSpaces
   ) where
@@ -22,6 +23,9 @@ import           Network.HTTP.Client (Request, RequestBody(..))
 import qualified Network.HTTP.Client as HC
 
 import           P hiding ((<>))
+
+import           Tinfoil (hexEncode, unHash)
+import           Tinfoil.Hash (hashSHA256)
 
 import           Zodiac.Data.Error
 import           Zodiac.Data.Request
@@ -113,3 +117,14 @@ reqCPayload r = do
     RequestBodyBS b -> pure b
     _ -> Left UnsupportedPayloadType
   pure $ CPayload bs
+
+renderCRequest :: CRequest -> ByteString
+renderCRequest (CRequest m u qs hs p) =
+  let pHash = T.encodeUtf8 . hexEncode . unHash . hashSHA256 $ unCPayload p in
+  BS.intercalate "\n" [
+      renderCMethod m
+    , renderCURI u
+    , renderCQueryString qs
+    , renderCHeaders hs
+    , pHash
+    ]

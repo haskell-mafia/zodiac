@@ -6,7 +6,9 @@ module Test.Zodiac.Request where
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 
+import           Disorder.Core.Property ((=/=))
 import           Disorder.Core.Tripping (tripping)
+import           Disorder.Core.UniquePair (UniquePair(..))
 
 import           P
 
@@ -30,6 +32,10 @@ prop_trimSpaces bs =
   case BS.null bs' of
     True -> bs1 === bs'
     False -> (bs1, bs2) === (bs', bs' <> " " <> bs')
+
+prop_renderCRequest :: UniquePair CRequest -> Property
+prop_renderCRequest (UniquePair cr1 cr2) =
+  cr1 =/= cr2
 
 return []
 tests :: IO Bool
