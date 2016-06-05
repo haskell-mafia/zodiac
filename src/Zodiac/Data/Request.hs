@@ -83,7 +83,6 @@ newtype CURI =
 
 instance NFData CURI where rnf = genericRnf
 
--- FIXME: test
 -- | Path elements are URL-encoded with ' ' encoded as '%20'.
 renderCURI :: CURI -> ByteString
 renderCURI = urlEncode False . unCURI
