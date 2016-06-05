@@ -35,6 +35,8 @@ import qualified Data.Text.Encoding as T
 import           Data.Time.Clock (UTCTime)
 import           Data.Time.Format (defaultTimeLocale, formatTime, iso8601DateFormat)
 
+import           Network.HTTP.Types.URI (urlEncode)
+
 import           GHC.Generics (Generic)
 
 import           P
@@ -81,8 +83,10 @@ newtype CURI =
 
 instance NFData CURI where rnf = genericRnf
 
+-- FIXME: test
+-- | Path elements are URL-encoded with ' ' encoded as '%20'.
 renderCURI :: CURI -> ByteString
-renderCURI = unCURI
+renderCURI = urlEncode False . unCURI
 
 -- | From the ? (not inclusive) to the end of the URL.
 newtype CQueryString =
@@ -92,8 +96,9 @@ newtype CQueryString =
 
 instance NFData CQueryString where rnf = genericRnf
 
+-- | Query strings are URL-encoded with ' ' encoded as '+'.
 renderCQueryString :: CQueryString -> ByteString
-renderCQueryString = unCQueryString
+renderCQueryString = urlEncode True . unCQueryString
 
 -- | Header name. The canonical form is lowercase, but that's done on render.
 newtype CHeaderName =
