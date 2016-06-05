@@ -34,6 +34,7 @@ import           Zodiac.Data.Request
 -- verification.
 toCanonicalRequest :: Request -> Either RequestError CRequest
 toCanonicalRequest r =
+  -- URI part and query string are both already URL-encoded in http-client.
   let uri = CURI $ HC.path r
       qs = CQueryString $ HC.queryString r in do
   method <- reqCMethod r

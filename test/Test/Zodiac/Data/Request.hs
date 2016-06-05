@@ -9,6 +9,8 @@ import qualified Data.ByteString.Char8 as BSC
 
 import           Disorder.Core.Tripping (tripping)
 
+import           Network.HTTP.Types.URI (urlDecode)
+
 import           P
 
 import           System.IO (IO)
@@ -35,15 +37,23 @@ urlEncoded = (=== True) . BS.all (not . flip elem urlBad)
     -- "unwise" per RFC 2396
     unwise = BS.unpack . BSC.pack $ "{}|\\^[]`"
 
-prop_renderCURI :: ByteString -> Property
-prop_renderCURI bs =
-  let bs' = renderCURI $ CURI bs in
+prop_encodeCURI :: ByteString -> Property
+prop_encodeCURI bs =
+  let bs' = unCURI $ encodeCURI bs in
   urlEncoded bs'
 
-prop_renderCQueryString :: ByteString -> Property
-prop_renderCQueryString bs =
-  let bs' = renderCQueryString $ CQueryString bs in
+prop_tripping_encodeCURI :: ByteString -> Property
+prop_tripping_encodeCURI =
+  tripping encodeCURI (Just . urlDecode False . renderCURI)
+
+prop_encodeCQueryString :: ByteString -> Property
+prop_encodeCQueryString bs =
+  let bs' = unCQueryString $ encodeCQueryString bs in
   urlEncoded bs'
+
+prop_tripping_encodeCQueryString :: ByteString -> Property
+prop_tripping_encodeCQueryString =
+  tripping encodeCQueryString (Just . urlDecode True . renderCQueryString)
 
 prop_tripping_CMethod :: CMethod -> Property
 prop_tripping_CMethod = tripping renderCMethod parseCMethod

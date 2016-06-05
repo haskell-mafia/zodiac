@@ -39,7 +39,7 @@ instance Arbitrary CURI where
 -- I don't think this needs to be particularly realistic.
 instance Arbitrary CQueryString where
   arbitrary =
-    CQueryString <$> utf8BS1
+    encodeCQueryString <$> utf8BS1
 
 instance Arbitrary CHeaderName where
   arbitrary = do

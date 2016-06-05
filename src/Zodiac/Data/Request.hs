@@ -12,6 +12,8 @@ module Zodiac.Data.Request(
   , CURI(..)
   , RequestExpiry(..)
   , RequestTimestamp(..)
+  , encodeCURI
+  , encodeCQueryString
   , parseCMethod
   , renderCHeaders
   , renderCMethod
@@ -76,6 +78,8 @@ parseCMethod _ = Nothing'
 
 -- | The bit from the last character of the host part of the URL to either
 -- the ? beginning the query string or the end of the URL.
+--
+-- Represented as a *URL-encoded* ByteString.
 newtype CURI =
   CURI {
     unCURI :: ByteString
@@ -83,11 +87,16 @@ newtype CURI =
 
 instance NFData CURI where rnf = genericRnf
 
--- | Path elements are URL-encoded with ' ' encoded as '%20'.
 renderCURI :: CURI -> ByteString
-renderCURI = urlEncode False . unCURI
+renderCURI = unCURI
+
+-- | Path elements are URL-encoded with ' ' encoded as '%20'.
+encodeCURI :: ByteString -> CURI
+encodeCURI = CURI . urlEncode False -- don't encode ' ' as '+'
 
 -- | From the ? (not inclusive) to the end of the URL.
+--
+-- Represented as a *URL-encoded* ByteString.
 newtype CQueryString =
   CQueryString {
     unCQueryString :: ByteString
@@ -95,9 +104,12 @@ newtype CQueryString =
 
 instance NFData CQueryString where rnf = genericRnf
 
--- | Query strings are URL-encoded with ' ' encoded as '+'.
 renderCQueryString :: CQueryString -> ByteString
-renderCQueryString = urlEncode True . unCQueryString
+renderCQueryString = unCQueryString
+
+-- | Query strings are URL-encoded with ' ' encoded as '+'.
+encodeCQueryString :: ByteString -> CQueryString
+encodeCQueryString = CQueryString . urlEncode True -- encode ' ' as '+'
 
 -- | Header name. The canonical form is lowercase, but that's done on render.
 newtype CHeaderName =
