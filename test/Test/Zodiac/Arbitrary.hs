@@ -18,6 +18,10 @@ import           P
 import           Zodiac.Data
 
 import           Test.QuickCheck
+import           Test.QuickCheck.Instances ()
+import           Test.Zodiac.Gen
+
+import           Tinfoil.Data
 
 -- FIXME: should find a better home for this instance at some point
 instance Arbitrary a => Arbitrary (NonEmpty a) where
@@ -65,3 +69,17 @@ instance Arbitrary CRequest where
 
 instance Arbitrary Protocol where
   arbitrary = elements [minBound..maxBound]
+
+-- quickcheck-instances (day + seconds) - days clustered in 19th century,
+-- seconds in a day are uniform.
+instance Arbitrary RequestTimestamp where
+  arbitrary = RequestTimestamp <$> arbitrary
+
+-- FIXME: should use the instance in tinfoil
+instance Arbitrary KeyId where
+  arbitrary = genUBytes KeyId 32
+
+-- FIXME: should use the instance in tinfoil
+instance Arbitrary SymmetricKey where
+  arbitrary = genUBytes SymmetricKey 32
+

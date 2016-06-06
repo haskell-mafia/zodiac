@@ -60,6 +60,7 @@ test-suite test
                      , ambiata-disorder-core
                      , ambiata-disorder-corpus
                      , ambiata-p
+                     , ambiata-tinfoil
                      , ambiata-zodiac
                      , bytestring                      >= 0.10.4     && < 0.10.7
                      , containers                      == 0.5.*
