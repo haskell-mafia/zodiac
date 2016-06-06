@@ -10,6 +10,7 @@ module Zodiac.Data.Request(
   , CPayload(..)
   , CRequest(..)
   , CURI(..)
+  , RequestDate(..)
   , RequestExpiry(..)
   , RequestTimestamp(..)
   , encodeCURI
@@ -19,7 +20,9 @@ module Zodiac.Data.Request(
   , renderCMethod
   , renderCQueryString
   , renderCURI
-  , renderTimestampDate
+  , renderRequestDate
+  , renderRequestTimestamp
+  , timestampDate
   ) where
 
 import           Control.DeepSeq.Generics (genericRnf)
@@ -34,7 +37,8 @@ import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as M
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
-import           Data.Time.Clock (UTCTime)
+import           Data.Time.Calendar (Day(..))
+import           Data.Time.Clock (UTCTime(..))
 import           Data.Time.Format (defaultTimeLocale, formatTime, iso8601DateFormat)
 
 import           Network.HTTP.Types.URI (urlEncode)
@@ -191,14 +195,40 @@ newtype RequestTimestamp =
     unRequestTimestamp :: UTCTime
   } deriving (Eq, Generic)
 
--- | Render just the date part in ISO-8601 format.
-renderTimestampDate :: RequestTimestamp -> ByteString
-renderTimestampDate (RequestTimestamp ts) =
-  let fmt = iso8601DateFormat Nothing
+instance NFData RequestTimestamp where rnf = genericRnf
+
+instance Show RequestTimestamp where
+  show = BSC.unpack . renderRequestTimestamp
+
+renderRequestTimestamp :: RequestTimestamp -> ByteString
+renderRequestTimestamp (RequestTimestamp ts) =
+  let fmt = iso8601DateFormat $ Just "%H:%M:%S"
       str = formatTime defaultTimeLocale fmt ts in
   BSC.pack str
 
-instance NFData RequestTimestamp where rnf = genericRnf
+-- | Date on which a request is made (UTC).
+newtype RequestDate =
+  RequestDate {
+    unRequestDate :: Day
+  } deriving (Eq, Generic)
+
+instance NFData RequestDate where rnf = genericRnf
+
+instance Show RequestDate where
+  show = BSC.unpack . renderRequestDate
+
+timestampDate :: RequestTimestamp -> RequestDate
+timestampDate = RequestDate . utctDay . unRequestTimestamp
+
+-- | Render just the date part in ISO-8601 format.
+renderRequestDate :: RequestDate -> ByteString
+renderRequestDate (RequestDate rd) =
+  let ts = UTCTime rd 0
+      fmt = iso8601DateFormat Nothing
+      str = formatTime defaultTimeLocale fmt ts in
+  BSC.pack str
+
+
 
 -- | Number of seconds for a request to be considered valid - after
 -- this time, an application server will discard it.

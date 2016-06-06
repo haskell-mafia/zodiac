@@ -21,7 +21,9 @@ import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 import           Test.Zodiac.Gen
 
+-- FIXME: expose these instances from tinfoil
 import           Tinfoil.Data
+import           Tinfoil.Encode (hexEncode)
 
 -- FIXME: should find a better home for this instance at some point
 instance Arbitrary a => Arbitrary (NonEmpty a) where
@@ -75,6 +77,9 @@ instance Arbitrary Protocol where
 instance Arbitrary RequestTimestamp where
   arbitrary = RequestTimestamp <$> arbitrary
 
+instance Arbitrary RequestDate where
+  arbitrary = timestampDate <$> arbitrary
+
 -- FIXME: should use the instance in tinfoil
 instance Arbitrary KeyId where
   arbitrary = genUBytes KeyId 32
@@ -83,3 +88,6 @@ instance Arbitrary KeyId where
 instance Arbitrary SymmetricKey where
   arbitrary = genUBytes SymmetricKey 32
 
+-- testing only
+instance Show SymmetricKey where
+  show = T.unpack . hexEncode . unSymmetricKey
