@@ -39,6 +39,7 @@ library
                        Zodiac
                        Zodiac.Data
                        Zodiac.Data.Error
+                       Zodiac.Data.Key
                        Zodiac.Data.Protocol
                        Zodiac.Data.Request
                        Zodiac.MAC

@@ -12,7 +12,7 @@ module Zodiac.MAC(
 
 import           P
 
-import           Tinfoil (SymmetricKey(..), KeyId(..), MAC(..))
+import           Tinfoil (SymmetricKey(..), MAC(..))
 import           Tinfoil.MAC (hmacSHA256)
 
 import           Zodiac.Data

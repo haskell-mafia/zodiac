@@ -228,8 +228,6 @@ renderRequestDate (RequestDate rd) =
       str = formatTime defaultTimeLocale fmt ts in
   BSC.pack str
 
-
-
 -- | Number of seconds for a request to be considered valid - after
 -- this time, an application server will discard it.
 newtype RequestExpiry =

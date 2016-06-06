@@ -15,8 +15,9 @@ import           Test.Zodiac.Arbitrary ()
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 
-import           Tinfoil.Data
+import           Tinfoil.Data.Key (SymmetricKey(..))
 
+import           Zodiac.Data.Key
 import           Zodiac.Data.Request
 import           Zodiac.MAC
 
