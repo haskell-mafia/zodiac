@@ -3,6 +3,13 @@
 This document is a high-level outline of a protocol for authenticating
 HTTP requests via a hash-based message authentication code (HMAC).
 
+# Definitions
+
+ - `+` shall refer to string concatenation.
+ - "hexadecimal encoding" shall mean the representation of a string of
+   bytes of length `n` as the hexadecimal representation in lowercase
+   ASCII characters of length `2n`.
+
 # Canonical request form
 
 The request is first transformed into a canonical form for signing,
@@ -28,6 +35,11 @@ let dateKey = hmacSHA256 ("TSRPv1-begin" + k) date
     idKey = hmacSHA256 dateKey keyID
     signingKey = hmacSHA256 idKey "TSRPv1-end"
 ```
+
+ - `date` is the ISO 8601 date of the request in UTC, e.g.,
+   `"2016-06-24"`.
+ - `keyID` is the hexadecimal encoding of the 32-byte key ID, e.g.,
+   `"8c57b5cde3dc531dbfa19e781f24605e113e3d2f34f63006f431bf6dec12ad9f"`.
 
 # Authentication headers
 
