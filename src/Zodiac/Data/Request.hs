@@ -10,18 +10,34 @@ module Zodiac.Data.Request(
   , CPayload(..)
   , CRequest(..)
   , CURI(..)
+  , RequestExpiry(..)
+  , RequestTimestamp(..)
+  , encodeCURI
+  , encodeCQueryString
   , parseCMethod
+  , renderCHeaders
   , renderCMethod
+  , renderCQueryString
+  , renderCURI
+  , renderTimestampDate
   ) where
 
 import           Control.DeepSeq.Generics (genericRnf)
 
 import           Data.ByteString (ByteString)
+import qualified Data.ByteString as BS
+import qualified Data.ByteString.Char8 as BSC
 import qualified Data.List as L
 import           Data.List.NonEmpty (NonEmpty)
 import qualified Data.List.NonEmpty as NE
 import           Data.Map.Strict (Map)
 import qualified Data.Map.Strict as M
+import qualified Data.Text as T
+import qualified Data.Text.Encoding as T
+import           Data.Time.Clock (UTCTime)
+import           Data.Time.Format (defaultTimeLocale, formatTime, iso8601DateFormat)
+
+import           Network.HTTP.Types.URI (urlEncode)
 
 import           GHC.Generics (Generic)
 
@@ -62,6 +78,8 @@ parseCMethod _ = Nothing'
 
 -- | The bit from the last character of the host part of the URL to either
 -- the ? beginning the query string or the end of the URL.
+--
+-- Represented as a *URL-encoded* ByteString.
 newtype CURI =
   CURI {
     unCURI :: ByteString
@@ -69,13 +87,29 @@ newtype CURI =
 
 instance NFData CURI where rnf = genericRnf
 
+renderCURI :: CURI -> ByteString
+renderCURI = unCURI
+
+-- | Path elements are URL-encoded with ' ' encoded as '%20'.
+encodeCURI :: ByteString -> CURI
+encodeCURI = CURI . urlEncode False -- don't encode ' ' as '+'
+
 -- | From the ? (not inclusive) to the end of the URL.
+--
+-- Represented as a *URL-encoded* ByteString.
 newtype CQueryString =
   CQueryString {
     unCQueryString :: ByteString
   } deriving (Eq, Show, Generic)
 
 instance NFData CQueryString where rnf = genericRnf
+
+renderCQueryString :: CQueryString -> ByteString
+renderCQueryString = unCQueryString
+
+-- | Query strings are URL-encoded with ' ' encoded as '+'.
+encodeCQueryString :: ByteString -> CQueryString
+encodeCQueryString = CQueryString . urlEncode True -- encode ' ' as '+'
 
 -- | Header name. The canonical form is lowercase, but that's done on render.
 newtype CHeaderName =
@@ -98,6 +132,16 @@ newtype CHeaders =
   } deriving (Eq, Show, Generic)
 
 instance NFData CHeaders where rnf = genericRnf
+
+renderCHeaders :: CHeaders -> ByteString
+renderCHeaders (CHeaders hs) =
+  let hassocs = sortOn fst $ M.assocs hs
+      hs' = (uncurry renderHeader) <$> hassocs in
+  BS.intercalate "\n" hs'
+  where
+    renderHeader hn hvs =
+      let hn' = T.encodeUtf8 . T.toLower $ unCHeaderName hn in
+      BS.concat $ [hn', ":", BS.intercalate "," (NE.toList $ unCHeaderValue <$> hvs)]
 
 -- | Body of request.
 newtype CPayload =
@@ -140,3 +184,27 @@ instance Eq CRequest where
             ks1 == ks2
           , vs1 == vs2
           ]
+
+-- | Time at which the request is made.
+newtype RequestTimestamp =
+  RequestTimestamp {
+    unRequestTimestamp :: UTCTime
+  } deriving (Eq, Generic)
+
+-- | Render just the date part in ISO-8601 format.
+renderTimestampDate :: RequestTimestamp -> ByteString
+renderTimestampDate (RequestTimestamp ts) =
+  let fmt = iso8601DateFormat Nothing
+      str = formatTime defaultTimeLocale fmt ts in
+  BSC.pack str
+
+instance NFData RequestTimestamp where rnf = genericRnf
+
+-- | Number of seconds for a request to be considered valid - after
+-- this time, an application server will discard it.
+newtype RequestExpiry =
+  RequestExpiry {
+    unRequestExpiry :: Int
+  } deriving (Eq, Show, Generic)
+
+instance NFData RequestExpiry where rnf = genericRnf

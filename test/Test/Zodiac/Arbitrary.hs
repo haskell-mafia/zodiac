@@ -15,7 +15,7 @@ import           Disorder.Corpus (muppets)
 
 import           P
 
-import           Zodiac.Data.Request
+import           Zodiac.Data
 
 import           Test.QuickCheck
 
@@ -39,7 +39,7 @@ instance Arbitrary CURI where
 -- I don't think this needs to be particularly realistic.
 instance Arbitrary CQueryString where
   arbitrary =
-    CQueryString <$> utf8BS1
+    encodeCQueryString <$> utf8BS1
 
 instance Arbitrary CHeaderName where
   arbitrary = do
@@ -62,3 +62,6 @@ instance Arbitrary CRequest where
     <*> arbitrary
     <*> arbitrary
     <*> arbitrary
+
+instance Arbitrary Protocol where
+  arbitrary = elements [minBound..maxBound]

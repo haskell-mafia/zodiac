@@ -2,6 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Zodiac.Request(
     fromCanonicalRequest
+  , renderCRequest
   , toCanonicalRequest
   , trimSpaces
   ) where
@@ -23,6 +24,9 @@ import qualified Network.HTTP.Client as HC
 
 import           P hiding ((<>))
 
+import           Tinfoil (hexEncode, unHash)
+import           Tinfoil.Hash (hashSHA256)
+
 import           Zodiac.Data.Error
 import           Zodiac.Data.Request
 
@@ -30,6 +34,7 @@ import           Zodiac.Data.Request
 -- verification.
 toCanonicalRequest :: Request -> Either RequestError CRequest
 toCanonicalRequest r =
+  -- URI part and query string are both already URL-encoded in http-client.
   let uri = CURI $ HC.path r
       qs = CQueryString $ HC.queryString r in do
   method <- reqCMethod r
@@ -113,3 +118,14 @@ reqCPayload r = do
     RequestBodyBS b -> pure b
     _ -> Left UnsupportedPayloadType
   pure $ CPayload bs
+
+renderCRequest :: CRequest -> ByteString
+renderCRequest (CRequest m u qs hs p) =
+  let pHash = T.encodeUtf8 . hexEncode . unHash . hashSHA256 $ unCPayload p in
+  BS.intercalate "\n" [
+      renderCMethod m
+    , renderCURI u
+    , renderCQueryString qs
+    , renderCHeaders hs
+    , pHash
+    ]
