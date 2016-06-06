@@ -3,6 +3,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Test.Zodiac.Data.Protocol where
 
+import           Disorder.Core.Run (ExpectedTestSpeed(..), disorderCheckEnvAll)
 import           Disorder.Core.Tripping (tripping)
 
 import           P
@@ -19,4 +20,4 @@ prop_tripping_Protocol = tripping renderProtocol parseProtocol
 
 return []
 tests :: IO Bool
-tests = $forAllProperties $ quickCheckWithResult (stdArgs { maxSuccess = 100 } )
+tests = $disorderCheckEnvAll TestRunMore

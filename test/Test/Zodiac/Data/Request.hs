@@ -7,6 +7,7 @@ import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BSC
 
+import           Disorder.Core.Run (ExpectedTestSpeed(..), disorderCheckEnvAll)
 import           Disorder.Core.Tripping (tripping)
 
 import           Network.HTTP.Types.URI (urlDecode)
@@ -60,4 +61,4 @@ prop_tripping_CMethod = tripping renderCMethod parseCMethod
 
 return []
 tests :: IO Bool
-tests = $forAllProperties $ quickCheckWithResult (stdArgs { maxSuccess = 1000 } )
+tests = $disorderCheckEnvAll TestRunMore

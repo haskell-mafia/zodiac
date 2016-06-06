@@ -7,6 +7,7 @@ import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 
 import           Disorder.Core.Property ((=/=))
+import           Disorder.Core.Run (ExpectedTestSpeed(..), disorderCheckEnvAll)
 import           Disorder.Core.Tripping (tripping)
 import           Disorder.Core.UniquePair (UniquePair(..))
 
@@ -39,4 +40,4 @@ prop_renderCRequest (UniquePair cr1 cr2) =
 
 return []
 tests :: IO Bool
-tests = $forAllProperties $ quickCheckWithResult (stdArgs { maxSuccess = 1000 } )
+tests = $disorderCheckEnvAll TestRunMore
