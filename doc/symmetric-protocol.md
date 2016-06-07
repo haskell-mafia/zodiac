@@ -26,6 +26,20 @@ The following data is included in the request's signature:
  - Key ID.
  - The SHA256 hash of the canonical request.
 
+These fields are rendered separated by the linefeed character `0x0a` before
+signing. 
+
+For example:
+
+```
+TSRPv1
+HMAC-SHA256
+2016-06-06T01:23:45
+60
+b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c
+7d865e959b2466918c9863afca942d0fb89d7c9ac0c99bafc3749504ded97730
+```
+
 ## Signing key
 
 The signing key is derived from the secret key via an iterated chain
