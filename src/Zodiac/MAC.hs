@@ -17,7 +17,7 @@ import           Tinfoil.MAC (hmacSHA256)
 
 import           Zodiac.Data
 
-macProtocol :: Protocol
+macProtocol :: SymmetricProtocol
 macProtocol = TSRPv1
 
 -- | Derive the key we actually use to sign the request from the
@@ -31,8 +31,8 @@ deriveRequestKey rd (KeyId kid) (SymmetricKey sk) =
       k3 = chainNext $ hmacSHA256 k2 suffix in
   k3
   where
-    prefix = renderProtocol macProtocol <> "-start"
+    prefix = renderSymmetricProtocol macProtocol <> "-start"
 
-    suffix = renderProtocol macProtocol <> "-end"
+    suffix = renderSymmetricProtocol macProtocol <> "-end"
 
     chainNext = SymmetricKey . unMAC

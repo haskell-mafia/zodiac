@@ -69,8 +69,14 @@ instance Arbitrary CRequest where
     <*> arbitrary
     <*> arbitrary
 
-instance Arbitrary Protocol where
+instance Arbitrary SymmetricProtocol where
   arbitrary = elements [minBound..maxBound]
+
+instance Arbitrary AsymmetricProtocol where
+  arbitrary = elements [minBound..maxBound]
+
+instance Arbitrary Protocol where
+  arbitrary = oneof [Symmetric <$> arbitrary, Asymmetric <$> arbitrary]
 
 -- quickcheck-instances (day + seconds) - days clustered in 19th century,
 -- seconds in a day are uniform.
