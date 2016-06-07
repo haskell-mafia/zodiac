@@ -19,6 +19,7 @@ which is constructed as described [here](canonical-request.md).
 
 The following data is included in the request's signature:
 
+ - Protocol.
  - Algorithm.
  - Request timestamp.
  - Request expiry.
