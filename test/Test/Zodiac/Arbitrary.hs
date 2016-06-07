@@ -87,7 +87,7 @@ instance Arbitrary RequestDate where
   arbitrary = timestampDate <$> arbitrary
 
 instance Arbitrary KeyId where
-  arbitrary = genUBytes KeyId 32
+  arbitrary = genUBytes KeyId 16
 
 -- FIXME: should use the instance in tinfoil
 instance Arbitrary SymmetricKey where

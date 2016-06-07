@@ -36,7 +36,7 @@ TSRPv1
 HMAC-SHA256
 2016-06-06T01:23:45
 60
-b5bb9d8014a0f9b1d61e21e796d78dccdf1352f23cd32812f4850b878ae4944c
+8c57b5cde3dc531dbfa19e781f24605e
 7d865e959b2466918c9863afca942d0fb89d7c9ac0c99bafc3749504ded97730
 ```
 
@@ -53,8 +53,8 @@ let dateKey = hmacSHA256 ("TSRPv1-begin" + k) date
 
  - `date` is the ISO 8601 date of the request in UTC, e.g.,
    `"2016-06-24"`.
- - `keyID` is the hexadecimal encoding of the 32-byte key ID, e.g.,
-   `"8c57b5cde3dc531dbfa19e781f24605e113e3d2f34f63006f431bf6dec12ad9f"`.
+ - `keyID` is the hexadecimal encoding of the 16-byte key ID, e.g.,
+   `"8c57b5cde3dc531dbfa19e781f24605e"`.
 
 # Authentication headers
 
