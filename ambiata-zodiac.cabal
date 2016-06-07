@@ -39,8 +39,10 @@ library
                        Zodiac
                        Zodiac.Data
                        Zodiac.Data.Error
+                       Zodiac.Data.Key
                        Zodiac.Data.Protocol
                        Zodiac.Data.Request
+                       Zodiac.MAC
                        Zodiac.Request
 
 test-suite test
@@ -59,6 +61,7 @@ test-suite test
                      , ambiata-disorder-core
                      , ambiata-disorder-corpus
                      , ambiata-p
+                     , ambiata-tinfoil
                      , ambiata-zodiac
                      , bytestring                      >= 0.10.4     && < 0.10.7
                      , containers                      == 0.5.*

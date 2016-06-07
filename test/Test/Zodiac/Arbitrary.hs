@@ -18,6 +18,12 @@ import           P
 import           Zodiac.Data
 
 import           Test.QuickCheck
+import           Test.QuickCheck.Instances ()
+import           Test.Zodiac.Gen
+
+-- FIXME: expose these instances from tinfoil
+import           Tinfoil.Data.Key (SymmetricKey(..))
+import           Tinfoil.Encode (hexEncode)
 
 -- FIXME: should find a better home for this instance at some point
 instance Arbitrary a => Arbitrary (NonEmpty a) where
@@ -63,5 +69,30 @@ instance Arbitrary CRequest where
     <*> arbitrary
     <*> arbitrary
 
-instance Arbitrary Protocol where
+instance Arbitrary SymmetricProtocol where
   arbitrary = elements [minBound..maxBound]
+
+instance Arbitrary AsymmetricProtocol where
+  arbitrary = elements [minBound..maxBound]
+
+instance Arbitrary Protocol where
+  arbitrary = oneof [Symmetric <$> arbitrary, Asymmetric <$> arbitrary]
+
+-- quickcheck-instances (day + seconds) - days clustered in 19th century,
+-- seconds in a day are uniform.
+instance Arbitrary RequestTimestamp where
+  arbitrary = RequestTimestamp <$> arbitrary
+
+instance Arbitrary RequestDate where
+  arbitrary = timestampDate <$> arbitrary
+
+instance Arbitrary KeyId where
+  arbitrary = genUBytes KeyId 32
+
+-- FIXME: should use the instance in tinfoil
+instance Arbitrary SymmetricKey where
+  arbitrary = genUBytes SymmetricKey 32
+
+-- testing only
+instance Show SymmetricKey where
+  show = T.unpack . hexEncode . unSymmetricKey
