@@ -44,12 +44,18 @@ let dateKey = hmacSHA256 ("TSRPv1-begin" + k) date
 
 # Authentication headers
 
-The following headers are added to a request before it is signed:
+The following header is added to a request after it is signed:
 
- - `X-Zodiac-Protocol`: "TSRPv1"
- - `X-Zodiac-HashAlgorithm`: "SHA-256"
- - `X-Zodiac-KeyId`: key ID.
- - `X-Zodiac-Timestamp`: ISO 8601-formatted date and time of the request.
- - `X-Zodiac-Expires`: number of seconds from the request timestamp
-   for the request to be valid.
- - `X-Zodiac-SignedHeaders`: list of headers included in the signature.
+```
+Authorization: $protocol $hash_algorithm $key_id $request_timestamp $request_expiry $signed_headers
+```
+
+ - All fields are space-separated.
+ - `$protocol` is replaced by "TSRPv1".
+ - `$hash_algorithm` is replaced by "SHA-256".
+ - `$key_id` is replaced by key ID.
+ - `$request_timestamp` is replaced by ISO 8601-formatted date and time of the request.
+ - `$request_expiry` is replaced by number of seconds from the request
+   timestamp for the request to be valid.
+ - `$signed_headers` is replaced by lowercase list of headers included
+   in the signature, separated by commas.
