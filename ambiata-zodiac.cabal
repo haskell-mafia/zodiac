@@ -44,6 +44,7 @@ library
                        Zodiac.Data.Request
                        Zodiac.MAC
                        Zodiac.Request
+                       Zodiac.Request.HttpClient
 
 test-suite test
   type:                exitcode-stdio-1.0
