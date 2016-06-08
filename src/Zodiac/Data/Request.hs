@@ -9,6 +9,7 @@ module Zodiac.Data.Request(
   , CQueryString(..)
   , CPayload(..)
   , CRequest(..)
+  , CSignedHeaders(..)
   , CURI(..)
   , RequestDate(..)
   , RequestExpiry(..)
@@ -16,9 +17,11 @@ module Zodiac.Data.Request(
   , encodeCURI
   , encodeCQueryString
   , parseCMethod
+  , renderCHeaderName
   , renderCHeaders
   , renderCMethod
   , renderCQueryString
+  , renderCSignedHeaders
   , renderCURI
   , renderRequestDate
   , renderRequestExpiry
@@ -124,6 +127,9 @@ newtype CHeaderName =
 
 instance NFData CHeaderName where rnf = genericRnf
 
+renderCHeaderName :: CHeaderName -> ByteString
+renderCHeaderName = T.encodeUtf8 . T.toLower . unCHeaderName
+
 newtype CHeaderValue =
   CHeaderValue {
     unCHeaderValue :: ByteString
@@ -145,8 +151,7 @@ renderCHeaders (CHeaders hs) =
   BS.intercalate "\n" hs'
   where
     renderHeader hn hvs =
-      let hn' = T.encodeUtf8 . T.toLower $ unCHeaderName hn in
-      BS.concat $ [hn', ":", BS.intercalate "," (NE.toList $ unCHeaderValue <$> hvs)]
+      BS.concat $ [renderCHeaderName hn, ":", BS.intercalate "," (NE.toList $ unCHeaderValue <$> hvs)]
 
 -- | Body of request.
 newtype CPayload =
@@ -240,3 +245,16 @@ instance NFData RequestExpiry where rnf = genericRnf
 
 renderRequestExpiry :: RequestExpiry -> ByteString
 renderRequestExpiry = T.encodeUtf8 . renderIntegral . unRequestExpiry
+
+-- | List of signed headers in a request (as opposed to headers which
+-- might be added later by proxies and the like).
+newtype CSignedHeaders =
+  CSignedHeaders {
+    unCSignedHeaders :: NonEmpty CHeaderName
+  } deriving (Eq, Show, Generic)
+
+instance NFData CSignedHeaders where rnf = genericRnf
+
+renderCSignedHeaders :: CSignedHeaders -> ByteString
+renderCSignedHeaders =
+  BS.intercalate "," . NE.toList . fmap renderCHeaderName . unCSignedHeaders
