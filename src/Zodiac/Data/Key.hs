@@ -9,6 +9,7 @@ module Zodiac.Data.Key(
 import           Control.DeepSeq.Generics (genericRnf)
 
 import           Data.ByteString (ByteString)
+import qualified Data.Text.Encoding as T
 
 import           GHC.Generics (Generic)
 
@@ -25,5 +26,5 @@ newtype KeyId =
 
 instance NFData KeyId where rnf = genericRnf
 
-renderKeyId :: KeyId -> Text
-renderKeyId = hexEncode . unKeyId
+renderKeyId :: KeyId -> ByteString
+renderKeyId = T.encodeUtf8 . hexEncode . unKeyId

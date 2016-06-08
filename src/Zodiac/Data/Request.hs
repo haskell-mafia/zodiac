@@ -21,6 +21,7 @@ module Zodiac.Data.Request(
   , renderCQueryString
   , renderCURI
   , renderRequestDate
+  , renderRequestExpiry
   , renderRequestTimestamp
   , timestampDate
   ) where
@@ -236,3 +237,6 @@ newtype RequestExpiry =
   } deriving (Eq, Show, Generic)
 
 instance NFData RequestExpiry where rnf = genericRnf
+
+renderRequestExpiry :: RequestExpiry -> ByteString
+renderRequestExpiry = T.encodeUtf8 . renderIntegral . unRequestExpiry
