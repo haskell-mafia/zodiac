@@ -42,6 +42,7 @@ library
                        Zodiac.Data.Key
                        Zodiac.Data.Protocol
                        Zodiac.Data.Request
+                       Zodiac.Data.Symmetric
                        Zodiac.MAC
                        Zodiac.Request
                        Zodiac.Request.HttpClient
