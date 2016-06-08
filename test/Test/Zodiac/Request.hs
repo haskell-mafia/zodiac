@@ -16,10 +16,11 @@ import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 
 import           Zodiac.Data.Request
+import           Zodiac.Request
 
 prop_renderCRequest :: UniquePair CRequest -> Property
 prop_renderCRequest (UniquePair cr1 cr2) =
-  cr1 =/= cr2
+  renderCRequest cr1 =/= renderCRequest cr2
 
 return []
 tests :: IO Bool
