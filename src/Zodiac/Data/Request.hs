@@ -17,6 +17,9 @@ module Zodiac.Data.Request(
   , encodeCURI
   , encodeCQueryString
   , parseCMethod
+  , parseCSignedHeaders
+  , parseRequestExpiry
+  , parseRequestTimestamp
   , renderCHeaderName
   , renderCHeaders
   , renderCMethod
@@ -31,6 +34,8 @@ module Zodiac.Data.Request(
 
 import           Control.DeepSeq.Generics (genericRnf)
 
+import qualified Data.Attoparsec.ByteString as AB
+import qualified Data.Attoparsec.ByteString.Char8 as ABC
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BSC
@@ -43,7 +48,8 @@ import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import           Data.Time.Calendar (Day(..))
 import           Data.Time.Clock (UTCTime(..))
-import           Data.Time.Format (defaultTimeLocale, formatTime, iso8601DateFormat)
+import           Data.Time.Format (formatTime, iso8601DateFormat)
+import           Data.Time.Format (defaultTimeLocale, parseTimeM)
 
 import           Network.HTTP.Types.URI (urlEncode)
 
@@ -206,11 +212,19 @@ instance NFData RequestTimestamp where rnf = genericRnf
 instance Show RequestTimestamp where
   show = BSC.unpack . renderRequestTimestamp
 
+requestTimestampFormat :: [Char]
+requestTimestampFormat =
+  iso8601DateFormat $ Just "%H:%M:%S"
+
 renderRequestTimestamp :: RequestTimestamp -> ByteString
 renderRequestTimestamp (RequestTimestamp ts) =
-  let fmt = iso8601DateFormat $ Just "%H:%M:%S"
-      str = formatTime defaultTimeLocale fmt ts in
+  let str = formatTime defaultTimeLocale requestTimestampFormat ts in
   BSC.pack str
+
+parseRequestTimestamp :: ByteString -> Maybe' RequestTimestamp
+parseRequestTimestamp =
+  fmap RequestTimestamp . strictMaybe .
+    parseTimeM False defaultTimeLocale requestTimestampFormat . BSC.unpack
 
 -- | Date on which a request is made (UTC).
 newtype RequestDate =
@@ -246,6 +260,15 @@ instance NFData RequestExpiry where rnf = genericRnf
 renderRequestExpiry :: RequestExpiry -> ByteString
 renderRequestExpiry = T.encodeUtf8 . renderIntegral . unRequestExpiry
 
+parseRequestExpiry :: ByteString -> Maybe' RequestExpiry
+parseRequestExpiry bs =
+  case AB.parseOnly (ABC.decimal <* AB.endOfInput) bs of
+    Right x -> if x > 0
+                 then pure $ RequestExpiry x
+                 else Nothing'
+    -- Don't want to propagate errors up from 'symmetricAuthHeaderP' at this point.
+    Left _ -> Nothing'
+
 -- | List of signed headers in a request (as opposed to headers which
 -- might be added later by proxies and the like).
 newtype CSignedHeaders =
@@ -258,3 +281,15 @@ instance NFData CSignedHeaders where rnf = genericRnf
 renderCSignedHeaders :: CSignedHeaders -> ByteString
 renderCSignedHeaders =
   BS.intercalate "," . NE.toList . fmap renderCHeaderName . unCSignedHeaders
+
+parseCSignedHeaders :: ByteString -> Maybe' CSignedHeaders
+parseCSignedHeaders bs = do
+  hs <- strictMaybe . NE.nonEmpty $ BS.splitWith isComma bs
+  fmap CSignedHeaders $ mapM toHeaderName hs
+  where
+    isComma 0x2c = True
+    isComma _ = False
+
+    toHeaderName h = case T.decodeUtf8' h of
+      Right x -> Just' $ CHeaderName x
+      Left _ -> Nothing'

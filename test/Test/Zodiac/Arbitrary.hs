@@ -22,6 +22,7 @@ import           Test.QuickCheck.Instances ()
 import           Test.Zodiac.Gen
 
 -- FIXME: expose these instances from tinfoil
+import           Tinfoil.Data.Hash (HashFunction(..))
 import           Tinfoil.Data.Key (SymmetricKey(..))
 import           Tinfoil.Encode (hexEncode)
 
@@ -52,6 +53,9 @@ instance Arbitrary CHeaderName where
     n <- choose (1, 100)
     v <- vectorOf n (elements [0x61..0x7a]) -- alpha
     pure . CHeaderName . T.decodeUtf8 $ BS.pack v
+
+instance Arbitrary CSignedHeaders where
+  arbitrary = CSignedHeaders <$> arbitrary
 
 instance Arbitrary CHeaderValue where
   arbitrary =
@@ -89,10 +93,24 @@ instance Arbitrary RequestDate where
 instance Arbitrary KeyId where
   arbitrary = genUBytes KeyId 16
 
+instance Arbitrary RequestExpiry where
+  arbitrary = RequestExpiry <$> choose (1, maxBound)
+
 -- FIXME: should use the instance in tinfoil
 instance Arbitrary SymmetricKey where
   arbitrary = genUBytes SymmetricKey 32
 
+instance Arbitrary HashFunction where
+  arbitrary = elements [minBound..maxBound]
+
 -- testing only
 instance Show SymmetricKey where
   show = T.unpack . hexEncode . unSymmetricKey
+
+instance Arbitrary SymmetricAuthHeader where
+  arbitrary = SymmetricAuthHeader <$> arbitrary
+                                  <*> arbitrary
+                                  <*> arbitrary
+                                  <*> arbitrary
+                                  <*> arbitrary
+                                  <*> arbitrary
