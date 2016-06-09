@@ -34,8 +34,9 @@ import           P
 
 -- | Whether the request being processed is beyond its expiry window.
 data RequestExpired =
-    RequestExpired
-  | RequestNotExpired
+    TimeExpired
+  | TimeValid
+  | NotYetValid
   deriving (Eq, Show, Generic)
 
 instance NFData RequestExpired where rnf = genericRnf

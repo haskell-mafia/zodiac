@@ -50,6 +50,7 @@ library
                        Zodiac.Request
                        Zodiac.Request.HttpClient
                        Zodiac.Symmetric
+                       Zodiac.Time
 
 test-suite test
   type:                exitcode-stdio-1.0
