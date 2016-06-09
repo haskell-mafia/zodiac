@@ -201,7 +201,7 @@ instance Eq CRequest where
           , vs1 == vs2
           ]
 
--- | Time at which the request is made.
+-- | Time at which the request is made. Precision is to the second.
 newtype RequestTimestamp =
   RequestTimestamp {
     unRequestTimestamp :: UTCTime

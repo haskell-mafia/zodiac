@@ -9,6 +9,8 @@ import qualified Data.List.NonEmpty as NE
 import qualified Data.Map.Strict as M
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
+import           Data.Time.Calendar (Day(..))
+import           Data.Time.Clock (UTCTime(..), secondsToDiffTime)
 
 import           Disorder.Core.Gen (utf8BS1)
 import           Disorder.Corpus (muppets)
@@ -82,10 +84,12 @@ instance Arbitrary AsymmetricProtocol where
 instance Arbitrary Protocol where
   arbitrary = oneof [Symmetric <$> arbitrary, Asymmetric <$> arbitrary]
 
--- quickcheck-instances (day + seconds) - days clustered in 19th century,
--- seconds in a day are uniform.
+-- Generate timestamps to second precision, which is all we care about/support.
 instance Arbitrary RequestTimestamp where
-  arbitrary = RequestTimestamp <$> arbitrary
+  arbitrary = do
+    days <- ModifiedJulianDay <$> choose (0, 100000) -- uniform between 1878-11-17 and 2132-09-01
+    secPart <- choose (0, 86401) -- seconds in a day (with possible leap second)
+    pure . RequestTimestamp $ UTCTime days (secondsToDiffTime secPart)
 
 instance Arbitrary RequestDate where
   arbitrary = timestampDate <$> arbitrary
