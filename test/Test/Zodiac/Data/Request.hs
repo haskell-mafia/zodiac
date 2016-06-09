@@ -59,14 +59,8 @@ prop_tripping_encodeCQueryString =
 prop_tripping_CMethod :: CMethod -> Property
 prop_tripping_CMethod = tripping renderCMethod parseCMethod
 
-prop_tripping_RequestTimestamp :: RequestTimestamp -> Property
-prop_tripping_RequestTimestamp = tripping renderRequestTimestamp parseRequestTimestamp
-
 prop_tripping_CSignedHeaders :: CSignedHeaders -> Property
 prop_tripping_CSignedHeaders = tripping renderCSignedHeaders parseCSignedHeaders
-
-prop_tripping_RequestExpiry :: RequestExpiry -> Property
-prop_tripping_RequestExpiry = tripping renderRequestExpiry parseRequestExpiry
 
 return []
 tests :: IO Bool
