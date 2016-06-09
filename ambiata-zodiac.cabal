@@ -16,6 +16,8 @@ library
                      , ambiata-p
                      , ambiata-tinfoil
                      , ambiata-x-eithert
+                     , attoparsec                      >= 0.10 && < 0.13
+                     , base16-bytestring               == 0.1.1.*
                      , bytestring                      >= 0.10.4     && < 0.10.7
                      , case-insensitive                == 1.2.*
                      , containers                      == 0.5.*
@@ -25,7 +27,7 @@ library
                      , http-types                      == 0.9.*
                      , semigroups                      >= 0.16       && < 0.19
                      , text                            == 1.2.*
-                     , time                            >= 1.5        && < 1.6
+                     , time                            >= 1.5        && < 1.7
                      , transformers                    >= 0.4        && < 0.6
 
   ghc-options:
@@ -42,8 +44,11 @@ library
                        Zodiac.Data.Key
                        Zodiac.Data.Protocol
                        Zodiac.Data.Request
+                       Zodiac.Data.Symmetric
                        Zodiac.MAC
                        Zodiac.Request
+                       Zodiac.Request.HttpClient
+                       Zodiac.Symmetric
 
 test-suite test
   type:                exitcode-stdio-1.0
@@ -69,5 +74,6 @@ test-suite test
                      , quickcheck-instances            == 0.3.*
                      , semigroups                      >= 0.16       && < 0.19
                      , text                            == 1.2.*
+                     , time                            >= 1.5        && < 1.7
                      , transformers                    >= 0.4        && < 0.6
 

@@ -9,6 +9,7 @@ module Zodiac.Data.Request(
   , CQueryString(..)
   , CPayload(..)
   , CRequest(..)
+  , CSignedHeaders(..)
   , CURI(..)
   , RequestDate(..)
   , RequestExpiry(..)
@@ -16,17 +17,25 @@ module Zodiac.Data.Request(
   , encodeCURI
   , encodeCQueryString
   , parseCMethod
+  , parseCSignedHeaders
+  , parseRequestExpiry
+  , parseRequestTimestamp
+  , renderCHeaderName
   , renderCHeaders
   , renderCMethod
   , renderCQueryString
+  , renderCSignedHeaders
   , renderCURI
   , renderRequestDate
+  , renderRequestExpiry
   , renderRequestTimestamp
   , timestampDate
   ) where
 
 import           Control.DeepSeq.Generics (genericRnf)
 
+import qualified Data.Attoparsec.ByteString as AB
+import qualified Data.Attoparsec.ByteString.Char8 as ABC
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Char8 as BSC
@@ -39,7 +48,8 @@ import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import           Data.Time.Calendar (Day(..))
 import           Data.Time.Clock (UTCTime(..))
-import           Data.Time.Format (defaultTimeLocale, formatTime, iso8601DateFormat)
+import           Data.Time.Format (formatTime, iso8601DateFormat)
+import           Data.Time.Format (defaultTimeLocale, parseTimeM)
 
 import           Network.HTTP.Types.URI (urlEncode)
 
@@ -123,6 +133,9 @@ newtype CHeaderName =
 
 instance NFData CHeaderName where rnf = genericRnf
 
+renderCHeaderName :: CHeaderName -> ByteString
+renderCHeaderName = T.encodeUtf8 . T.toLower . unCHeaderName
+
 newtype CHeaderValue =
   CHeaderValue {
     unCHeaderValue :: ByteString
@@ -144,8 +157,7 @@ renderCHeaders (CHeaders hs) =
   BS.intercalate "\n" hs'
   where
     renderHeader hn hvs =
-      let hn' = T.encodeUtf8 . T.toLower $ unCHeaderName hn in
-      BS.concat $ [hn', ":", BS.intercalate "," (NE.toList $ unCHeaderValue <$> hvs)]
+      BS.concat $ [renderCHeaderName hn, ":", BS.intercalate "," (NE.toList $ unCHeaderValue <$> hvs)]
 
 -- | Body of request.
 newtype CPayload =
@@ -189,7 +201,7 @@ instance Eq CRequest where
           , vs1 == vs2
           ]
 
--- | Time at which the request is made.
+-- | Time at which the request is made. Precision is to the second.
 newtype RequestTimestamp =
   RequestTimestamp {
     unRequestTimestamp :: UTCTime
@@ -200,11 +212,19 @@ instance NFData RequestTimestamp where rnf = genericRnf
 instance Show RequestTimestamp where
   show = BSC.unpack . renderRequestTimestamp
 
+requestTimestampFormat :: [Char]
+requestTimestampFormat =
+  iso8601DateFormat $ Just "%H:%M:%S"
+
 renderRequestTimestamp :: RequestTimestamp -> ByteString
 renderRequestTimestamp (RequestTimestamp ts) =
-  let fmt = iso8601DateFormat $ Just "%H:%M:%S"
-      str = formatTime defaultTimeLocale fmt ts in
+  let str = formatTime defaultTimeLocale requestTimestampFormat ts in
   BSC.pack str
+
+parseRequestTimestamp :: ByteString -> Maybe' RequestTimestamp
+parseRequestTimestamp =
+  fmap RequestTimestamp . strictMaybe .
+    parseTimeM False defaultTimeLocale requestTimestampFormat . BSC.unpack
 
 -- | Date on which a request is made (UTC).
 newtype RequestDate =
@@ -236,3 +256,40 @@ newtype RequestExpiry =
   } deriving (Eq, Show, Generic)
 
 instance NFData RequestExpiry where rnf = genericRnf
+
+renderRequestExpiry :: RequestExpiry -> ByteString
+renderRequestExpiry = T.encodeUtf8 . renderIntegral . unRequestExpiry
+
+parseRequestExpiry :: ByteString -> Maybe' RequestExpiry
+parseRequestExpiry bs =
+  case AB.parseOnly (ABC.decimal <* AB.endOfInput) bs of
+    Right x -> if x > 0
+                 then pure $ RequestExpiry x
+                 else Nothing'
+    -- Don't want to propagate errors up from 'symmetricAuthHeaderP' at this point.
+    Left _ -> Nothing'
+
+-- | List of signed headers in a request (as opposed to headers which
+-- might be added later by proxies and the like).
+newtype CSignedHeaders =
+  CSignedHeaders {
+    unCSignedHeaders :: NonEmpty CHeaderName
+  } deriving (Eq, Show, Generic)
+
+instance NFData CSignedHeaders where rnf = genericRnf
+
+renderCSignedHeaders :: CSignedHeaders -> ByteString
+renderCSignedHeaders =
+  BS.intercalate "," . NE.toList . fmap renderCHeaderName . unCSignedHeaders
+
+parseCSignedHeaders :: ByteString -> Maybe' CSignedHeaders
+parseCSignedHeaders bs = do
+  hs <- strictMaybe . NE.nonEmpty $ BS.splitWith isComma bs
+  fmap CSignedHeaders $ mapM toHeaderName hs
+  where
+    isComma 0x2c = True
+    isComma _ = False
+
+    toHeaderName h = case T.decodeUtf8' h of
+      Right x -> Just' $ CHeaderName x
+      Left _ -> Nothing'
