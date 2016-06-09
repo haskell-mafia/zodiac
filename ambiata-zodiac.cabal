@@ -74,6 +74,7 @@ test-suite test
                      , containers                      == 0.5.*
                      , http-types                      == 0.9.*
                      , quickcheck-instances            == 0.3.*
+                     , random                          == 1.1.*
                      , semigroups                      >= 0.16       && < 0.19
                      , text                            == 1.2.*
                      , time                            >= 1.5        && < 1.7
@@ -101,6 +102,7 @@ test-suite test-io
                      , containers                      == 0.5.*
                      , http-types                      == 0.9.*
                      , quickcheck-instances            == 0.3.*
+                     , random                          == 1.1.*
                      , semigroups                      >= 0.16       && < 0.19
                      , text                            == 1.2.*
                      , time                            >= 1.5        && < 1.7

@@ -7,6 +7,7 @@ import qualified Test.Zodiac.Data.Time
 import qualified Test.Zodiac.MAC
 import qualified Test.Zodiac.Request
 import qualified Test.Zodiac.Request.HttpClient
+import qualified Test.Zodiac.Time
 
 main :: IO ()
 main =
@@ -18,4 +19,5 @@ main =
   , Test.Zodiac.MAC.tests
   , Test.Zodiac.Request.tests
   , Test.Zodiac.Request.HttpClient.tests
+  , Test.Zodiac.Time.tests
   ]
