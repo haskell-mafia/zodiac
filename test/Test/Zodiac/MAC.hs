@@ -17,9 +17,7 @@ import           Test.QuickCheck.Instances ()
 
 import           Tinfoil.Data.Key (SymmetricKey(..))
 
-import           Zodiac.Data.Key
-import           Zodiac.Data.Protocol
-import           Zodiac.Data.Request
+import           Zodiac.Data
 import           Zodiac.MAC
 
 prop_deriveRequestKey_timestamp :: SymmetricProtocol -> UniquePair RequestDate -> KeyId -> SymmetricKey -> Property

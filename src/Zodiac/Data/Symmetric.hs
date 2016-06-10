@@ -23,6 +23,7 @@ import           Tinfoil.Data (HashFunction, renderHashFunction, parseHashFuncti
 import           Zodiac.Data.Key
 import           Zodiac.Data.Protocol
 import           Zodiac.Data.Request
+import           Zodiac.Data.Time
 
 data SymmetricAuthHeader =
   SymmetricAuthHeader {
