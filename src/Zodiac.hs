@@ -5,4 +5,5 @@ module Zodiac(
     module X
   ) where
 
-import           Zodiac.Data as X
+import           Zodiac.Data.Key as X
+import           Zodiac.Key as X
