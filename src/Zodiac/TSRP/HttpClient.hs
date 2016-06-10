@@ -1,13 +1,14 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Zodiac.TSRP.HttpClient(
-    macHttpClientRequest
+    authedHttpClientRequest'
+  , macHttpClientRequest
   , httpAuthHeader
   ) where
 
 import qualified Data.CaseInsensitive as CI
 
-import           Network.HTTP.Client (Request)
+import           Network.HTTP.Client (Request(..), requestHeaders)
 import           Network.HTTP.Types (Header)
 
 import           P
@@ -19,6 +20,21 @@ import           Zodiac.Request
 import           Zodiac.Request.HttpClient
 import           Zodiac.Symmetric
 
+authedHttpClientRequest' :: SymmetricProtocol
+                         -> HashFunction
+                         -> KeyId
+                         -> SymmetricKey
+                         -> RequestExpiry
+                         -> Request
+                         -> RequestTimestamp
+                         -> Either RequestError Request
+authedHttpClientRequest' TSRPv1 hf kid sk re r rt =
+  toCanonicalRequest r >>= \cr ->
+    let mac = macRequest TSRPv1 hf kid rt re cr sk
+        authH = httpAuthHeader TSRPv1 hf kid rt re cr mac
+        newHeaders = authH : (requestHeaders r) in
+    Right $ r { requestHeaders = newHeaders }
+
 httpAuthHeader :: SymmetricProtocol
                -> HashFunction
                -> KeyId
@@ -27,10 +43,10 @@ httpAuthHeader :: SymmetricProtocol
                -> CRequest
                -> MAC
                -> Header
-httpAuthHeader sp hf kid rt re cr mac =
+httpAuthHeader TSRPv1 hf kid rt re cr mac =
   let sh = signedHeaders cr
-      sah = SymmetricAuthHeader sp hf kid rt re sh mac in
-  (CI.mk "Authorization", renderSymmetricAuthHeader sah)
+      sah = SymmetricAuthHeader TSRPv1 hf kid rt re sh mac in
+  (CI.mk "authorization", renderSymmetricAuthHeader sah)
 
 macHttpClientRequest :: SymmetricProtocol
                      -> HashFunction
@@ -40,9 +56,9 @@ macHttpClientRequest :: SymmetricProtocol
                      -> Request
                      -> RequestTimestamp
                      -> Either RequestError MAC
-macHttpClientRequest sp hf kid sk re r rts = do
+macHttpClientRequest TSRPv1 hf kid sk re r rts = do
   cr <- toCanonicalRequest r
-  pure $ macRequest sp hf kid rts re cr sk
+  pure $ macRequest TSRPv1 hf kid rts re cr sk
   
 
 
