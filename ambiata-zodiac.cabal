@@ -46,11 +46,13 @@ library
                        Zodiac.Data.Request
                        Zodiac.Data.Symmetric
                        Zodiac.Data.Time
+                       Zodiac.Key
                        Zodiac.MAC
                        Zodiac.Request
                        Zodiac.Request.HttpClient
                        Zodiac.Symmetric
                        Zodiac.Time
+                       Zodiac.TSRP.HttpClient
 
 test-suite test
   type:                exitcode-stdio-1.0
@@ -72,6 +74,7 @@ test-suite test
                      , ambiata-zodiac
                      , bytestring                      >= 0.10.4     && < 0.10.7
                      , containers                      == 0.5.*
+                     , http-client                     == 0.4.18.*
                      , http-types                      == 0.9.*
                      , quickcheck-instances            == 0.3.*
                      , random                          == 1.1.*

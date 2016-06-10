@@ -1,22 +1,26 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.Zodiac.Data.Symmetric where
+module Test.IO.Zodiac.Key where
 
+import           Disorder.Core.IO (testIO)
+import           Disorder.Core.Property ((=/=))
 import           Disorder.Core.Run (ExpectedTestSpeed(..), disorderCheckEnvAll)
-import           Disorder.Core.Tripping (tripping)
 
 import           P
 
 import           System.IO (IO)
 
-import           Zodiac.Data.Symmetric
-
-import           Test.Zodiac.Arbitrary ()
 import           Test.QuickCheck
+import           Test.QuickCheck.Instances ()
 
-prop_tripping_SymmetricAuthHeader :: SymmetricAuthHeader -> Property
-prop_tripping_SymmetricAuthHeader = tripping renderSymmetricAuthHeader parseSymmetricAuthHeader
+import           Zodiac.Key
+
+prop_genKeyId :: Property
+prop_genKeyId = testIO $ do
+  k1 <- genKeyId
+  k2 <- genKeyId
+  pure $ k1 =/= k2
 
 return []
 tests :: IO Bool

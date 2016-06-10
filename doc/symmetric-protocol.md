@@ -61,7 +61,7 @@ let dateKey = hmacSHA256 ("TSRPv1-begin" + k) date
 The following header is added to a request after it is signed:
 
 ```
-Authorization: $protocol $hash_algorithm $key_id $request_timestamp $request_expiry $signed_headers
+Authorization: $protocol $hash_algorithm $key_id $request_timestamp $request_expiry $signed_headers $signature
 ```
 
  - All fields are space-separated.
@@ -73,3 +73,4 @@ Authorization: $protocol $hash_algorithm $key_id $request_timestamp $request_exp
    timestamp for the request to be valid.
  - `$signed_headers` is replaced by lowercase list of headers included
    in the signature, separated by commas.
+ - `$signature` is the hexadecimal-encoded request MAC.
