@@ -52,6 +52,7 @@ library
                        Zodiac.Request.HttpClient
                        Zodiac.Symmetric
                        Zodiac.Time
+                       Zodiac.TSRP.HttpClient
 
 test-suite test
   type:                exitcode-stdio-1.0
