@@ -26,6 +26,7 @@ import           Test.Zodiac.Gen
 -- FIXME: expose these instances from tinfoil
 import           Tinfoil.Data.Hash (HashFunction(..))
 import           Tinfoil.Data.Key (SymmetricKey(..))
+import           Tinfoil.Data.MAC (MAC(..))
 import           Tinfoil.Encode (hexEncode)
 
 -- FIXME: should find a better home for this instance at some point
@@ -107,12 +108,16 @@ instance Arbitrary SymmetricKey where
 instance Arbitrary HashFunction where
   arbitrary = elements [minBound..maxBound]
 
+instance Arbitrary MAC where
+  arbitrary = genUBytes MAC 32
+
 -- testing only
 instance Show SymmetricKey where
   show = T.unpack . hexEncode . unSymmetricKey
 
 instance Arbitrary SymmetricAuthHeader where
   arbitrary = SymmetricAuthHeader <$> arbitrary
+                                  <*> arbitrary
                                   <*> arbitrary
                                   <*> arbitrary
                                   <*> arbitrary
