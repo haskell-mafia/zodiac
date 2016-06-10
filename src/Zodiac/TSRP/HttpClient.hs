@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Zodiac.TSRP.HttpClient(
-    authedHttpClientRequest'
+    authedHttpClientRequest
   , macHttpClientRequest
   , httpAuthHeader
   ) where
@@ -20,15 +20,15 @@ import           Zodiac.Request
 import           Zodiac.Request.HttpClient
 import           Zodiac.Symmetric
 
-authedHttpClientRequest' :: SymmetricProtocol
-                         -> HashFunction
-                         -> KeyId
-                         -> SymmetricKey
-                         -> RequestExpiry
-                         -> Request
-                         -> RequestTimestamp
-                         -> Either RequestError Request
-authedHttpClientRequest' TSRPv1 hf kid sk re r rt =
+authedHttpClientRequest :: SymmetricProtocol
+                        -> HashFunction
+                        -> KeyId
+                        -> SymmetricKey
+                        -> RequestExpiry
+                        -> Request
+                        -> RequestTimestamp
+                        -> Either RequestError Request
+authedHttpClientRequest TSRPv1 hf kid sk re r rt =
   toCanonicalRequest r >>= \cr ->
     let mac = macRequest TSRPv1 hf kid rt re cr sk
         authH = httpAuthHeader TSRPv1 hf kid rt re cr mac
