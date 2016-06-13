@@ -24,7 +24,6 @@ import           Test.QuickCheck.Instances ()
 import           Test.Zodiac.Gen
 
 -- FIXME: expose these instances from tinfoil
-import           Tinfoil.Data.Hash (HashFunction(..))
 import           Tinfoil.Data.Key (SymmetricKey(..))
 import           Tinfoil.Data.MAC (MAC(..))
 import           Tinfoil.Encode (hexEncode)
@@ -105,9 +104,6 @@ instance Arbitrary RequestExpiry where
 instance Arbitrary SymmetricKey where
   arbitrary = genUBytes SymmetricKey 32
 
-instance Arbitrary HashFunction where
-  arbitrary = elements [minBound..maxBound]
-
 instance Arbitrary MAC where
   arbitrary = genUBytes MAC 32
 
@@ -117,7 +113,6 @@ instance Show SymmetricKey where
 
 instance Arbitrary SymmetricAuthHeader where
   arbitrary = SymmetricAuthHeader <$> arbitrary
-                                  <*> arbitrary
                                   <*> arbitrary
                                   <*> arbitrary
                                   <*> arbitrary
