@@ -15,8 +15,9 @@ import           P
 
 import           System.IO (IO)
 
-import           Tinfoil.Data (HashFunction, renderHashFunction, renderHash)
-import           Tinfoil.Data (Verified(..), MAC, SymmetricKey, keyHashFunction)
+import           Tinfoil.Data (Verified(..), MAC, SymmetricKey)
+import           Tinfoil.Data (KeyedHashFunction(..), HashFunction(..))
+import           Tinfoil.Data (renderHash)
 import           Tinfoil.Hash (hash)
 import           Tinfoil.MAC (macBytes, verifyMAC)
 
@@ -27,22 +28,19 @@ import           Zodiac.Time
 
 -- | Authenticate a 'CanonicalRequest' with a secret key.
 macRequest :: SymmetricProtocol
-           -> HashFunction
            -> KeyId
            -> RequestTimestamp
            -> RequestExpiry
            -> CRequest
            -> SymmetricKey
            -> MAC
-macRequest TSRPv1 hf kid rts re cr sk =
+macRequest TSRPv1 kid rts re cr sk =
   let authKey = deriveRequestKey TSRPv1 (timestampDate rts) kid sk
-      authString = authenticationString TSRPv1 hf kid rts re cr
-      khf = keyHashFunction hf in
-  macBytes khf authKey authString
+      authString = authenticationString TSRPv1 kid rts re cr in
+  macBytes HMAC_SHA256 authKey authString
 
 -- | Verify a request MAC.
 verifyRequest' :: SymmetricProtocol
-               -> HashFunction
                -> KeyId
                -> RequestTimestamp
                -> RequestExpiry
@@ -51,29 +49,26 @@ verifyRequest' :: SymmetricProtocol
                -> MAC
                -> UTCTime
                -> IO Verified
-verifyRequest' TSRPv1 hf kid rts re cr sk mac now =
+verifyRequest' TSRPv1 kid rts re cr sk mac now =
   let authKey = deriveRequestKey TSRPv1 (timestampDate rts) kid sk
-      authString = authenticationString TSRPv1 hf kid rts re cr
-      khf = keyHashFunction hf in
+      authString = authenticationString TSRPv1 kid rts re cr in
   case requestExpired rts re now of
     NotYetValid -> pure NotVerified
     TimeExpired -> pure NotVerified
-    TimeValid -> verifyMAC khf authKey authString mac
+    TimeValid -> verifyMAC HMAC_SHA256 authKey authString mac
 
 -- | Construct a string to authenticate, from all the information which will
 -- be included in the request MAC.
 authenticationString :: SymmetricProtocol
-                     -> HashFunction
                      -> KeyId
                      -> RequestTimestamp
                      -> RequestExpiry
                      -> CRequest
                      -> ByteString
-authenticationString TSRPv1 hf kid rts re cr =
-  let hcr = hash hf $ renderCRequest cr in
+authenticationString TSRPv1 kid rts re cr =
+  let hcr = hash SHA256 $ renderCRequest cr in
   BS.intercalate "\n" [
       renderSymmetricProtocol TSRPv1
-    , T.encodeUtf8 (renderHashFunction hf)
     , renderKeyId kid
     , renderRequestTimestamp rts
     , renderRequestExpiry re

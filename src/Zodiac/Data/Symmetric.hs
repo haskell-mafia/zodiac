@@ -23,8 +23,7 @@ import           P
 import           System.IO (IO)
 
 import           Tinfoil.Comparison (safeEq)
-import           Tinfoil.Data (HashFunction, MAC(..))
-import           Tinfoil.Data (renderHashFunction, parseHashFunction)
+import           Tinfoil.Data (MAC(..))
 import           Tinfoil.Encode (hexEncode)
 
 import           Zodiac.Data.Key
@@ -35,7 +34,6 @@ import           Zodiac.Data.Time
 data SymmetricAuthHeader =
   SymmetricAuthHeader {
       sahSymmetricProtocol :: !SymmetricProtocol
-    , sahHashFunction :: !HashFunction
     , sahKeyId :: !KeyId
     , sahRequestTimestamp :: !RequestTimestamp
     , sahRequestExpiry :: !RequestExpiry
@@ -49,11 +47,10 @@ instance NFData SymmetricAuthHeader where rnf = genericRnf
 --
 -- FIXME: need a better solution for this in tinfoil
 symmetricAuthHeaderEq :: SymmetricAuthHeader -> SymmetricAuthHeader -> IO Bool
-symmetricAuthHeaderEq (SymmetricAuthHeader sp1 hf1 kid1 rt1 re1 sh1 mac1) (SymmetricAuthHeader sp2 hf2 kid2 rt2 re2 sh2 mac2) = do
+symmetricAuthHeaderEq (SymmetricAuthHeader sp1 kid1 rt1 re1 sh1 mac1) (SymmetricAuthHeader sp2 kid2 rt2 re2 sh2 mac2) = do
   mac <- (unMAC mac1) `safeEq` (unMAC mac2)
   pure $ and [
       sp1 == sp2
-    , hf1 == hf2
     , kid1 == kid2
     , rt1 == rt2
     , re1 == re2
@@ -62,9 +59,8 @@ symmetricAuthHeaderEq (SymmetricAuthHeader sp1 hf1 kid1 rt1 re1 sh1 mac1) (Symme
     ]
 
 renderSymmetricAuthHeader :: SymmetricAuthHeader -> ByteString
-renderSymmetricAuthHeader (SymmetricAuthHeader TSRPv1 hf kid rts re sh mac) = BS.intercalate " " [
+renderSymmetricAuthHeader (SymmetricAuthHeader TSRPv1 kid rts re sh mac) = BS.intercalate " " [
     renderSymmetricProtocol TSRPv1
-  , T.encodeUtf8 (renderHashFunction hf)
   , renderKeyId kid
   , renderRequestTimestamp rts
   , renderRequestExpiry re
@@ -81,18 +77,13 @@ parseSymmetricAuthHeader bs = case AB.parseOnly symmetricAuthHeaderP bs of
 symmetricAuthHeaderP :: AB.Parser SymmetricAuthHeader
 symmetricAuthHeaderP = do
   proto <- liftP parseSymmetricProtocol =<< next
-  hf <- utf8P (liftP parseHashFunction) =<< next
   kid <- liftP parseKeyId =<< next
   rts <- liftP parseRequestTimestamp =<< next
   re <- liftP parseRequestExpiry =<< next
   sh <- liftP parseCSignedHeaders =<< next
   mac <- liftP parseMAC =<< AB.takeByteString
-  pure $ SymmetricAuthHeader proto hf kid rts re sh mac
+  pure $ SymmetricAuthHeader proto kid rts re sh mac
   where
-    utf8P p bs = case T.decodeUtf8' bs of
-      Left e -> fail $ "error decoding UTF-8: " <> show e
-      Right t -> p t
-
     next = do
       p <- AB.takeTill isSpace
       AB.skip isSpace

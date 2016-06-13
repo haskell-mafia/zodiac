@@ -20,7 +20,6 @@ which is constructed as described [here](canonical-request.md).
 The following data is included in the request's signature:
 
  - Protocol.
- - Algorithm.
  - Request timestamp.
  - Request expiry.
  - Key ID.
@@ -33,7 +32,6 @@ For example:
 
 ```
 TSRPv1
-HMAC-SHA256
 2016-06-06T01:23:45
 60
 8c57b5cde3dc531dbfa19e781f24605e
@@ -61,12 +59,11 @@ let dateKey = hmacSHA256 ("TSRPv1-begin" + k) date
 The following header is added to a request after it is signed:
 
 ```
-Authorization: $protocol $hash_algorithm $key_id $request_timestamp $request_expiry $signed_headers $signature
+Authorization: $protocol $key_id $request_timestamp $request_expiry $signed_headers $signature
 ```
 
  - All fields are space-separated.
  - `$protocol` is replaced by "TSRPv1".
- - `$hash_algorithm` is replaced by "SHA-256".
  - `$key_id` is replaced by key ID.
  - `$request_timestamp` is replaced by ISO 8601-formatted date and time of the request.
  - `$request_expiry` is replaced by number of seconds from the request

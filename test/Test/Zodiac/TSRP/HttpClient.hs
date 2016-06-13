@@ -16,23 +16,22 @@ import           Test.Zodiac.Arbitrary ()
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 
-import           Tinfoil.Data (HashFunction, SymmetricKey)
+import           Tinfoil.Data (SymmetricKey)
 
 import           Zodiac.Data
 import           Zodiac.Request.HttpClient
 import           Zodiac.TSRP.HttpClient
 
 prop_authedHttpClientRequest :: SymmetricProtocol
-                             -> HashFunction
                              -> CRequest
                              -> KeyId
                              -> SymmetricKey
                              -> RequestExpiry
                              -> RequestTimestamp
                              -> Property
-prop_authedHttpClientRequest sp hf cr kid sk re rt =
+prop_authedHttpClientRequest sp cr kid sk re rt =
   let req = fromCanonicalRequest cr
-      res = authedHttpClientRequest sp hf kid sk re req rt in
+      res = authedHttpClientRequest sp kid sk re req rt in
   case res of
     Left e -> failWith $ "authentication unexpectedly failed: " <> renderRequestError e
     Right req' ->
