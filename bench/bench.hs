@@ -4,6 +4,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module Main where
 
+import qualified Bench.Zodiac.MAC
 import qualified Bench.Zodiac.Symmetric
 
 import           Criterion.Main
@@ -25,5 +26,6 @@ zodiacBench = defaultMainWith cfg
 
 main :: IO ()
 main = zodiacBench $ join [
-    Bench.Zodiac.Symmetric.benchmarks
+    Bench.Zodiac.MAC.benchmarks
+  , Bench.Zodiac.Symmetric.benchmarks
   ]
