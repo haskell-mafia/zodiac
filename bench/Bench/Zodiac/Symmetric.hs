@@ -24,5 +24,8 @@ macRequestEnv = (,,,,) <$> arbitrary
 
 benchmarks = [
     env (generate' macRequestEnv) $ \ ~(kid, rt, re, cr, sk) ->
-      bgroup "Symmetric" $ [bench "macRequest" $ nf (macRequest TSRPv1 kid rt re cr) sk]
+      bgroup "Symmetric" $ [
+          bench "macRequest" $ nf (macRequest TSRPv1 kid rt re cr) sk
+        , bench "authenticationString" $ nf (authenticationString TSRPv1 kid rt re) cr
+        ]
   ]
