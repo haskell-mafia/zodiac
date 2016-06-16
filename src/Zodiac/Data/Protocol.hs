@@ -5,6 +5,7 @@ module Zodiac.Data.Protocol(
     AsymmetricProtocol(..)
   , Protocol(..)
   , SymmetricProtocol(..)
+  , authHeaderName
   , parseAsymmetricProtocol
   , parseProtocol
   , parseSymmetricProtocol
@@ -68,3 +69,8 @@ parseAsymmetricProtocol :: ByteString -> Maybe' AsymmetricProtocol
 parseAsymmetricProtocol "TARPv1" = Just' TARPv1
 parseAsymmetricProtocol _ = Nothing'
 
+-- | The header we use for authentication details.
+--
+-- Yes, I know.
+authHeaderName :: Text
+authHeaderName = "authorization"

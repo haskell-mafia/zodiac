@@ -4,9 +4,11 @@ module Zodiac.TSRP.HttpClient(
     authedHttpClientRequest
   , macHttpClientRequest
   , httpAuthHeader
+  , extractHttpClientAuthHeader
   ) where
 
 import qualified Data.CaseInsensitive as CI
+import qualified Data.Text.Encoding as T
 
 import           Network.HTTP.Client (Request(..), requestHeaders)
 import           Network.HTTP.Types (Header)
@@ -37,6 +39,19 @@ authedHttpClientRequest kid sk re r rt =
         newHeaders = authH : (requestHeaders r) in
     Right $ r { requestHeaders = newHeaders }
 
+extractHttpClientAuthHeader :: Request
+                            -> Either ProtocolError SymmetricAuthHeader
+extractHttpClientAuthHeader r =
+  let hs = requestHeaders r in
+  case filter ((== auth) . fst) hs of
+    [] ->
+      Left NoAuthHeader
+    [(_, v)] ->
+      maybe' (Left MalformedAuthHeader) Right $ parseSymmetricAuthHeader v
+    _ -> Left MultipleAuthHeaders
+  where
+    auth = CI.mk $ T.encodeUtf8 authHeaderName
+
 -- | Given a precomputed MAC of a request, construct the appropriate
 -- Authorization header in a form suitable to be used with
 -- http-client.
@@ -50,7 +65,7 @@ httpAuthHeader :: SymmetricProtocol
 httpAuthHeader TSRPv1 kid rt re cr mac =
   let sh = signedHeaders cr
       sah = SymmetricAuthHeader TSRPv1 kid rt re sh mac in
-  (CI.mk "authorization", renderSymmetricAuthHeader sah)
+  (CI.mk $ T.encodeUtf8 authHeaderName, renderSymmetricAuthHeader sah)
 
 -- | Create a detached MAC of an http-client request. This MAC can be
 -- converted to an http-client-compatible Authorization header using

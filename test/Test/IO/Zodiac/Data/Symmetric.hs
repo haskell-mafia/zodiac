@@ -16,6 +16,7 @@ import           Test.Zodiac.Arbitrary ()
 import           Test.QuickCheck
 
 -- really need a SafeEq typeclass for this kind of thing
+-- FIXME: rewrite once https://github.com/ambiata/tinfoil/pull/47 is merged
 prop_tripping_SymmetricAuthHeader :: SymmetricAuthHeader -> Property
 prop_tripping_SymmetricAuthHeader sah =
   let sah' = parseSymmetricAuthHeader $ renderSymmetricAuthHeader sah in

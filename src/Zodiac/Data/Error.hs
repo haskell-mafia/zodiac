@@ -23,6 +23,7 @@ import           P
 data ProtocolError =
     NoAuthHeader
   | MalformedAuthHeader
+  | MultipleAuthHeaders
   deriving (Eq, Show, Generic)
 
 instance NFData ProtocolError where rnf = genericRnf
@@ -30,6 +31,7 @@ instance NFData ProtocolError where rnf = genericRnf
 renderProtocolError :: ProtocolError -> Text
 renderProtocolError NoAuthHeader = "no Authorization header present"
 renderProtocolError MalformedAuthHeader = "invalid Authorization header"
+renderProtocolError MultipleAuthHeaders = "multiple Authorization header values present"
 
 data RequestError =
     InvalidHTTPMethod ByteString
