@@ -6,9 +6,11 @@ module Zodiac.TSRP.HttpClient(
   , httpAuthHeader
   , httpClientKeyId
   , httpClientAuthHeader
+  , verifyHttpClientRequest'
   ) where
 
 import qualified Data.CaseInsensitive as CI
+import           Data.Time.Clock (UTCTime)
 import qualified Data.Text.Encoding as T
 
 import           Network.HTTP.Client (Request(..), requestHeaders)
@@ -16,7 +18,9 @@ import           Network.HTTP.Types (Header)
 
 import           P
 
-import           Tinfoil.Data (MAC, SymmetricKey)
+import           System.IO (IO)
+
+import           Tinfoil.Data (Verified(..), MAC, SymmetricKey)
 
 import           Zodiac.Data
 import           Zodiac.Request
@@ -39,6 +43,24 @@ authedHttpClientRequest kid sk re r rt =
         authH = httpAuthHeader TSRPv1 kid rt re cr mac
         newHeaders = authH : (requestHeaders r) in
     Right $ r { requestHeaders = newHeaders }
+
+verifyHttpClientRequest' :: UTCTime
+                         -> KeyId
+                         -> SymmetricKey
+                         -> Request
+                         -> IO Verified
+verifyHttpClientRequest' now kid sk req =
+  case httpClientAuthHeader req of
+    Left _ ->
+      pure NotVerified
+    Right (SymmetricAuthHeader sp kid' rt re csh mac) ->
+      if kid /= kid'
+        then pure NotVerified
+        else case toCanonicalRequest req of
+          Left _ -> pure NotVerified
+          Right cr ->
+            let cr' = stripUnsignedHeaders cr csh in
+            verifyRequest' sp kid rt re cr' sk mac now
 
 -- | Extract the 'KeyId' from a request.
 httpClientKeyId :: Request

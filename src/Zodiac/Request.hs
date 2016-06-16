@@ -3,6 +3,7 @@
 module Zodiac.Request(
     renderCRequest
   , signedHeaders
+  , stripUnsignedHeaders
   ) where
 
 import           Data.ByteString (ByteString)
@@ -22,6 +23,23 @@ signedHeaders :: CRequest -> CSignedHeaders
 signedHeaders cr =
   let hns = NE.fromList . M.keys . unCHeaders $ crHeaders cr in
   CSignedHeaders hns
+
+-- | Return a version of the canonical request with all headers which
+-- don't appear in the list of signed headers removed.
+--
+-- We don't bother verifying that all of the signed headers claimed
+-- here are actually present as missing headers will cause the
+-- request hashes to differ.
+--
+-- This will (for a well-formed request) also strip the auth header we added
+-- during signing.
+stripUnsignedHeaders :: CRequest -> CSignedHeaders -> CRequest
+stripUnsignedHeaders cr (CSignedHeaders shs) =
+  let oldHeaders = unCHeaders $ crHeaders cr
+      newHeaders = CHeaders $ M.filterWithKey isSigned oldHeaders in
+  cr { crHeaders = newHeaders }
+  where
+    isSigned hn _ = elem hn shs
 
 renderCRequest :: CRequest -> ByteString
 renderCRequest (CRequest m u qs hs p) =
