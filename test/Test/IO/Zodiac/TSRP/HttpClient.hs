@@ -11,6 +11,8 @@ import           Network.HTTP.Client (requestHeaders)
 
 import           P
 
+import qualified Prelude
+
 import           System.IO (IO)
 
 import           Test.Zodiac.Arbitrary ()
@@ -49,13 +51,13 @@ prop_httpClientAuthHeader cr kid sk re rt =
               r <- sah' `symmetricAuthHeaderEq` sah
               pure $ r === True
 
-prop_verifyHttpClientRequest :: KeyId
-                             -> RequestTimestamp
-                             -> RequestExpiry
-                             -> CRequest
-                             -> SymmetricKey
-                             -> Property
-prop_verifyHttpClientRequest kid rt re cr sk =
+prop_verifyHttpClientRequest' :: KeyId
+                              -> RequestTimestamp
+                              -> RequestExpiry
+                              -> CRequest
+                              -> SymmetricKey
+                              -> Property
+prop_verifyHttpClientRequest' kid rt re cr sk =
   forAll (genTimeWithin rt re) $ \now ->
     let req = fromCanonicalRequest cr in
     case authedHttpClientRequest kid sk re req rt of
@@ -64,6 +66,28 @@ prop_verifyHttpClientRequest kid rt re cr sk =
       Right ar -> testIO $ do
         r <- verifyHttpClientRequest' kid sk ar now
         pure $ r === Verified
+
+-- FIXME: rewrite once https://github.com/ambiata/tinfoil/pull/47 is merged
+prop_httpClientKeyId :: KeyId
+                     -> RequestTimestamp
+                     -> RequestExpiry
+                     -> CRequest
+                     -> SymmetricKey
+                     -> Property
+prop_httpClientKeyId kid rt re cr sk =
+  let req = fromCanonicalRequest cr
+      shs = signedHeaders cr
+      mac = fromRight $ macHttpClientRequest kid sk re req rt
+      sah = SymmetricAuthHeader TSRPv1 kid rt re shs mac
+      ar = fromRight $ authedHttpClientRequest kid sk re req rt in
+  case httpClientAuthHeader ar of
+    Left e -> failWith $ "auth header lookup failed: " <> renderProtocolError e
+    Right sah' -> testIO $ do
+      r <- sah `symmetricAuthHeaderEq` sah'
+      pure $ r === True
+  where
+    fromRight (Right x) = x
+    fromRight (Left _) = Prelude.error "impossible: unexpected Left in prop_httpClientKeyId"
 
 return []
 tests :: IO Bool
