@@ -65,14 +65,10 @@ verifyHttpClientRequest' kid sk req now =
   case httpClientAuthHeader req of
     Left _ ->
       pure NotVerified
-    Right (SymmetricAuthHeader sp kid' rt re csh mac) ->
-      if kid /= kid'
-        then pure NotVerified
-        else case toCanonicalRequest req of
-          Left _ -> pure NotVerified
-          Right cr ->
-            let cr' = stripUnsignedHeaders cr csh in
-            verifyRequest' sp kid rt re cr' sk mac now
+    Right sah ->
+      case toCanonicalRequest req of
+        Left _ -> pure NotVerified
+        Right cr -> verifyRequest kid sk cr sah now
 
 -- | Extract the 'KeyId' from a request.
 httpClientKeyId :: Request
