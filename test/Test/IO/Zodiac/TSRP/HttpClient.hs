@@ -25,13 +25,13 @@ import           Zodiac.Request.HttpClient
 import           Zodiac.TSRP.HttpClient
 
 -- FIXME: rewrite once https://github.com/ambiata/tinfoil/pull/47 is merged
-prop_extractHttpClientAuthHeader :: CRequest
-                                 -> KeyId
-                                 -> SymmetricKey
-                                 -> RequestExpiry
-                                 -> RequestTimestamp
-                                 -> Property
-prop_extractHttpClientAuthHeader cr kid sk re rt =
+prop_httpClientAuthHeader :: CRequest
+                          -> KeyId
+                          -> SymmetricKey
+                          -> RequestExpiry
+                          -> RequestTimestamp
+                          -> Property
+prop_httpClientAuthHeader cr kid sk re rt =
   let req = fromCanonicalRequest cr
       mac = macHttpClientRequest kid sk re req rt in
   case mac of
@@ -41,7 +41,7 @@ prop_extractHttpClientAuthHeader cr kid sk re rt =
           authH = httpAuthHeader TSRPv1 kid rt re cr mac'
           newHs = authH : (requestHeaders req)
           req' = req { requestHeaders = newHs } in
-          case extractHttpClientAuthHeader req' of
+          case httpClientAuthHeader req' of
             Left e ->
               failWith $ "auth header extraction unexpectedly failed: " <> renderProtocolError e
             Right sah' -> testIO $ do

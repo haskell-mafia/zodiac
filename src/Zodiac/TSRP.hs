@@ -13,6 +13,7 @@ module Zodiac.TSRP (
   , authedHttpClientRequest
   , genKeyId
   , genSymmetricKey
+  , httpClientKeyId
   , timestampRequest
   ) where
 

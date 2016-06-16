@@ -4,7 +4,8 @@ module Zodiac.TSRP.HttpClient(
     authedHttpClientRequest
   , macHttpClientRequest
   , httpAuthHeader
-  , extractHttpClientAuthHeader
+  , httpClientKeyId
+  , httpClientAuthHeader
   ) where
 
 import qualified Data.CaseInsensitive as CI
@@ -39,9 +40,15 @@ authedHttpClientRequest kid sk re r rt =
         newHeaders = authH : (requestHeaders r) in
     Right $ r { requestHeaders = newHeaders }
 
-extractHttpClientAuthHeader :: Request
-                            -> Either ProtocolError SymmetricAuthHeader
-extractHttpClientAuthHeader r =
+-- | Extract the 'KeyId' from a request.
+httpClientKeyId :: Request
+                -> Either ProtocolError KeyId
+httpClientKeyId r =
+  httpClientAuthHeader r >>= (pure . sahKeyId)
+
+httpClientAuthHeader :: Request
+                     -> Either ProtocolError SymmetricAuthHeader
+httpClientAuthHeader r =
   let hs = requestHeaders r in
   case filter ((== auth) . fst) hs of
     [] ->
