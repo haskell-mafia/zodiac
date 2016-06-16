@@ -3,7 +3,7 @@
 module Zodiac.Request(
     renderCRequest
   , signedHeaders
-  , stripUnsignedHeaders
+  , stripCRequest
   ) where
 
 import           Data.ByteString (ByteString)
@@ -33,11 +33,11 @@ signedHeaders cr =
 --
 -- This will (for a well-formed request) also strip the auth header we added
 -- during signing.
-stripUnsignedHeaders :: CRequest -> CSignedHeaders -> CRequest
-stripUnsignedHeaders cr (CSignedHeaders shs) =
+stripCRequest :: CRequest -> CSignedHeaders -> StrippedCRequest
+stripCRequest cr (CSignedHeaders shs) =
   let oldHeaders = unCHeaders $ crHeaders cr
       newHeaders = CHeaders $ M.filterWithKey isSigned oldHeaders in
-  cr { crHeaders = newHeaders }
+  StrippedCRequest $ cr { crHeaders = newHeaders }
   where
     isSigned hn _ = elem hn shs
 

@@ -11,6 +11,7 @@ module Zodiac.Data.Request(
   , CRequest(..)
   , CSignedHeaders(..)
   , CURI(..)
+  , StrippedCRequest(..)
   , encodeCURI
   , encodeCQueryString
   , parseCMethod
@@ -209,3 +210,13 @@ parseCSignedHeaders bs = do
     toHeaderName h = case T.decodeUtf8' h of
       Right x -> Just' $ CHeaderName x
       Left _ -> Nothing'
+
+-- | A 'CRequest' which has been cleaned of all the cruft which may have been
+-- added to it by proxies ("X-Forwarded-For" headers and such) or by us
+-- (authentication headers).
+newtype StrippedCRequest =
+  StrippedCRequest {
+    unStrippedCRequest :: CRequest
+  } deriving (Eq, Show, Generic)
+
+instance NFData StrippedCRequest where rnf = genericRnf

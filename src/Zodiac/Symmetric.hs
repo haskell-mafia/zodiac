@@ -56,7 +56,7 @@ verifyRequest kid sk cr (SymmetricAuthHeader sp kid' rt re csh mac) now =
     then
       pure NotVerified
     else
-      let cr' = stripUnsignedHeaders cr csh in
+      let cr' = stripCRequest cr csh in
       verifyRequest' sp kid rt re cr' sk mac now
 
 -- | Verify the MAC of an unpacked request.
@@ -78,12 +78,12 @@ verifyRequest' :: SymmetricProtocol
                -> KeyId
                -> RequestTimestamp
                -> RequestExpiry
-               -> CRequest
+               -> StrippedCRequest
                -> SymmetricKey
                -> MAC
                -> UTCTime
                -> IO Verified
-verifyRequest' TSRPv1 kid rts re cr sk mac now =
+verifyRequest' TSRPv1 kid rts re (StrippedCRequest cr) sk mac now =
   let authKey = deriveRequestKey TSRPv1 (timestampDate rts) kid sk
       authString = authenticationString TSRPv1 kid rts re cr in
   case requestExpired rts re now of
