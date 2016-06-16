@@ -20,6 +20,10 @@ import           Zodiac.Request
 import           Zodiac.Request.HttpClient
 import           Zodiac.Symmetric
 
+-- | Authenticate an http-client request. If the request isn't
+-- malformed, the output is a Request object with the necessary
+-- Authorization header added which can be sent directly to a server
+-- supporting TSRP.
 authedHttpClientRequest :: SymmetricProtocol
                         -> KeyId
                         -> SymmetricKey
@@ -34,6 +38,9 @@ authedHttpClientRequest TSRPv1 kid sk re r rt =
         newHeaders = authH : (requestHeaders r) in
     Right $ r { requestHeaders = newHeaders }
 
+-- | Given a precomputed MAC of a request, construct the appropriate
+-- Authorization header in a form suitable to be used with
+-- http-client.
 httpAuthHeader :: SymmetricProtocol
                -> KeyId
                -> RequestTimestamp
@@ -46,6 +53,9 @@ httpAuthHeader TSRPv1 kid rt re cr mac =
       sah = SymmetricAuthHeader TSRPv1 kid rt re sh mac in
   (CI.mk "authorization", renderSymmetricAuthHeader sah)
 
+-- | Create a detached MAC of an http-client request. This MAC can be
+-- converted to an http-client-compatible Authorization header using
+-- 'httpAuthHeader'.
 macHttpClientRequest :: SymmetricProtocol
                      -> KeyId
                      -> SymmetricKey
