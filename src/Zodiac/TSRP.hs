@@ -10,11 +10,16 @@ module Zodiac.TSRP (
     KeyId
   , SymmetricKey
 
-  , authedHttpClientRequest
+  -- * Key generation
   , genKeyId
   , genSymmetricKey
-  , httpClientKeyId
+
+  -- * Timestamps
   , timestampRequest
+
+  -- * http-client interface
+  , authedHttpClientRequest
+  , httpClientKeyId
   ) where
 
 import           Tinfoil.Data.Key (SymmetricKey)
