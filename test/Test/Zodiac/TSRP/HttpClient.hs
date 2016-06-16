@@ -22,16 +22,15 @@ import           Zodiac.Data
 import           Zodiac.Request.HttpClient
 import           Zodiac.TSRP.HttpClient
 
-prop_authedHttpClientRequest :: SymmetricProtocol
-                             -> CRequest
+prop_authedHttpClientRequest :: CRequest
                              -> KeyId
                              -> SymmetricKey
                              -> RequestExpiry
                              -> RequestTimestamp
                              -> Property
-prop_authedHttpClientRequest sp cr kid sk re rt =
+prop_authedHttpClientRequest cr kid sk re rt =
   let req = fromCanonicalRequest cr
-      res = authedHttpClientRequest sp kid sk re req rt in
+      res = authedHttpClientRequest kid sk re req rt in
   case res of
     Left e -> failWith $ "authentication unexpectedly failed: " <> renderRequestError e
     Right req' ->

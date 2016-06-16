@@ -24,14 +24,13 @@ import           Zodiac.Symmetric
 -- malformed, the output is a Request object with the necessary
 -- Authorization header added which can be sent directly to a server
 -- supporting TSRP.
-authedHttpClientRequest :: SymmetricProtocol
-                        -> KeyId
+authedHttpClientRequest :: KeyId
                         -> SymmetricKey
                         -> RequestExpiry
                         -> Request
                         -> RequestTimestamp
                         -> Either RequestError Request
-authedHttpClientRequest TSRPv1 kid sk re r rt =
+authedHttpClientRequest kid sk re r rt =
   toCanonicalRequest r >>= \cr ->
     let mac = macRequest TSRPv1 kid rt re cr sk
         authH = httpAuthHeader TSRPv1 kid rt re cr mac
@@ -56,14 +55,13 @@ httpAuthHeader TSRPv1 kid rt re cr mac =
 -- | Create a detached MAC of an http-client request. This MAC can be
 -- converted to an http-client-compatible Authorization header using
 -- 'httpAuthHeader'.
-macHttpClientRequest :: SymmetricProtocol
-                     -> KeyId
+macHttpClientRequest :: KeyId
                      -> SymmetricKey
                      -> RequestExpiry
                      -> Request
                      -> RequestTimestamp
                      -> Either RequestError MAC
-macHttpClientRequest TSRPv1 kid sk re r rts = do
+macHttpClientRequest kid sk re r rts = do
   cr <- toCanonicalRequest r
   pure $ macRequest TSRPv1 kid rts re cr sk
   
