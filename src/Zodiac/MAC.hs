@@ -17,19 +17,16 @@ import           Tinfoil.MAC (hmacSHA256)
 
 import           Zodiac.Data
 
--- | Derive the key we actually use to sign the request from the
+-- | Derive the key we actually use to authenticate the request from the
 -- secret key, the key ID and the date part of the request timestamp
 -- via an iterated chain of keyed hashes.
 deriveRequestKey :: SymmetricProtocol -> RequestDate -> KeyId -> SymmetricKey -> SymmetricKey
 deriveRequestKey TSRPv1 rd (KeyId kid) (SymmetricKey sk) =
   let k0 = SymmetricKey $ sk <> renderRequestDate rd
-      k1 = chainNext $ hmacSHA256 k0 prefix
-      k2 = chainNext $ hmacSHA256 k1 kid
-      k3 = chainNext $ hmacSHA256 k2 suffix in
-  k3
+      k1 = chainNext $ hmacSHA256 k0 kid
+      k2 = chainNext $ hmacSHA256 k1 proto in
+  k2
   where
-    prefix = renderSymmetricProtocol TSRPv1 <> "-start"
-
-    suffix = renderSymmetricProtocol TSRPv1 <> "-end"
+    proto = renderSymmetricProtocol TSRPv1
 
     chainNext = SymmetricKey . unMAC
