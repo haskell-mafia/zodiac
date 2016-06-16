@@ -16,8 +16,9 @@ import           System.IO (IO)
 import           Test.Zodiac.Arbitrary ()
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
+import           Test.Zodiac.Gen
 
-import           Tinfoil.Data (SymmetricKey)
+import           Tinfoil.Data (Verified(..), SymmetricKey)
 
 import           Zodiac.Data
 import           Zodiac.Request
@@ -47,6 +48,22 @@ prop_httpClientAuthHeader cr kid sk re rt =
             Right sah' -> testIO $ do
               r <- sah' `symmetricAuthHeaderEq` sah
               pure $ r === True
+
+prop_verifyHttpClientRequest :: KeyId
+                             -> RequestTimestamp
+                             -> RequestExpiry
+                             -> CRequest
+                             -> SymmetricKey
+                             -> Property
+prop_verifyHttpClientRequest kid rt re cr sk =
+  forAll (genTimeWithin rt re) $ \now ->
+    let req = fromCanonicalRequest cr in
+    case authedHttpClientRequest kid sk re req rt of
+      Left e ->
+        failWith $ "authentication unexpectedly failed: " <> renderRequestError e
+      Right ar -> testIO $ do
+        r <- verifyHttpClientRequest' kid sk ar now
+        pure $ r === Verified
 
 return []
 tests :: IO Bool
