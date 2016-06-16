@@ -19,6 +19,9 @@ import           Tinfoil.Hash (hashSHA256)
 
 import           Zodiac.Data.Request
 
+-- | Get the list of names of headers we will sign (which is all of the headers
+-- in the request we're given). Any unsigned headers will either be our
+-- authentication header or will have been added by proxies.
 signedHeaders :: CRequest -> CSignedHeaders
 signedHeaders cr =
   let hns = NE.fromList . M.keys . unCHeaders $ crHeaders cr in

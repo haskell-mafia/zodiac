@@ -19,6 +19,7 @@ import           Test.Zodiac.Gen
 import           Tinfoil.Data
 
 import           Zodiac.Data
+import           Zodiac.Request
 import           Zodiac.Symmetric
 
 prop_verifyRequest' :: SymmetricProtocol
@@ -84,6 +85,36 @@ prop_verifyRequest_after' sp kid rt re cr sk =
   forAll (genTimeExpired rt re) $ \now ->
     let mac = macRequest sp kid rt re cr sk in testIO $ do
     r <- verifyRequest' sp kid rt re (StrippedCRequest cr) sk mac now
+    pure $ r === NotVerified
+
+prop_verifyRequest :: SymmetricProtocol
+                   -> KeyId
+                   -> RequestTimestamp
+                   -> RequestExpiry
+                   -> CRequest
+                   -> SymmetricKey
+                   -> Property
+prop_verifyRequest sp kid rt re cr sk =
+  forAll (genTimeWithin rt re) $ \now ->
+    let mac = macRequest sp kid rt re cr sk
+        shs = signedHeaders cr
+        sah = SymmetricAuthHeader sp kid rt re shs mac in testIO $ do
+    r <- verifyRequest kid sk cr sah now
+    pure $ r === Verified
+
+prop_verifyRequest_kid :: SymmetricProtocol
+                       -> UniquePair KeyId
+                       -> RequestTimestamp
+                       -> RequestExpiry
+                       -> CRequest
+                       -> SymmetricKey
+                       -> Property
+prop_verifyRequest_kid sp (UniquePair kid kid') rt re cr sk =
+  forAll (genTimeWithin rt re) $ \now ->
+    let mac = macRequest sp kid rt re cr sk
+        shs = signedHeaders cr
+        sah = SymmetricAuthHeader sp kid' rt re shs mac in testIO $ do
+    r <- verifyRequest kid sk cr sah now
     pure $ r === NotVerified
 
 return []
