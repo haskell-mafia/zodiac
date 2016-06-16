@@ -52,6 +52,7 @@ library
                        Zodiac.Request.HttpClient
                        Zodiac.Symmetric
                        Zodiac.Time
+                       Zodiac.TSRP
                        Zodiac.TSRP.HttpClient
 
 test-suite test
