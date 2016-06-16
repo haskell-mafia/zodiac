@@ -6,15 +6,15 @@ module Zodiac.TSRP.HttpClient(
   , httpAuthHeader
   , httpClientKeyId
   , httpClientAuthHeader
+  , verifyHttpClientRequest
   , verifyHttpClientRequest'
   ) where
 
-import qualified Data.CaseInsensitive as CI
-import           Data.Time.Clock (UTCTime)
-import qualified Data.Text.Encoding as T
+import           Data.Time.Clock (UTCTime, getCurrentTime)
 
 import           Network.HTTP.Client (Request(..), requestHeaders)
 import           Network.HTTP.Types (Header)
+import           Network.HTTP.Types.Header (hAuthorization)
 
 import           P
 
@@ -44,12 +44,24 @@ authedHttpClientRequest kid sk re r rt =
         newHeaders = authH : (requestHeaders r) in
     Right $ r { requestHeaders = newHeaders }
 
-verifyHttpClientRequest' :: UTCTime
-                         -> KeyId
+-- | Works as 'verifyHttpClientRequest'', but uses the current time to verify
+-- the request.
+verifyHttpClientRequest :: KeyId
+                        -> SymmetricKey
+                        -> Request
+                        -> IO Verified
+verifyHttpClientRequest kid sk r =
+  getCurrentTime >>= (verifyHttpClientRequest' kid sk r)
+
+-- | Verify an authenticated http-client request. The 'KeyId' parameter
+-- can be extracted with 'httpClientKeyId'; the 'SymmetricKey' should be
+-- the one associated with the 'KeyId'.
+verifyHttpClientRequest' :: KeyId
                          -> SymmetricKey
                          -> Request
+                         -> UTCTime
                          -> IO Verified
-verifyHttpClientRequest' now kid sk req =
+verifyHttpClientRequest' kid sk req now =
   case httpClientAuthHeader req of
     Left _ ->
       pure NotVerified
@@ -72,14 +84,12 @@ httpClientAuthHeader :: Request
                      -> Either ProtocolError SymmetricAuthHeader
 httpClientAuthHeader r =
   let hs = requestHeaders r in
-  case filter ((== auth) . fst) hs of
+  case filter ((== hAuthorization) . fst) hs of
     [] ->
       Left NoAuthHeader
     [(_, v)] ->
       maybe' (Left MalformedAuthHeader) Right $ parseSymmetricAuthHeader v
     _ -> Left MultipleAuthHeaders
-  where
-    auth = CI.mk $ T.encodeUtf8 authHeaderName
 
 -- | Given a precomputed MAC of a request, construct the appropriate
 -- Authorization header in a form suitable to be used with
@@ -94,7 +104,7 @@ httpAuthHeader :: SymmetricProtocol
 httpAuthHeader TSRPv1 kid rt re cr mac =
   let sh = signedHeaders cr
       sah = SymmetricAuthHeader TSRPv1 kid rt re sh mac in
-  (CI.mk $ T.encodeUtf8 authHeaderName, renderSymmetricAuthHeader sah)
+  (hAuthorization, renderSymmetricAuthHeader sah)
 
 -- | Create a detached MAC of an http-client request. This MAC can be
 -- converted to an http-client-compatible Authorization header using

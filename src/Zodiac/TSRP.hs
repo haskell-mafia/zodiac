@@ -20,6 +20,8 @@ module Zodiac.TSRP (
   -- * http-client interface
   , authedHttpClientRequest
   , httpClientKeyId
+  , verifyHttpClientRequest
+  , verifyHttpClientRequest'
   ) where
 
 import           Tinfoil.Data.Key (SymmetricKey)
