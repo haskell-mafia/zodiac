@@ -20,6 +20,10 @@ import           Test.QuickCheck.Instances ()
 prop_tripping_RequestTimestamp :: RequestTimestamp -> Property
 prop_tripping_RequestTimestamp = tripping renderRequestTimestamp parseRequestTimestamp
 
+prop_parseRequestTimestamp_neg :: Property
+prop_parseRequestTimestamp_neg = forAll genNegativeTimestamp $ \bs ->
+  (parseRequestTimestamp bs) === Nothing'
+
 prop_tripping_RequestExpiry :: RequestExpiry -> Property
 prop_tripping_RequestExpiry = tripping renderRequestExpiry parseRequestExpiry
 

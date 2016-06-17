@@ -5,7 +5,8 @@ module Test.Zodiac.Gen where
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import qualified Data.Text.Encoding as T
-import           Data.Time.Clock (UTCTime(..), addUTCTime)
+import           Data.Time.Calendar (Day(..))
+import           Data.Time.Clock (UTCTime(..), addUTCTime, secondsToDiffTime)
 
 import           P
 
@@ -45,3 +46,11 @@ genInvalidExpiry =
     tooSmall = choose (- maxBound, 0)
 
     tooBig = choose (maxRequestExpiry, maxBound)
+
+-- | Negative in a calendrical sense (i.e., before 0001-01-01).
+genNegativeTimestamp :: Gen ByteString
+genNegativeTimestamp = do
+  days <- ModifiedJulianDay <$> choose (- (2 ^ (256 :: Integer)), - 678575)
+  secPart <- choose (0, 86401)
+  pure . renderRequestTimestamp . RequestTimestamp $
+    UTCTime days (secondsToDiffTime secPart)
