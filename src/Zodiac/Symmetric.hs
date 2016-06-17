@@ -3,6 +3,7 @@
 module Zodiac.Symmetric(
     authenticationString
   , macRequest
+  , verifyRequest
   , verifyRequest'
   ) where
 
@@ -39,17 +40,50 @@ macRequest TSRPv1 kid rts re cr sk =
       authString = authenticationString TSRPv1 kid rts re cr in
   macBytes HMAC_SHA256 authKey authString
 
--- | Verify a request MAC.
+-- | Verify a request and authentication header.
+--
+-- The provided 'KeyId' and 'SymmetricKey' should be those stored by the
+-- server. The key ID will be checked against the one contained in the
+-- 'SymmetricAuthHeader'.
+verifyRequest :: KeyId
+              -> SymmetricKey
+              -> CRequest
+              -> SymmetricAuthHeader
+              -> UTCTime
+              -> IO Verified
+verifyRequest kid sk cr (SymmetricAuthHeader sp kid' rt re csh mac) now =
+  if kid /= kid'
+    then
+      pure NotVerified
+    else
+      let cr' = stripCRequest cr csh in
+      verifyRequest' sp kid rt re cr' sk mac now
+
+-- | Verify the MAC of an unpacked request.
+--
+-- This is the lowest-level verification in zodiac.
+--
+-- This function:
+--  * Derives the auth key.
+--  * Derives the string to MAC.
+--  * Verifies that the request is within its window of validity (based on the
+--    provided "current" time).
+--  * Computes the HMAC.
+--  * Compares the computed value to the provided HMAC (in constant time).
+--
+-- This function does not:
+--  * Verify that the key ID is actually associated with a requester.
+--  * Strip unsigned headers from requests.
 verifyRequest' :: SymmetricProtocol
                -> KeyId
                -> RequestTimestamp
                -> RequestExpiry
-               -> CRequest
+               -> StrippedCRequest
                -> SymmetricKey
                -> MAC
                -> UTCTime
                -> IO Verified
-verifyRequest' TSRPv1 kid rts re cr sk mac now =
+verifyRequest' TSRPv1 kid rts re (StrippedCRequest cr) sk mac now =
   let authKey = deriveRequestKey TSRPv1 (timestampDate rts) kid sk
       authString = authenticationString TSRPv1 kid rts re cr in
   case requestExpired rts re now of
