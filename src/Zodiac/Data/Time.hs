@@ -7,6 +7,7 @@ module Zodiac.Data.Time(
   , RequestExpiry(..)
   , RequestTimestamp(..)
 
+  , maxClockSkew
   , maxRequestExpiry
   , parseRequestExpiry
   , parseRequestTimestamp
@@ -24,7 +25,7 @@ import           Data.ByteString (ByteString)
 import qualified Data.ByteString.Char8 as BSC
 import qualified Data.Text.Encoding as T
 import           Data.Time.Calendar (Day(..))
-import           Data.Time.Clock (UTCTime(..))
+import           Data.Time.Clock (UTCTime(..), NominalDiffTime)
 import           Data.Time.Format (formatTime, iso8601DateFormat)
 import           Data.Time.Format (defaultTimeLocale, parseTimeM)
 
@@ -104,6 +105,11 @@ renderRequestExpiry = T.encodeUtf8 . renderIntegral . unRequestExpiry
 -- | Maximum value for request expiry, in seconds (365 days).
 maxRequestExpiry :: Int
 maxRequestExpiry = 31536000
+
+-- | Maximum forwards clock skew - if we receive a timestamp after
+-- ten minutes after the current time, we reject the request.
+maxClockSkew :: NominalDiffTime
+maxClockSkew = fromIntegral (600 :: Int)
 
 parseRequestExpiry :: ByteString -> Maybe' RequestExpiry
 parseRequestExpiry bs =
