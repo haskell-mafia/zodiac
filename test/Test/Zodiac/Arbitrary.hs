@@ -113,7 +113,8 @@ instance Arbitrary KeyId where
   arbitrary = genUBytes KeyId 16
 
 instance Arbitrary RequestExpiry where
-  arbitrary = RequestExpiry <$> choose (1, maxBound)
+  -- Uniform over valid expiry values.
+  arbitrary = RequestExpiry <$> choose (1, 31536000)
 
 -- FIXME: should use the instance in tinfoil
 instance Arbitrary SymmetricKey where

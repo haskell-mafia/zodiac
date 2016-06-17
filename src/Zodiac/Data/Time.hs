@@ -103,7 +103,8 @@ renderRequestExpiry = T.encodeUtf8 . renderIntegral . unRequestExpiry
 parseRequestExpiry :: ByteString -> Maybe' RequestExpiry
 parseRequestExpiry bs =
   case AB.parseOnly (ABC.decimal <* AB.endOfInput) bs of
-    Right x -> if x > 0
+    -- Check it's at least one second and at most one year.
+    Right x -> if x > 0 && x <= 31536000
                  then pure $ RequestExpiry x
                  else Nothing'
     -- Don't want to propagate errors up from 'symmetricAuthHeaderP' at this point.
