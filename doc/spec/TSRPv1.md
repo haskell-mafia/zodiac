@@ -275,15 +275,17 @@ Request timestamp
 -----------------
 
 This is the date and time of the request in UTC, to second
-precision. It is determined by the client; if the server receives a
-request with a request timestamp which is before the current time as
-determined by the server, the server shall respond to the request with
-an error.
+precision. It is determined by the client.
 
 This value is formatted according to ISO 8601. An example value for
 this field is "2016-01-23T01:23:45", which refers to the 23rd day of
 January of the year 2016 CE, at one hour twenty-three minutes and
 forty-five seconds past midnight in Coordinated Universal Time (UTC).
+
+If the server receives a request with a request timestamp which is
+more than *600 seconds* (ten minutes) after the current time as
+determined by the server, the server shall respond to the request with
+an error.
 
 Request expiry
 --------------
