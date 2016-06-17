@@ -297,6 +297,11 @@ This value is formatted as a decimal integer number of seconds. An
 example value for this field is "60", which refers to an expiry one
 minute after the request timestamp.
 
+The request expiry has a minimum value of 1. It has a maximum value of
+31536000, which is the number of seconds in one solar year (rounded to
+the nearest integer). The server shall reject any request containing a
+request expiry outside of this range.
+
 Key ID
 ------
 
