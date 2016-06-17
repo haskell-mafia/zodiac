@@ -87,6 +87,8 @@ verifyRequest' TSRPv1 kid rts re (StrippedCRequest cr) sk mac now =
   let authKey = deriveRequestKey TSRPv1 (timestampDate rts) kid sk
       authString = authenticationString TSRPv1 kid rts re cr in
   case requestExpired rts re now of
+    -- The server can detect this and return an error earlier in the process,
+    -- but we don't return any extra information from this function.
     NotYetValid -> pure NotVerified
     TimeExpired -> pure NotVerified
     TimeValid -> verifyMAC HMAC_SHA256 authKey authString mac

@@ -87,9 +87,24 @@ instance Arbitrary Protocol where
 -- Generate timestamps to second precision, which is all we care about/support.
 instance Arbitrary RequestTimestamp where
   arbitrary = do
-    days <- ModifiedJulianDay <$> choose (0, 100000) -- uniform between 1878-11-17 and 2132-09-01
-    secPart <- choose (0, 86401) -- seconds in a day (with possible leap second)
+    -- Reasonable mix of sensible dates and ridiculous ones.
+    days <- oneof [
+        sensible
+      , whenIWasALad
+      , hurdReleaseDate
+      ]
+    -- Seconds in a day (with possible leap second).
+    secPart <- choose (0, 86401)
     pure . RequestTimestamp $ UTCTime days (secondsToDiffTime secPart)
+    where
+      -- Uniform between 0001-01-01 and 4616-10-14.
+      sensible = ModifiedJulianDay <$> choose (0, 100000)
+
+      -- Uniform between 0001-01-01 and 1858-11-17
+      whenIWasALad = ModifiedJulianDay <$> choose ((- 678575), 0)
+
+      -- Uniform between 4616-10-14 and 2739765-11-19.
+      hurdReleaseDate = ModifiedJulianDay <$> choose (100000, 100000000)
 
 instance Arbitrary RequestDate where
   arbitrary = timestampDate <$> arbitrary
@@ -98,7 +113,8 @@ instance Arbitrary KeyId where
   arbitrary = genUBytes KeyId 16
 
 instance Arbitrary RequestExpiry where
-  arbitrary = RequestExpiry <$> choose (1, maxBound)
+  -- Uniform over valid expiry values.
+  arbitrary = RequestExpiry <$> choose (1, maxRequestExpiry)
 
 -- FIXME: should use the instance in tinfoil
 instance Arbitrary SymmetricKey where

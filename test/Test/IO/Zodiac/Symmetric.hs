@@ -3,6 +3,8 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Test.IO.Zodiac.Symmetric where
 
+import           Data.Time.Clock (addUTCTime)
+
 import           Disorder.Core.IO (testIO)
 import           Disorder.Core.Run (ExpectedTestSpeed(..), disorderCheckEnvAll)
 import           Disorder.Core.UniquePair (UniquePair(..))
@@ -69,7 +71,7 @@ prop_verifyRequest_before' :: SymmetricProtocol
                            -> SymmetricKey
                            -> Property
 prop_verifyRequest_before' sp kid rt re cr sk =
-  forAll (genTimeBefore rt) $ \now ->
+  forAll (genTimeBefore (RequestTimestamp $ addUTCTime (- maxClockSkew) (unRequestTimestamp rt))) $ \now ->
     let mac = macRequest sp kid rt re cr sk in testIO $ do
     r <- verifyRequest' sp kid rt re (StrippedCRequest cr) sk mac now
     pure $ r === NotVerified

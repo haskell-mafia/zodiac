@@ -4,7 +4,9 @@ module Test.Zodiac.Gen where
 
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
-import           Data.Time.Clock (UTCTime(..), addUTCTime)
+import qualified Data.Text.Encoding as T
+import           Data.Time.Calendar (Day(..))
+import           Data.Time.Clock (UTCTime(..), addUTCTime, secondsToDiffTime)
 
 import           P
 
@@ -37,4 +39,18 @@ genTimeExpired (RequestTimestamp rt) (RequestExpiry re) = do
   secs <- choose (re, maxBound)
   pure $ addUTCTime (fromIntegral secs) rt
 
+genInvalidExpiry :: Gen ByteString
+genInvalidExpiry =
+  fmap (T.encodeUtf8 . renderIntegral) $ oneof [tooSmall, tooBig]
+  where
+    tooSmall = choose (- maxBound, 0)
 
+    tooBig = choose (maxRequestExpiry, maxBound)
+
+-- | Negative in a calendrical sense (i.e., before 0001-01-01).
+genNegativeTimestamp :: Gen ByteString
+genNegativeTimestamp = do
+  days <- ModifiedJulianDay <$> choose (- (2 ^ (256 :: Integer)), - 678575)
+  secPart <- choose (0, 86401)
+  pure . renderRequestTimestamp . RequestTimestamp $
+    UTCTime days (secondsToDiffTime secPart)
