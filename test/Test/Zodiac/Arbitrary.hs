@@ -114,7 +114,7 @@ instance Arbitrary KeyId where
 
 instance Arbitrary RequestExpiry where
   -- Uniform over valid expiry values.
-  arbitrary = RequestExpiry <$> choose (1, 31536000)
+  arbitrary = RequestExpiry <$> choose (1, maxRequestExpiry)
 
 -- FIXME: should use the instance in tinfoil
 instance Arbitrary SymmetricKey where

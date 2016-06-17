@@ -13,6 +13,7 @@ import           System.IO (IO)
 import           Zodiac.Data.Time
 
 import           Test.Zodiac.Arbitrary ()
+import           Test.Zodiac.Gen
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 
@@ -21,6 +22,10 @@ prop_tripping_RequestTimestamp = tripping renderRequestTimestamp parseRequestTim
 
 prop_tripping_RequestExpiry :: RequestExpiry -> Property
 prop_tripping_RequestExpiry = tripping renderRequestExpiry parseRequestExpiry
+
+prop_parseRequestExpiry_neg :: Property
+prop_parseRequestExpiry_neg = forAll genInvalidExpiry $ \e ->
+  (parseRequestExpiry e) === Nothing'
 
 return []
 tests :: IO Bool

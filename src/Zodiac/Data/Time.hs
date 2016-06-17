@@ -7,6 +7,7 @@ module Zodiac.Data.Time(
   , RequestExpiry(..)
   , RequestTimestamp(..)
 
+  , maxRequestExpiry
   , parseRequestExpiry
   , parseRequestTimestamp
   , renderRequestDate
@@ -100,11 +101,15 @@ instance NFData RequestExpiry where rnf = genericRnf
 renderRequestExpiry :: RequestExpiry -> ByteString
 renderRequestExpiry = T.encodeUtf8 . renderIntegral . unRequestExpiry
 
+-- | Maximum value for request expiry, in seconds (365 days).
+maxRequestExpiry :: Int
+maxRequestExpiry = 31536000
+
 parseRequestExpiry :: ByteString -> Maybe' RequestExpiry
 parseRequestExpiry bs =
   case AB.parseOnly (ABC.decimal <* AB.endOfInput) bs of
     -- Check it's at least one second and at most one year.
-    Right x -> if x > 0 && x <= 31536000
+    Right x -> if x > 0 && x <= maxRequestExpiry
                  then pure $ RequestExpiry x
                  else Nothing'
     -- Don't want to propagate errors up from 'symmetricAuthHeaderP' at this point.

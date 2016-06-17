@@ -4,6 +4,7 @@ module Test.Zodiac.Gen where
 
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
+import qualified Data.Text.Encoding as T
 import           Data.Time.Clock (UTCTime(..), addUTCTime)
 
 import           P
@@ -37,4 +38,10 @@ genTimeExpired (RequestTimestamp rt) (RequestExpiry re) = do
   secs <- choose (re, maxBound)
   pure $ addUTCTime (fromIntegral secs) rt
 
+genInvalidExpiry :: Gen ByteString
+genInvalidExpiry =
+  fmap (T.encodeUtf8 . renderIntegral) $ oneof [tooSmall, tooBig]
+  where
+    tooSmall = choose (- maxBound, 0)
 
+    tooBig = choose (maxRequestExpiry, maxBound)
