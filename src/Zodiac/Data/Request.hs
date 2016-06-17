@@ -42,7 +42,7 @@ import           GHC.Generics (Generic)
 
 import           P
 
--- | One of the methods explicitly defined in section 9 of RFC 2616, we don't
+-- | One of the methods explicitly defined in section 4.1 of RFC 7231, we don't
 -- allow any others.
 data CMethod =
     OPTIONS
