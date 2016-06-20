@@ -12,7 +12,7 @@ Definitions
 ===========
 
  - *HTTP* and *HTTP request* shall refer to the HTTP/1.1 protocol
-   defined in RFC 2616[0] or any later version of that protocol.
+   defined in RFC 7230-7235[0] or any later version of that protocol.
  - *client* shall refer to the party initiating an HTTP request.
  - *server* shall refer to the party receiving an HTTP request from a
    client.
@@ -161,7 +161,7 @@ Request method
 --------------
 
 The *request method* field shall consist of one of the methods
-explicitly defined in section 9 of RFC 2616.
+explicitly defined in section 4.1 of RFC 7231.
 
 Example values for this field are "GET" and "POST".
 
@@ -201,7 +201,7 @@ appear in the request, and terminated with a linefeed character.
 
 The list of headers computed by the *client* shall include all headers
 in the original request. In particular, canonical requests not
-including a "HOST" header as defined by RFC 2616 shall be deemed
+including a "HOST" header as defined by RFC 7230 shall be deemed
 invalid and rejected by the server.
 
 The list of headers computed by the *server* shall include all headers
@@ -242,10 +242,9 @@ An example value is "host,myheader1,myheader2,x-content-type".
 Hash of the request payload
 ---------------------------
 
-The *request payload* is the body of the request as defined by RFC
-2616, exactly as it appears in the original HTTP request. The hash of
-the request payload is computed as the hexadecimal-encoded SHA256 hash
-of the unmodified payload.
+The *request payload* is the body of the request as defined by section
+3.3 of RFC 7230. The hash of the request payload is computed as the
+hexadecimal-encoded SHA256 hash of the unmodified payload.
 
 If the request does not have a body, the payload hash shall be
 computed as the hexadecimal-encoded SHA256 hash of the empty string.
@@ -397,11 +396,11 @@ Authentication header
 
 The information required to authenticate a request is included in an
 HTTP header which is added to the request by the client. This header
-is the *Authorization* header, as specified by RFC 2616 (note that
-despite the name, the usual function of this header is authentication,
-not authorization).
+is the *Authorization* header, as specified by section 4.2 of RFC 7235
+(note that despite the name, the usual function of this header is
+authentication, not authorization).
 
-The header name "Authorization" is case-insensitive, per RFC 2616. The
+The header name "Authorization" is case-insensitive, per RFC 7230. The
 header value is constructed from the following fields, which are
 separated by the space character:
 
@@ -454,7 +453,15 @@ An example of the full header value is
 References
 ==========
 
-[0] https://www.ietf.org/rfc/rfc2616.txt
+[0] https://www.ietf.org/rfc/rfc7230.txt
+    https://www.ietf.org/rfc/rfc7231.txt
+    https://www.ietf.org/rfc/rfc7232.txt
+    https://www.ietf.org/rfc/rfc7233.txt
+    https://www.ietf.org/rfc/rfc7234.txt
+    https://www.ietf.org/rfc/rfc7235.txt
+
 [1] https://web.archive.org/20130526224224/http://csrc.nist.gov/groups/STM/cavp/documents/shs/sha256-384-512.pdf
+
 [2] https://www.ietf.org/rfc/rfc2104.txt
+
 [3] https://www.ietf.org/rfc/rfc3986.txt

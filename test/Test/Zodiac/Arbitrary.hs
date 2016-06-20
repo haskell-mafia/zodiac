@@ -97,7 +97,7 @@ instance Arbitrary RequestTimestamp where
     secPart <- choose (0, 86401)
     pure . RequestTimestamp $ UTCTime days (secondsToDiffTime secPart)
     where
-      -- Uniform between 0001-01-01 and 4616-10-14.
+      -- Uniform between 1858-11-17 and 4616-10-14.
       sensible = ModifiedJulianDay <$> choose (0, 100000)
 
       -- Uniform between 0001-01-01 and 1858-11-17
