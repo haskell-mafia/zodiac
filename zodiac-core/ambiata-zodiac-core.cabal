@@ -72,6 +72,7 @@ test-suite test
                      , ambiata-disorder-corpus
                      , ambiata-p
                      , ambiata-tinfoil
+                     , ambiata-tinfoil-test
                      , ambiata-zodiac-core
                      , bytestring                      >= 0.10.4     && < 0.10.7
                      , containers                      == 0.5.*
@@ -101,6 +102,7 @@ test-suite test-io
                      , ambiata-disorder-corpus
                      , ambiata-p
                      , ambiata-tinfoil
+                     , ambiata-tinfoil-test
                      , ambiata-zodiac-core
                      , bytestring                      >= 0.10.4     && < 0.10.7
                      , containers                      == 0.5.*
@@ -131,6 +133,7 @@ benchmark bench
                      , ambiata-disorder-corpus
                      , ambiata-p
                      , ambiata-tinfoil
+                     , ambiata-tinfoil-test
                      , ambiata-zodiac-core
                      , bytestring                      >= 0.10.4     && < 0.10.7
                      , containers                      == 0.5.*
