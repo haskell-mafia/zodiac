@@ -4,24 +4,25 @@
 [build.dist-7-8]
   command = [
       ["master", "build", "dist-7-8", "-C", "zodiac-core"]
+    , ["master", "build", "dist-7-8", "-C", "zodiac-export"]
     ]
 
 [build.dist-7-10]
   command = [
-      ["git", "submodule", "init"]
-    , ["master", "build", "dist-7-10", "-C", "zodiac-core"]
+      ["master", "build", "dist-7-10", "-C", "zodiac-core"]
+    , ["master", "build", "dist-7-10", "-C", "zodiac-export"]
     ]
 
 [build.branches-7-8]
   command = [
-      ["git", "submodule", "init"]
-    , ["master", "build", "branches-7-8", "-C", "zodiac-core"]
+      ["master", "build", "branches-7-8", "-C", "zodiac-core"]
+    , ["master", "build", "branches-7-8", "-C", "zodiac-export"]
     ]
 
 [build.branches-7-10]
   command = [
-      ["git", "submodule", "init"]
-    , ["master", "build", "branches-7-10", "-C", "zodiac-core"]
+      ["master", "build", "branches-7-10", "-C", "zodiac-core"]
+    , ["master", "build", "branches-7-10", "-C", "zodiac-export"]
     ]
 
 [build.validate]
