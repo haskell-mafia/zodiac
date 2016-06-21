@@ -2,9 +2,27 @@
   version = 1
 
 [build.dist-7-8]
+  command = [
+      ["master", "build", "dist-7-8", "-C", "zodiac-core"]
+    ]
 
 [build.dist-7-10]
+  command = [
+      ["git", "submodule", "init"]
+    , ["master", "build", "dist-7-10", "-C", "zodiac-core"]
+    ]
 
 [build.branches-7-8]
+  command = [
+      ["git", "submodule", "init"]
+    , ["master", "build", "branches-7-8", "-C", "zodiac-core"]
+    ]
 
 [build.branches-7-10]
+  command = [
+      ["git", "submodule", "init"]
+    , ["master", "build", "branches-7-10", "-C", "zodiac-core"]
+    ]
+
+[build.validate]
+  command = [["validate-respect"]]
