@@ -14,7 +14,8 @@ import qualified Data.Text.Encoding as T
 
 import           P
 
-import           Tinfoil (hexEncode, unHash)
+import           Tinfoil.Data.Hash (unHash)
+import           Tinfoil.Encode (hexEncode)
 import           Tinfoil.Hash (hashSHA256)
 
 import           Zodiac.Core.Data.Request

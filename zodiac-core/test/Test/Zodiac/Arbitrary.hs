@@ -4,8 +4,6 @@
 module Test.Zodiac.Arbitrary where
 
 import qualified Data.ByteString as BS
-import           Data.List.NonEmpty (NonEmpty(..))
-import qualified Data.List.NonEmpty as NE
 import qualified Data.Map.Strict as M
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
@@ -21,16 +19,8 @@ import           Zodiac.Core.Data
 
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
+import           Test.Tinfoil.Arbitrary ()
 import           Test.Zodiac.Gen
-
--- FIXME: expose these instances from tinfoil
-import           Tinfoil.Data.Key (SymmetricKey(..))
-import           Tinfoil.Data.MAC (MAC(..))
-import           Tinfoil.Encode (hexEncode)
-
--- FIXME: should find a better home for this instance at some point
-instance Arbitrary a => Arbitrary (NonEmpty a) where
-  arbitrary = NE.fromList <$> listOf1 arbitrary
 
 instance Arbitrary CMethod where
   arbitrary = elements [minBound..maxBound]
@@ -115,17 +105,6 @@ instance Arbitrary KeyId where
 instance Arbitrary RequestExpiry where
   -- Uniform over valid expiry values.
   arbitrary = RequestExpiry <$> choose (1, maxRequestExpiry)
-
--- FIXME: should use the instance in tinfoil
-instance Arbitrary SymmetricKey where
-  arbitrary = genUBytes SymmetricKey 32
-
-instance Arbitrary MAC where
-  arbitrary = genUBytes MAC 32
-
--- testing only
-instance Show SymmetricKey where
-  show = T.unpack . hexEncode . unSymmetricKey
 
 instance Arbitrary SymmetricAuthHeader where
   arbitrary = SymmetricAuthHeader <$> arbitrary

@@ -13,7 +13,6 @@ import           Control.DeepSeq.Generics (genericRnf)
 import qualified Data.Attoparsec.ByteString as AB
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
-import qualified Data.ByteString.Base16 as B16
 import qualified Data.Text.Encoding as T
 
 import           GHC.Generics (Generic)
@@ -23,7 +22,7 @@ import           P
 import           System.IO (IO)
 
 import           Tinfoil.Comparison (safeEq)
-import           Tinfoil.Data (MAC(..))
+import           Tinfoil.Data (MAC(..), parseMAC)
 import           Tinfoil.Encode (hexEncode)
 
 import           Zodiac.Core.Data.Key
@@ -81,9 +80,13 @@ symmetricAuthHeaderP = do
   rts <- liftP parseRequestTimestamp =<< next
   re <- liftP parseRequestExpiry =<< next
   sh <- liftP parseCSignedHeaders =<< next
-  mac <- liftP parseMAC =<< AB.takeByteString
+  mac <- utf8P (liftP parseMAC)  =<< AB.takeByteString
   pure $ SymmetricAuthHeader proto kid rts re sh mac
   where
+    utf8P p bs = case T.decodeUtf8' bs of
+      Left e -> fail $ "error decoding UTF-8: " <> show e
+      Right t -> p t
+     
     next = do
       p <- AB.takeTill isSpace
       AB.skip isSpace
@@ -95,11 +98,3 @@ symmetricAuthHeaderP = do
     liftP f bs = case f bs of
       Just' x -> pure x
       Nothing' -> fail "Zodiac.Data.Symmetric.parseSymmetricAuthHeader"
-
--- FIXME: this belongs in tinfoil
-parseMAC :: ByteString -> Maybe' MAC
-parseMAC bs = case B16.decode bs of
-  (x, "") -> if BS.length x == 32
-               then Just' $ MAC x
-               else Nothing'
-  _ -> Nothing'
