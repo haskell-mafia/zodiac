@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
-module Bench.Zodiac.Symmetric where
+module Bench.Zodiac.Core.Symmetric where
 
 import           Bench.Zodiac
 

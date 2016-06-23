@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
-module Bench.Zodiac.MAC where
+module Bench.Zodiac.Core.MAC where
 
 import           Bench.Zodiac
 
