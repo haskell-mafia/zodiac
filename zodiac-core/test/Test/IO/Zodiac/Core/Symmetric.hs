@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.IO.Zodiac.Symmetric where
+module Test.IO.Zodiac.Core.Symmetric where
 
 import           Data.Time.Clock (addUTCTime)
 
@@ -15,8 +15,8 @@ import           System.IO (IO)
 
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
-import           Test.Zodiac.Arbitrary ()
-import           Test.Zodiac.Gen
+import           Test.Zodiac.Core.Arbitrary ()
+import           Test.Zodiac.Core.Gen
 
 import           Tinfoil.Data
 

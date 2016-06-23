@@ -10,7 +10,7 @@ import           Criterion.Main
 import           P
 
 import           Test.QuickCheck (arbitrary)
-import           Test.Zodiac.Arbitrary ()
+import           Test.Zodiac.Core.Arbitrary ()
 
 import           Zodiac.Core.Data
 import           Zodiac.Core.MAC

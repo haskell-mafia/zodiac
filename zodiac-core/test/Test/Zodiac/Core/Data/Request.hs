@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.Zodiac.Data.Request where
+module Test.Zodiac.Core.Data.Request where
 
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
@@ -18,7 +18,7 @@ import           System.IO (IO)
 
 import           Zodiac.Core.Data.Request
 
-import           Test.Zodiac.Arbitrary ()
+import           Test.Zodiac.Core.Arbitrary ()
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 

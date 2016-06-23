@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.IO.Zodiac.Key where
+module Test.IO.Zodiac.Core.Key where
 
 import           Disorder.Core.IO (testIO)
 import           Disorder.Core.Property ((=/=))

@@ -14,7 +14,7 @@ import           P
 
 import           System.IO
 
-import           Test.Zodiac.Arbitrary ()
+import           Test.Zodiac.Core.Arbitrary ()
 
 zodiacBench :: [Benchmark] -> IO ()
 zodiacBench = defaultMainWith cfg

@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.Zodiac.MAC where
+module Test.Zodiac.Core.MAC where
 
 import           Disorder.Core.Property ((=/=))
 import           Disorder.Core.Run (ExpectedTestSpeed(..), disorderCheckEnvAll)
@@ -11,7 +11,7 @@ import           P
 
 import           System.IO (IO)
 
-import           Test.Zodiac.Arbitrary ()
+import           Test.Zodiac.Core.Arbitrary ()
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 

@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.Zodiac.Time where
+module Test.Zodiac.Core.Time where
 
 import           Data.Time.Clock (addUTCTime)
 
@@ -13,7 +13,7 @@ import           Prelude (fromEnum)
 
 import           System.IO (IO)
 
-import           Test.Zodiac.Arbitrary ()
+import           Test.Zodiac.Core.Arbitrary ()
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 

@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.Zodiac.Data.Time where
+module Test.Zodiac.Core.Data.Time where
 
 import           Disorder.Core.Run (ExpectedTestSpeed(..), disorderCheckEnvAll)
 import           Disorder.Core.Tripping (tripping)
@@ -12,8 +12,8 @@ import           System.IO (IO)
 
 import           Zodiac.Core.Data.Time
 
-import           Test.Zodiac.Arbitrary ()
-import           Test.Zodiac.Gen
+import           Test.Zodiac.Core.Arbitrary ()
+import           Test.Zodiac.Core.Gen
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 

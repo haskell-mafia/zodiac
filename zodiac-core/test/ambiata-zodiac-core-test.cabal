@@ -26,5 +26,5 @@ library
                      , transformers                    >= 0.4        && < 0.6
 
   exposed-modules:
-                       Test.Zodiac.Arbitrary
-                       Test.Zodiac.Gen
+                       Test.Zodiac.Core.Arbitrary
+                       Test.Zodiac.Core.Gen

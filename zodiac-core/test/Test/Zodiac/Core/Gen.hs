@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Test.Zodiac.Gen where
+module Test.Zodiac.Core.Gen where
 
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS

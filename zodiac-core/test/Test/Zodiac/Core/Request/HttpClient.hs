@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.Zodiac.Request.HttpClient where
+module Test.Zodiac.Core.Request.HttpClient where
 
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
@@ -13,7 +13,7 @@ import           P
 
 import           System.IO (IO)
 
-import           Test.Zodiac.Arbitrary ()
+import           Test.Zodiac.Core.Arbitrary ()
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 

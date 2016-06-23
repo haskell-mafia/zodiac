@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.Zodiac.Data.Protocol where
+module Test.Zodiac.Core.Data.Protocol where
 
 import           Disorder.Core.Run (ExpectedTestSpeed(..), disorderCheckEnvAll)
 import           Disorder.Core.Tripping (tripping)
@@ -12,7 +12,7 @@ import           System.IO (IO)
 
 import           Zodiac.Core.Data.Protocol
 
-import           Test.Zodiac.Arbitrary ()
+import           Test.Zodiac.Core.Arbitrary ()
 import           Test.QuickCheck
 
 prop_tripping_Protocol :: Protocol -> Property

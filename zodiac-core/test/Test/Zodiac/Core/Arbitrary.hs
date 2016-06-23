@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
-module Test.Zodiac.Arbitrary where
+module Test.Zodiac.Core.Arbitrary where
 
 import qualified Data.ByteString as BS
 import qualified Data.Map.Strict as M
@@ -20,7 +20,7 @@ import           Zodiac.Core.Data
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 import           Test.Tinfoil.Arbitrary ()
-import           Test.Zodiac.Gen
+import           Test.Zodiac.Core.Gen
 
 instance Arbitrary CMethod where
   arbitrary = elements [minBound..maxBound]

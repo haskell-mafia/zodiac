@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.IO.Zodiac.TSRP.HttpClient where
+module Test.IO.Zodiac.Core.TSRP.HttpClient where
 
 import           Disorder.Core.IO (testIO)
 import           Disorder.Core.Property (failWith)
@@ -15,10 +15,10 @@ import qualified Prelude
 
 import           System.IO (IO)
 
-import           Test.Zodiac.Arbitrary ()
+import           Test.Zodiac.Core.Arbitrary ()
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
-import           Test.Zodiac.Gen
+import           Test.Zodiac.Core.Gen
 
 import           Tinfoil.Data (Verified(..), SymmetricKey)
 
