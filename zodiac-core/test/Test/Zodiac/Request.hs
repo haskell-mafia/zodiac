@@ -31,7 +31,7 @@ prop_stripCRequest cr hn hv =
       newHeaders = CHeaders $ M.insert hn (pure hv) oldHeaders
       cr' = cr { crHeaders = newHeaders }
       cr'' = unStrippedCRequest $ stripCRequest cr' shs in
-  cr === cr''
+  not (M.member hn oldHeaders) ==> cr === cr''
 
 return []
 tests :: IO Bool

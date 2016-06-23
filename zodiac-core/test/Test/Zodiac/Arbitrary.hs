@@ -10,7 +10,7 @@ import qualified Data.Text.Encoding as T
 import           Data.Time.Calendar (Day(..))
 import           Data.Time.Clock (UTCTime(..), secondsToDiffTime)
 
-import           Disorder.Core.Gen (utf8BS1)
+import           Disorder.Core.Gen (utf8BS1, shrinkUtf8BS1)
 import           Disorder.Corpus (muppets)
 
 import           P
@@ -37,8 +37,9 @@ instance Arbitrary CURI where
 
 -- I don't think this needs to be particularly realistic.
 instance Arbitrary CQueryString where
-  arbitrary =
-    encodeCQueryString <$> utf8BS1
+  arbitrary = encodeCQueryString <$> utf8BS1
+
+  shrink = fmap encodeCQueryString . shrinkUtf8BS1 . unCQueryString
 
 instance Arbitrary CHeaderName where
   arbitrary = do
