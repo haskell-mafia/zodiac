@@ -4,7 +4,7 @@
 {-
 Convert http-client Request objects into canonical requests.
 -}
-module Zodiac.Core.Request.HttpClient(
+module Zodiac.HttpClient.Request (
     fromCanonicalRequest
   , toCanonicalRequest
   , trimSpaces

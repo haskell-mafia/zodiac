@@ -3,10 +3,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 {-
-This module is the primary interface for signing and verifying TSRP
-requests with zodiac and should provide everything needed to do so.
+This module is the primary interface for signing and verifying http-client 
+TSRP requests with zodiac and should provide everything needed to do so.
 -}
-module Zodiac.Core.TSRP (
+module Zodiac.HttpClient(
     KeyId
   , SymmetricKey
   , SymmetricProtocol(..)
@@ -23,7 +23,6 @@ module Zodiac.Core.TSRP (
 
   -- * Timestamps
   , timestampRequest
-
   -- * http-client interface
   , authedHttpClientRequest
   , httpClientKeyId
@@ -37,4 +36,4 @@ import           Zodiac.Core.Data.Key
 import           Zodiac.Core.Data.Protocol
 import           Zodiac.Core.Key
 import           Zodiac.Core.Time
-import           Zodiac.Core.TSRP.HttpClient
+import           Zodiac.HttpClient.TSRP

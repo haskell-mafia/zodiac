@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.IO.Zodiac.Core.TSRP.HttpClient where
+module Test.IO.Zodiac.HttpClient.TSRP where
 
 import           Disorder.Core.IO (testIO)
 import           Disorder.Core.Property (failWith)
@@ -24,8 +24,8 @@ import           Tinfoil.Data (Verified(..), SymmetricKey)
 
 import           Zodiac.Core.Data
 import           Zodiac.Core.Request
-import           Zodiac.Core.Request.HttpClient
-import           Zodiac.Core.TSRP.HttpClient
+import           Zodiac.HttpClient.Request
+import           Zodiac.HttpClient.TSRP
 
 -- FIXME: rewrite once https://github.com/ambiata/tinfoil/pull/47 is merged
 prop_httpClientAuthHeader :: CRequest

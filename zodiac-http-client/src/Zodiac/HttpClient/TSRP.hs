@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Zodiac.Core.TSRP.HttpClient(
+module Zodiac.HttpClient.TSRP(
     authedHttpClientRequest
   , macHttpClientRequest
   , httpAuthHeader
@@ -24,8 +24,8 @@ import           Tinfoil.Data (Verified(..), MAC, SymmetricKey)
 
 import           Zodiac.Core.Data
 import           Zodiac.Core.Request
-import           Zodiac.Core.Request.HttpClient
 import           Zodiac.Core.Symmetric
+import           Zodiac.HttpClient.Request
 
 -- | Authenticate an http-client request. If the request isn't
 -- malformed, the output is a Request object with the necessary

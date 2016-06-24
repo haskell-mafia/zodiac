@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.Zodiac.Core.Request.HttpClient where
+module Test.Zodiac.HttpClient.Request where
 
 import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
@@ -18,7 +18,7 @@ import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 
 import           Zodiac.Core.Data.Request
-import           Zodiac.Core.Request.HttpClient
+import           Zodiac.HttpClient.Request
 
 prop_tripping_CRequest :: CRequest -> Property
 prop_tripping_CRequest = tripping fromCanonicalRequest toCanonicalRequest

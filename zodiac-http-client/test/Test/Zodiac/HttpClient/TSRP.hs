@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.Zodiac.Core.TSRP.HttpClient where
+module Test.Zodiac.HttpClient.TSRP where
 
 import           Disorder.Core.Property (failWith)
 import           Disorder.Core.Run (ExpectedTestSpeed(..), disorderCheckEnvAll)
@@ -19,8 +19,8 @@ import           Test.QuickCheck.Instances ()
 import           Tinfoil.Data (SymmetricKey)
 
 import           Zodiac.Core.Data
-import           Zodiac.Core.Request.HttpClient
-import           Zodiac.Core.TSRP.HttpClient
+import           Zodiac.HttpClient.Request
+import           Zodiac.HttpClient.TSRP
 
 prop_authedHttpClientRequest :: CRequest
                              -> KeyId
