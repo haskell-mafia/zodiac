@@ -1,0 +1,8 @@
+#!/bin/sh -exu
+
+#
+# Build zodiac test packages.
+#
+
+cd zodiac-core/test
+../mafia build

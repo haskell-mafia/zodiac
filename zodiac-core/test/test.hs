@@ -1,23 +1,19 @@
 import           Disorder.Core.Main
 
-import qualified Test.Zodiac.Data.Protocol
-import qualified Test.Zodiac.Data.Request
-import qualified Test.Zodiac.Data.Time
-import qualified Test.Zodiac.MAC
-import qualified Test.Zodiac.Request
-import qualified Test.Zodiac.Request.HttpClient
-import qualified Test.Zodiac.Time
-import qualified Test.Zodiac.TSRP.HttpClient
+import qualified Test.Zodiac.Core.Data.Protocol
+import qualified Test.Zodiac.Core.Data.Request
+import qualified Test.Zodiac.Core.Data.Time
+import qualified Test.Zodiac.Core.MAC
+import qualified Test.Zodiac.Core.Request
+import qualified Test.Zodiac.Core.Time
 
 main :: IO ()
 main =
   disorderMain [
-    Test.Zodiac.Data.Protocol.tests
-  , Test.Zodiac.Data.Request.tests
-  , Test.Zodiac.Data.Time.tests
-  , Test.Zodiac.MAC.tests
-  , Test.Zodiac.Request.tests
-  , Test.Zodiac.Request.HttpClient.tests
-  , Test.Zodiac.Time.tests
-  , Test.Zodiac.TSRP.HttpClient.tests
+    Test.Zodiac.Core.Data.Protocol.tests
+  , Test.Zodiac.Core.Data.Request.tests
+  , Test.Zodiac.Core.Data.Time.tests
+  , Test.Zodiac.Core.MAC.tests
+  , Test.Zodiac.Core.Request.tests
+  , Test.Zodiac.Core.Time.tests
   ]

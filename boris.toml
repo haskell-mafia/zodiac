@@ -4,25 +4,32 @@
 [build.dist-7-8]
   command = [
       ["master", "build", "dist-7-8", "-C", "zodiac-core"]
+    , ["master", "build", "dist-7-8", "-C", "zodiac-http-client"]
     ]
 
 [build.dist-7-10]
   command = [
-      ["git", "submodule", "init"]
-    , ["master", "build", "dist-7-10", "-C", "zodiac-core"]
+      ["master", "build", "dist-7-10", "-C", "zodiac-core"]
+    , ["master", "build", "dist-7-10", "-C", "zodiac-http-client"]
     ]
+
+[build.dist-cabal-test]
+  command = [["./bin/ci.cabal-test"]]
 
 [build.branches-7-8]
   command = [
-      ["git", "submodule", "init"]
-    , ["master", "build", "branches-7-8", "-C", "zodiac-core"]
+      ["master", "build", "branches-7-8", "-C", "zodiac-core"]
+    , ["master", "build", "branches-7-8", "-C", "zodiac-http-client"]
     ]
 
 [build.branches-7-10]
   command = [
-      ["git", "submodule", "init"]
-    , ["master", "build", "branches-7-10", "-C", "zodiac-core"]
+      ["master", "build", "branches-7-10", "-C", "zodiac-core"]
+    , ["master", "build", "branches-7-10", "-C", "zodiac-http-client"]
     ]
+
+[build.branches-cabal-test]
+  command = [["./bin/ci.cabal-test"]]
 
 [build.validate]
   command = [["validate-respect"]]
