@@ -19,6 +19,7 @@ import           Test.QuickCheck.Instances ()
 import           Tinfoil.Data (SymmetricKey)
 
 import           Zodiac.Core.Data
+import           Zodiac.HttpClient.Error
 import           Zodiac.HttpClient.Request
 import           Zodiac.HttpClient.TSRP
 

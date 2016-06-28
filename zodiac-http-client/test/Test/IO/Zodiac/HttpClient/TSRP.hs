@@ -24,6 +24,7 @@ import           Tinfoil.Data (Verified(..), SymmetricKey)
 
 import           Zodiac.Core.Data
 import           Zodiac.Core.Request
+import           Zodiac.HttpClient.Error
 import           Zodiac.HttpClient.Request
 import           Zodiac.HttpClient.TSRP
 

@@ -27,8 +27,8 @@ import qualified Network.HTTP.Client as HC
 
 import           P hiding ((<>))
 
-import           Zodiac.Core.Data.Error
 import           Zodiac.Core.Data.Request
+import           Zodiac.HttpClient.Error
 
 -- | Convert an http-client Request to canonical form for signing or
 -- verification.

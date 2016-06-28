@@ -20,6 +20,7 @@ library
                      , case-insensitive                == 1.2.*
                      , containers                      == 0.5.*
                      , data-default-class              == 0.0.*
+                     , deepseq-generics                == 0.2.0.*
                      , http-client                     == 0.4.18.*
                      , http-types                      >= 0.8        && < 0.10
                      , semigroups                      >= 0.16       && < 0.19
@@ -36,6 +37,7 @@ library
   exposed-modules:
                        Paths_ambiata_zodiac_http_client
                        Zodiac.HttpClient
+                       Zodiac.HttpClient.Error
                        Zodiac.HttpClient.Request
                        Zodiac.HttpClient.TSRP
 
