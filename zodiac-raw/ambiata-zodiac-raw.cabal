@@ -1,27 +1,24 @@
-name:                  ambiata-zodiac-http-client
+name:                  ambiata-zodiac-raw
 version:               0.0.1
 license:               AllRightsReserved
 author:                Ambiata <info@ambiata.com>
 maintainer:            Ambiata <info@ambiata.com>
 copyright:             (c) 2015 Ambiata.
-synopsis:              ambiata-zodiac-http-client
+synopsis:              ambiata-zodiac-raw
 category:              System
 cabal-version:         >= 1.8
 build-type:            Custom
-description:           ambiata-zodiac-http-client
+description:           ambiata-zodiac-raw
 
 library
   build-depends:
                        base                            >= 3          && < 5
+                     , ambiata-hadron
                      , ambiata-p
                      , ambiata-tinfoil
                      , ambiata-zodiac-core
                      , bytestring                      == 0.10.*
-                     , case-insensitive                == 1.2.*
                      , containers                      == 0.5.*
-                     , data-default-class              == 0.0.*
-                     , http-client                     == 0.4.18.*
-                     , http-types                      >= 0.8        && < 0.10
                      , semigroups                      >= 0.16       && < 0.19
                      , text                            == 1.2.*
                      , time                            >= 1.5        && < 1.7
@@ -34,10 +31,8 @@ library
                        src
 
   exposed-modules:
-                       Paths_ambiata_zodiac_http_client
-                       Zodiac.HttpClient
-                       Zodiac.HttpClient.Request
-                       Zodiac.HttpClient.TSRP
+                       Paths_ambiata_zodiac_raw
+                       Zodiac.Raw
 
 test-suite test
   type:                exitcode-stdio-1.0
@@ -54,16 +49,15 @@ test-suite test
                      , QuickCheck                      >= 2.8.2      && < 2.9
                      , ambiata-disorder-core
                      , ambiata-disorder-corpus
+                     , ambiata-hadron
                      , ambiata-p
                      , ambiata-tinfoil
                      , ambiata-tinfoil-test
                      , ambiata-zodiac-core
                      , ambiata-zodiac-core-test
-                     , ambiata-zodiac-http-client
+                     , ambiata-zodiac-raw
                      , bytestring                      == 0.10.*
                      , containers                      == 0.5.*
-                     , http-client                     == 0.4.18.*
-                     , http-types                      >= 0.8        && < 0.10
                      , quickcheck-instances            == 0.3.*
                      , random                          == 1.1.*
                      , semigroups                      >= 0.16       && < 0.19
@@ -86,16 +80,15 @@ test-suite test-io
                      , QuickCheck                      >= 2.8.2      && < 2.9
                      , ambiata-disorder-core
                      , ambiata-disorder-corpus
+                     , ambiata-hadron
                      , ambiata-p
                      , ambiata-tinfoil
                      , ambiata-tinfoil-test
                      , ambiata-zodiac-core
                      , ambiata-zodiac-core-test
-                     , ambiata-zodiac-http-client
+                     , ambiata-zodiac-raw
                      , bytestring                      == 0.10.*
                      , containers                      == 0.5.*
-                     , http-client                     == 0.4.18.*
-                     , http-types                      >= 0.8        && < 0.10
                      , quickcheck-instances            == 0.3.*
                      , random                          == 1.1.*
                      , semigroups                      >= 0.16       && < 0.19
