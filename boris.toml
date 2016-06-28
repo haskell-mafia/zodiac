@@ -5,12 +5,14 @@
   command = [
       ["master", "build", "dist-7-8", "-C", "zodiac-core"]
     , ["master", "build", "dist-7-8", "-C", "zodiac-http-client"]
+    , ["master", "build", "dist-7-8", "-C", "zodiac-raw"]
     ]
 
 [build.dist-7-10]
   command = [
       ["master", "build", "dist-7-10", "-C", "zodiac-core"]
     , ["master", "build", "dist-7-10", "-C", "zodiac-http-client"]
+    , ["master", "build", "dist-7-10", "-C", "zodiac-raw"]
     ]
 
 [build.dist-cabal-test]
@@ -20,12 +22,14 @@
   command = [
       ["master", "build", "branches-7-8", "-C", "zodiac-core"]
     , ["master", "build", "branches-7-8", "-C", "zodiac-http-client"]
+    , ["master", "build", "branches-7-8", "-C", "zodiac-raw"]
     ]
 
 [build.branches-7-10]
   command = [
       ["master", "build", "branches-7-10", "-C", "zodiac-core"]
     , ["master", "build", "branches-7-10", "-C", "zodiac-http-client"]
+    , ["master", "build", "branches-7-10", "-C", "zodiac-raw"]
     ]
 
 [build.branches-cabal-test]

@@ -10,3 +10,6 @@
 [submodule "lib/tinfoil"]
 	path = lib/tinfoil
 	url = git@github.com:ambiata/tinfoil.git
+[submodule "lib/hadron"]
+	path = lib/hadron
+	url = git@github.com:ambiata/hadron.git
