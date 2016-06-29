@@ -16,11 +16,11 @@ import           GHC.Generics (Generic)
 import           P
 
 data RequestError =
-    InvalidHTTPMethod ByteString
+    InvalidHTTPMethod !ByteString
   | UnsupportedPayloadType
   | NoRequestHeaders
-  | HeaderNameInvalidUTF8 ByteString
-  | URIInvalidUTF8 ByteString
+  | HeaderNameInvalidUTF8 !ByteString
+  | URIInvalidUTF8 !ByteString
   deriving (Eq, Show, Generic)
 
 instance NFData RequestError where rnf = genericRnf
