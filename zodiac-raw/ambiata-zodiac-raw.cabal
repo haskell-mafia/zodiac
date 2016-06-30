@@ -16,6 +16,7 @@ library
                      , ambiata-hadron
                      , ambiata-p
                      , ambiata-tinfoil
+                     , ambiata-x-bytestring
                      , ambiata-zodiac-core
                      , bytestring                      == 0.10.*
                      , containers                      == 0.5.*
@@ -35,6 +36,7 @@ library
                        Paths_ambiata_zodiac_raw
                        Zodiac.Raw
                        Zodiac.Raw.Error
+                       Zodiac.Raw.Request
 
 test-suite test
   type:                exitcode-stdio-1.0

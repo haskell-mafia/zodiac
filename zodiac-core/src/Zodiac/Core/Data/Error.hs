@@ -8,9 +8,6 @@ module Zodiac.Core.Data.Error(
 
 import           Control.DeepSeq.Generics (genericRnf)
 
-import           Data.ByteString (ByteString)
-import qualified Data.Text as T
-
 import           GHC.Generics (Generic)
 
 import           P
