@@ -6,6 +6,9 @@ Convert raw HTTP request ByteStrings into canonical requests.
 -}
 module Zodiac.Raw.Request (
     toCanonicalRequest
+  , fromCanonicalRequest
+  , fromHadronRequest
+  , toHadronRequest
   ) where
 
 import           Data.ByteString (ByteString)
@@ -19,8 +22,8 @@ import qualified Data.Text.Encoding as T
 
 import           Hadron (HTTPRequest(..), HTTPRequestV1_1(..), Header(..))
 import           Hadron (HTTPRequestHeaders(..), RequestTarget(..))
-import           Hadron (Fragment(..), QueryString(..))
-import           Hadron (parseHTTPRequest)
+import           Hadron (Fragment(..), QueryString(..), HTTPMethod(..))
+import           Hadron (RequestBody(..))
 import qualified Hadron as H
 
 import           P hiding ((<>))
@@ -33,7 +36,11 @@ import           X.Data.ByteString.Char8 (asciiToLower)
 
 toCanonicalRequest :: ByteString -> Either RequestError CRequest
 toCanonicalRequest bs =
-  (first HadronError $ parseHTTPRequest bs) >>= fromHadronRequest
+  (first HadronError $ H.parseHTTPRequest bs) >>= fromHadronRequest
+
+fromCanonicalRequest :: CRequest -> ByteString
+fromCanonicalRequest cr =
+  H.renderHTTPRequest $ toHadronRequest cr
 
 fromHadronRequest :: HTTPRequest -> Either RequestError CRequest
 fromHadronRequest (HTTPV1_1Request r) =
