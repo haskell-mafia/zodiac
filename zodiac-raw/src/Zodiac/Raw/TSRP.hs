@@ -4,6 +4,7 @@ module Zodiac.Raw.TSRP(
     authedRawRequest
   , hadronAuthHeader
   , httpAuthHeader
+  , lookupHeader
   , macHadronRequest
   , rawKeyId
   , verifyRawRequest
