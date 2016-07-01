@@ -26,6 +26,7 @@ import qualified Hadron as H
 import           P hiding ((<>))
 
 import           Zodiac.Core.Data.Request
+import qualified Zodiac.Core.Header as Z
 import           Zodiac.Raw.Error
 
 import           X.Data.ByteString.Char8 (asciiToLower)
@@ -105,29 +106,3 @@ fromHadronHeaders (HTTPRequestHeaders hs) =
       case nonEmpty hvs of
         Nothing -> pure $ CHeaderValue ""
         Just xs -> xs
-
--- | Remove leading and trailing spaces, replace all internal strings
--- of spaces with a single space.
---
--- FIXME: move this somewhere shared.
-trimSpaces :: ByteString -> ByteString
-trimSpaces x =
-  let gps = foldSpace <$> BS.group x in
-  trimTrailing . trimLeading $ BS.concat gps
-  where
-    trimTrailing bs = case BS.unsnoc bs of
-      Nothing -> ""
-      Just (xs, 0x20) -> xs
-      Just (xs, y) -> BS.snoc xs y
-
-    trimLeading bs = case BS.uncons bs of
-      Nothing -> ""
-      Just (0x20, xs) -> xs
-      Just (y, xs) -> BS.cons y xs
-
-    foldSpace bs = case BS.head bs of
-      0x20 -> BS.singleton 0x20
-      _ -> bs
-
-      
-      

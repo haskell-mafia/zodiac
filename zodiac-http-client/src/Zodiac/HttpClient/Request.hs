@@ -7,10 +7,8 @@ Convert http-client Request objects into canonical requests.
 module Zodiac.HttpClient.Request (
     fromCanonicalRequest
   , toCanonicalRequest
-  , trimSpaces
   ) where
 
-import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BSL
 import qualified Data.CaseInsensitive as CI
@@ -28,6 +26,7 @@ import qualified Network.HTTP.Client as HC
 import           P hiding ((<>))
 
 import           Zodiac.Core.Data.Request
+import qualified Zodiac.Core.Header as Z
 import           Zodiac.HttpClient.Error
 
 -- | Convert an http-client Request to canonical form for signing or
@@ -77,33 +76,12 @@ reqCHeaders r =
 
     renderValues hv =
       -- split on comma
-      let hvs = fmap (CHeaderValue . trimSpaces) $ BS.split 0x2c hv in
+      let hvs = fmap (CHeaderValue . Z.trimSpaces) $ BS.split 0x2c hv in
       case nonEmpty hvs of
         -- Empty header value -> singleton empty header value.
         Nothing -> pure $ CHeaderValue ""
         -- One or more -> trim and return comma-separated values.
         Just xs -> xs
-
--- | Remove leading and trailing spaces, replace all internal strings
--- of spaces with a single space.
-trimSpaces :: ByteString -> ByteString
-trimSpaces x =
-  let gps = foldSpace <$> BS.group x in
-  trimTrailing . trimLeading $ BS.concat gps
-  where
-    trimTrailing bs = case BS.unsnoc bs of
-      Nothing -> ""
-      Just (xs, 0x20) -> xs
-      Just (xs, y) -> BS.snoc xs y
-
-    trimLeading bs = case BS.uncons bs of
-      Nothing -> ""
-      Just (0x20, xs) -> xs
-      Just (y, xs) -> BS.cons y xs
-
-    foldSpace bs = case BS.head bs of
-      0x20 -> BS.singleton 0x20
-      _ -> bs
 
 reqCMethod :: Request -> Either RequestError CMethod
 reqCMethod r =

@@ -44,6 +44,7 @@ library
                        Zodiac.Core.Data.Request
                        Zodiac.Core.Data.Symmetric
                        Zodiac.Core.Data.Time
+                       Zodiac.Core.Header
                        Zodiac.Core.Key
                        Zodiac.Core.MAC
                        Zodiac.Core.Request
