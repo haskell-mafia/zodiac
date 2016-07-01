@@ -55,8 +55,10 @@ instance Arbitrary CHeaderValue where
     (CHeaderValue . T.encodeUtf8) <$> (elements muppets)
 
 instance Arbitrary CHeaders where
-  arbitrary =
-    fmap (CHeaders . M.fromList) $ listOf1 arbitrary
+  arbitrary = do
+    hs <- listOf arbitrary
+    host <- (,) (CHeaderName "host") <$> arbitrary
+    pure . CHeaders . M.fromList $ host : hs
 
 instance Arbitrary CRequest where
   arbitrary = CRequest

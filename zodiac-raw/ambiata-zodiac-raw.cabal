@@ -16,9 +16,11 @@ library
                      , ambiata-hadron
                      , ambiata-p
                      , ambiata-tinfoil
+                     , ambiata-x-bytestring
                      , ambiata-zodiac-core
                      , bytestring                      == 0.10.*
                      , containers                      == 0.5.*
+                     , deepseq-generics                == 0.2.0.*
                      , semigroups                      >= 0.16       && < 0.19
                      , text                            == 1.2.*
                      , time                            >= 1.5        && < 1.7
@@ -33,6 +35,8 @@ library
   exposed-modules:
                        Paths_ambiata_zodiac_raw
                        Zodiac.Raw
+                       Zodiac.Raw.Error
+                       Zodiac.Raw.Request
 
 test-suite test
   type:                exitcode-stdio-1.0

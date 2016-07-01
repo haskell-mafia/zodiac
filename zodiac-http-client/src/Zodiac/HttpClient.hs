@@ -23,11 +23,14 @@ module Zodiac.HttpClient(
 
   -- * Timestamps
   , timestampRequest
+
   -- * http-client interface
   , authedHttpClientRequest
   , httpClientKeyId
   , verifyHttpClientRequest
   , verifyHttpClientRequest'
+  , RequestError(..)
+  , renderRequestError
   ) where
 
 import           Tinfoil.Data.Key (SymmetricKey, parseSymmetricKey, renderSymmetricKey)
@@ -36,4 +39,5 @@ import           Zodiac.Core.Data.Key
 import           Zodiac.Core.Data.Protocol
 import           Zodiac.Core.Key
 import           Zodiac.Core.Time
+import           Zodiac.HttpClient.Error
 import           Zodiac.HttpClient.TSRP

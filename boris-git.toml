@@ -20,4 +20,4 @@
   git = "refs/heads/topic/*"
 
 [build.validate]
-  git = "refs/heads/topic/*"
+  git = "refs/heads/master"

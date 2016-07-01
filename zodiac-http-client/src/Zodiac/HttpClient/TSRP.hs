@@ -25,6 +25,7 @@ import           Tinfoil.Data (Verified(..), MAC, SymmetricKey)
 import           Zodiac.Core.Data
 import           Zodiac.Core.Request
 import           Zodiac.Core.Symmetric
+import           Zodiac.HttpClient.Error
 import           Zodiac.HttpClient.Request
 
 -- | Authenticate an http-client request. If the request isn't
