@@ -37,6 +37,7 @@ library
                        Zodiac.Raw
                        Zodiac.Raw.Error
                        Zodiac.Raw.Request
+                       Zodiac.Raw.TSRP
 
 test-suite test
   type:                exitcode-stdio-1.0

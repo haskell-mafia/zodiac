@@ -8,6 +8,7 @@ module Zodiac.Raw.Request (
     toCanonicalRequest
   , fromCanonicalRequest
   , fromHadronRequest
+  , parseRawRequest
   , toHadronRequest
   ) where
 
@@ -34,9 +35,12 @@ import           Zodiac.Raw.Error
 
 import           X.Data.ByteString.Char8 (asciiToLower)
 
+parseRawRequest :: ByteString -> Either RequestError HTTPRequest
+parseRawRequest bs = first HadronError $ H.parseHTTPRequest bs
+
 toCanonicalRequest :: ByteString -> Either RequestError CRequest
-toCanonicalRequest bs =
-  (first HadronError $ H.parseHTTPRequest bs) >>= fromHadronRequest
+toCanonicalRequest =
+  parseRawRequest >=> fromHadronRequest
 
 fromCanonicalRequest :: CRequest -> ByteString
 fromCanonicalRequest cr =
