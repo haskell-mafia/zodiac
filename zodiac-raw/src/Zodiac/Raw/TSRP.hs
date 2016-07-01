@@ -2,8 +2,10 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Zodiac.Raw.TSRP(
     authedRawRequest
+  , hadronAuthHeader
   , httpAuthHeader
   , macHadronRequest
+  , rawKeyId
   , verifyRawRequest
   , verifyRawRequest'
   ) where
@@ -95,6 +97,12 @@ httpAuthHeader TSRPv1 kid rt re cr mac =
       sah = SymmetricAuthHeader TSRPv1 kid rt re sh mac in
   H.Header authz . pure . H.HeaderValue $
     renderSymmetricAuthHeader sah
+
+-- | Extract the 'KeyId' from a request.
+rawKeyId :: ByteString
+         -> Either ProtocolError KeyId
+rawKeyId bs =
+  first (const MalformedRequest) (parseRawRequest bs) >>= (fmap sahKeyId . hadronAuthHeader)
 
 hadronAuthHeader :: HTTPRequest
                  -> Either ProtocolError SymmetricAuthHeader
