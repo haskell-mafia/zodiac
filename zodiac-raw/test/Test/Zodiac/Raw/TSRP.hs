@@ -35,7 +35,7 @@ prop_authedRawRequest cr kid sk re rt =
   let req = fromCanonicalRequest cr
       res = fromRight "authedRawRequest" $ authedRawRequest kid sk re req rt
       req' = fromRight "parseRawRequest" $ parseRawRequest res in
-  case lookupHeader req' (H.HeaderName "authorization") of
+  case H.lookupRequestHeader req' (H.HeaderName "authorization") of
     Nothing' -> failWith $ "no authentication header in authenticated request"
     Just' auths ->
       -- Tests can generate "authorization" as a header name, so we just

@@ -4,7 +4,6 @@ module Zodiac.Raw.TSRP(
     authedRawRequest
   , hadronAuthHeader
   , httpAuthHeader
-  , lookupHeader
   , macHadronRequest
   , rawKeyId
   , verifyRawRequest
@@ -12,13 +11,13 @@ module Zodiac.Raw.TSRP(
   ) where
 
 import           Data.ByteString (ByteString)
-import           Data.List.NonEmpty (NonEmpty(..), nonEmpty)
-import qualified Data.List.NonEmpty as NE
+import           Data.List.NonEmpty (NonEmpty(..))
 import           Data.Semigroup ((<>))
 import           Data.Time.Clock (UTCTime, getCurrentTime)
 
 import           Hadron (HTTPRequest(..))
 import qualified Hadron as H
+import qualified Hadron.Header as H
 
 import           P hiding ((<>))
 
@@ -96,7 +95,7 @@ httpAuthHeader :: SymmetricProtocol
 httpAuthHeader TSRPv1 kid rt re cr mac =
   let sh = signedHeaders cr
       sah = SymmetricAuthHeader TSRPv1 kid rt re sh mac in
-  H.Header authz . pure . H.HeaderValue $
+  H.Header H.authorizationHeaderName . pure . H.HeaderValue $
     renderSymmetricAuthHeader sah
 
 -- | Extract the 'KeyId' from a request.
@@ -108,22 +107,10 @@ rawKeyId bs =
 hadronAuthHeader :: HTTPRequest
                  -> Either ProtocolError SymmetricAuthHeader
 hadronAuthHeader r =
-  case lookupHeader r authz of
+  case H.lookupRequestHeader r H.authorizationHeaderName of
     Nothing' ->
       Left NoAuthHeader
     Just' (h:|[]) ->
       maybe' (Left MalformedAuthHeader) Right . parseSymmetricAuthHeader $ H.unHeaderValue h
     Just' _ ->
       Left MultipleAuthHeaders
-
--- FIXME: belongs in hadron
-lookupHeader :: HTTPRequest -> H.HeaderName -> Maybe' (NonEmpty H.HeaderValue)
-lookupHeader (HTTPV1_1Request req) hn =
-  let matches = filter ((== hn) . H.httpHeaderName) . NE.toList . H.unHTTPRequestHeaders $ H.hrqv1_1Headers req in
-  case nonEmpty matches of
-    Nothing -> Nothing'
-    Just matches' -> Just' . join $ H.httpHeaderValues <$> matches'
-
--- FIXME: belongs in hadron
-authz :: H.HeaderName
-authz = H.HeaderName "authorization"
