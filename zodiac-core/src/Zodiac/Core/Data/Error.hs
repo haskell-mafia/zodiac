@@ -19,6 +19,7 @@ data ProtocolError =
     NoAuthHeader
   | MalformedAuthHeader
   | MultipleAuthHeaders
+  | MalformedRequest
   deriving (Eq, Show, Generic)
 
 instance NFData ProtocolError where rnf = genericRnf
@@ -27,3 +28,4 @@ renderProtocolError :: ProtocolError -> Text
 renderProtocolError NoAuthHeader = "no Authorization header present"
 renderProtocolError MalformedAuthHeader = "invalid Authorization header"
 renderProtocolError MultipleAuthHeaders = "multiple Authorization header values present"
+renderProtocolError MalformedRequest = "malformed HTTP request"

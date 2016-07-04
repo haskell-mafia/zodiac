@@ -47,12 +47,9 @@ instance NFData RequestExpired where rnf = genericRnf
 newtype RequestTimestamp =
   RequestTimestamp {
     unRequestTimestamp :: UTCTime
-  } deriving (Eq, Generic)
+  } deriving (Eq, Show, Generic)
 
 instance NFData RequestTimestamp where rnf = genericRnf
-
-instance Show RequestTimestamp where
-  show = BSC.unpack . renderRequestTimestamp
 
 requestTimestampFormat :: [Char]
 requestTimestampFormat =
