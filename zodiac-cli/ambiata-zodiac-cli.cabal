@@ -35,6 +35,7 @@ library
   exposed-modules:
                        Paths_ambiata_zodiac_cli
                        Zodiac.Cli
+                       Zodiac.Cli.Request
                        Zodiac.Cli.TSRP.Data
                        Zodiac.Cli.TSRP.Env
                        Zodiac.Cli.TSRP.Error
