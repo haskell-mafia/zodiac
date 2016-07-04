@@ -12,11 +12,15 @@ import qualified Data.Text as T
 
 import           P
 
+import qualified Zodiac.Raw as Z
+
 data TSRPError =
     TSRPParamError !ParamError
+  | TSRPRequestError !Z.RequestError
 
 renderTSRPError :: TSRPError -> Text
 renderTSRPError (TSRPParamError e) = renderParamError e
+renderTSRPError (TSRPRequestError e) = Z.renderRequestError e
 
 data ParamError =
     MissingRequiredParam !Text

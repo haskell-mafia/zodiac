@@ -15,7 +15,8 @@ import           Zodiac.Raw
 data TSRPCommand =
     TSRPAuth !TSRPParams !RequestExpiry !ByteString
   | TSRPVerify !TSRPParams !ByteString
-  deriving (Eq)
+  | TSRPValidate
+  deriving (Eq, Show)
 
 -- | Parameters required for auth/verification.
 --
@@ -26,3 +27,9 @@ data TSRPParams = TSRPParams {
     tsrpSecretKey :: !SymmetricKey
   , tsrpKeyId :: !KeyId
   } deriving (Eq)
+
+instance Show TSRPParams where
+  showsPrec p (TSRPParams _sk kid) =
+    showParen (p > 10) $
+      showString "TSRPParams (SymmetricKey \"<redacted>\") " .
+      showsPrec 11 kid
