@@ -34,6 +34,7 @@ library
   exposed-modules:
                        Paths_ambiata_zodiac_cli
                        Zodiac.Cli
+                       Zodiac.Cli.TSRP.Data
 
 executable             tsrp
   ghc-options:         -Wall -threaded -O2 -rtsopts -with-rtsopts=-N
