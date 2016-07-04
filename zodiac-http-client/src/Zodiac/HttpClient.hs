@@ -10,6 +10,7 @@ module Zodiac.HttpClient(
     KeyId
   , SymmetricKey
   , SymmetricProtocol(..)
+  , Verified(..)
 
   , parseSymmetricKey
   , parseSymmetricProtocol
@@ -37,7 +38,8 @@ module Zodiac.HttpClient(
   , renderRequestError
   ) where
 
-import           Tinfoil.Data.Key (SymmetricKey, parseSymmetricKey, renderSymmetricKey)
+import           Tinfoil.Data (Verified(..), SymmetricKey)
+import           Tinfoil.Data (parseSymmetricKey, renderSymmetricKey)
 
 import           Zodiac.Core.Data.Key
 import           Zodiac.Core.Data.Protocol
