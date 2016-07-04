@@ -13,6 +13,7 @@
       ["master", "build", "dist-7-10", "-C", "zodiac-core"]
     , ["master", "build", "dist-7-10", "-C", "zodiac-http-client"]
     , ["master", "build", "dist-7-10", "-C", "zodiac-raw"]
+    , ["master", "build", "dist-7-10", "-C", "zodiac-cli"]
     ]
 
 [build.dist-cabal-test]
@@ -30,6 +31,7 @@
       ["master", "build", "branches-7-10", "-C", "zodiac-core"]
     , ["master", "build", "branches-7-10", "-C", "zodiac-http-client"]
     , ["master", "build", "branches-7-10", "-C", "zodiac-raw"]
+    , ["master", "build", "branches-7-10", "-C", "zodiac-cli"]
     ]
 
 [build.branches-cabal-test]

@@ -1,0 +1,56 @@
+name:                  ambiata-zodiac-cli
+version:               0.0.1
+license:               Apache-2.0
+author:                Ambiata <info@ambiata.com>
+maintainer:            Ambiata <info@ambiata.com>
+copyright:             (c) 2016 Ambiata.
+synopsis:              ambiata-zodiac-cli
+category:              System
+cabal-version:         >= 1.8
+build-type:            Custom
+description:           ambiata-zodiac-cli
+
+library
+  build-depends:
+                       base                            >= 3          && < 5
+                     , ambiata-hadron
+                     , ambiata-p
+                     , ambiata-tinfoil
+                     , ambiata-x-optparse
+                     , ambiata-zodiac-core
+                     , ambiata-zodiac-raw
+                     , bytestring                      == 0.10.*
+                     , deepseq-generics                == 0.2.0.*
+                     , text                            == 1.2.*
+                     , time                            >= 1.5        && < 1.7
+                     , transformers                    >= 0.4        && < 0.6
+
+  ghc-options:
+                       -Wall
+
+  hs-source-dirs:
+                       src
+
+  exposed-modules:
+                       Paths_ambiata_zodiac_cli
+                       Zodiac.Cli
+
+executable             tsrp
+  ghc-options:         -Wall -threaded -O2 -rtsopts -with-rtsopts=-N
+  hs-source-dirs:      gen
+  main-is:             ../main/tsrp.hs
+  build-depends:
+                       base                            >= 3          && < 5
+                     , ambiata-hadron
+                     , ambiata-p
+                     , ambiata-tinfoil
+                     , ambiata-x-optparse
+                     , ambiata-zodiac-cli
+                     , ambiata-zodiac-core
+                     , ambiata-zodiac-raw
+                     , bytestring                      == 0.10.*
+                     , deepseq-generics                == 0.2.0.*
+                     , optparse-applicative            == 0.12.*
+                     , text                            == 1.2.*
+                     , time                            >= 1.5        && < 1.7
+                     , transformers                    >= 0.4        && < 0.6
