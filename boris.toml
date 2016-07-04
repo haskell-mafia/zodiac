@@ -6,7 +6,6 @@
       ["master", "build", "dist-7-8", "-C", "zodiac-core"]
     , ["master", "build", "dist-7-8", "-C", "zodiac-http-client"]
     , ["master", "build", "dist-7-8", "-C", "zodiac-raw"]
-    , ["master", "build", "dist-7-8", "-C", "zodiac-cli"]
     ]
 
 [build.dist-7-10]
@@ -25,7 +24,6 @@
       ["master", "build", "branches-7-8", "-C", "zodiac-core"]
     , ["master", "build", "branches-7-8", "-C", "zodiac-http-client"]
     , ["master", "build", "branches-7-8", "-C", "zodiac-raw"]
-    , ["master", "build", "branches-7-8", "-C", "zodiac-cli"]
     ]
 
 [build.branches-7-10]
