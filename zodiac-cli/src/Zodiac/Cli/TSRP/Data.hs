@@ -6,15 +6,13 @@ module Zodiac.Cli.TSRP.Data(
   , TSRPParams(..)
   ) where
 
-import           Data.ByteString (ByteString)
-
 import           P
 
 import           Zodiac.Raw
 
 data TSRPCommand =
-    TSRPAuth !TSRPParams !RequestExpiry !ByteString
-  | TSRPVerify !TSRPParams !ByteString
+    TSRPAuth !RequestExpiry
+  | TSRPVerify
   | TSRPValidate
   deriving (Eq, Show)
 

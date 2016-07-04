@@ -15,16 +15,20 @@ import           P
 import qualified Zodiac.Raw as Z
 
 data TSRPError =
-    TSRPParamError !ParamError
+    TSRPNotImplementedError
+  | TSRPParamError !ParamError
   | TSRPRequestError !Z.RequestError
+  deriving (Eq, Show)
 
 renderTSRPError :: TSRPError -> Text
+renderTSRPError TSRPNotImplementedError = "Implement me!"
 renderTSRPError (TSRPParamError e) = renderParamError e
 renderTSRPError (TSRPRequestError e) = Z.renderRequestError e
 
 data ParamError =
     MissingRequiredParam !Text
   | InvalidParam !Text !Text
+  deriving (Eq, Show)
 
 renderParamError :: ParamError -> Text
 renderParamError (MissingRequiredParam p) =

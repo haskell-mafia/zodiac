@@ -4,12 +4,12 @@
 import           BuildInfo_ambiata_zodiac_cli
 import           DependencyInfo_ambiata_zodiac_cli
 
+import qualified Data.ByteString as BS
+
 import           P
 
 import           System.IO (IO, BufferMode(..), putStrLn, print)
 import           System.IO (stdout, stderr, hSetBuffering)
-
-import           System.Exit (exitSuccess, exitFailure)
 
 import           X.Control.Monad.Trans.Either.Exit (orDie)
 import           X.Options.Applicative (SafeCommand(..), RunType(..))
@@ -27,11 +27,11 @@ main = do
   dispatch (safeCommand tsrpCommandP) >>= \sc ->
     case sc of
       VersionCommand ->
-        putStrLn buildInfoVersion >> exitSuccess
+        putStrLn buildInfoVersion
       DependencyCommand ->
         mapM_ putStrLn dependencyInfo
       RunCommand DryRun c ->
-        print c >> exitSuccess
+        print c
       RunCommand RealRun c ->
         run c
 
@@ -39,5 +39,8 @@ run :: TSRPCommand -> IO ()
 run c = case c of
   TSRPValidate ->
     orDie renderTSRPError TSRP.validate
-  _ ->
-    putStrLn "*implement me*" >> exitFailure
+  TSRPAuth re ->
+    BS.putStr =<< (orDie renderTSRPError $ TSRP.authenticate re)
+  TSRPVerify ->
+    orDie renderTSRPError TSRP.verify
+
