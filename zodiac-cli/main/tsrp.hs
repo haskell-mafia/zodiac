@@ -27,7 +27,7 @@ main = do
   dispatch (safeCommand tsrpCommandP) >>= \sc ->
     case sc of
       VersionCommand ->
-        putStrLn buildInfoVersion
+        putStrLn $ "tsrp: " <> buildInfoVersion
       DependencyCommand ->
         mapM_ putStrLn dependencyInfo
       RunCommand DryRun c ->

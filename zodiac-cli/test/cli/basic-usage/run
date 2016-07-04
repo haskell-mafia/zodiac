@@ -1,0 +1,27 @@
+#!/bin/sh -eu
+
+. $(dirname $0)/../core/setup.sh
+
+banner Display Version
+#---------------------
+
+$TSRP -v | grep -q tsrp
+
+$TSRP --version
+
+banner Display Help
+#------------------
+
+$TSRP -h
+
+$TSRP --help
+
+TSRP="$TSRP --dry-run"
+
+$TSRP validate
+
+$TSRP authenticate
+
+$TSRP authenticate -e 60
+
+$TSRP verify
