@@ -13,7 +13,6 @@ import           Zodiac.Raw
 data TSRPCommand =
     TSRPAuth !RequestExpiry
   | TSRPVerify
-  | TSRPValidate
   deriving (Eq, Show)
 
 -- | Parameters required for auth/verification.

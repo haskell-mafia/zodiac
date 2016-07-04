@@ -37,8 +37,6 @@ main = do
 
 run :: TSRPCommand -> IO ()
 run c = case c of
-  TSRPValidate ->
-    orDie renderTSRPError TSRP.validate
   TSRPAuth re ->
     BS.putStr =<< (orDie renderTSRPError $ TSRP.authenticate re)
   TSRPVerify ->

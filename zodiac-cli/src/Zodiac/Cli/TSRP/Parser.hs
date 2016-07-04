@@ -18,12 +18,8 @@ import           Zodiac.Raw
 
 tsrpCommandP :: Parser TSRPCommand
 tsrpCommandP = subparser $
-     command' "validate" "Verify that an HTTP request read from standard input is a valid request for TSRP authentication." validateP
-  <> command' "authenticate" "Authenticate an HTTP request read from standard input and write the authenticated request to standard output." authP
+     command' "authenticate" "Authenticate an HTTP request read from standard input and write the authenticated request to standard output." authP
   <> command' "verify" "Verify the authentication of an HTTP request read from standard input." verifyP
-
-validateP :: Parser TSRPCommand
-validateP = pure TSRPValidate
 
 authP :: Parser TSRPCommand
 authP = TSRPAuth <$> requestExpiryP
