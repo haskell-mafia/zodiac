@@ -16,6 +16,7 @@ library
                      , ambiata-hadron
                      , ambiata-p
                      , ambiata-tinfoil
+                     , ambiata-x-eithert
                      , ambiata-x-optparse
                      , ambiata-zodiac-core
                      , ambiata-zodiac-raw
@@ -35,6 +36,7 @@ library
                        Paths_ambiata_zodiac_cli
                        Zodiac.Cli
                        Zodiac.Cli.TSRP.Data
+                       Zodiac.Cli.TSRP.Env
                        Zodiac.Cli.TSRP.Error
 
 executable             tsrp
