@@ -18,12 +18,16 @@ data TSRPError =
     TSRPNotImplementedError
   | TSRPParamError !ParamError
   | TSRPRequestError !Z.RequestError
+  | TSRPRequestNotVerifiedError
+  | TSRPVerificationError
   deriving (Eq, Show)
 
 renderTSRPError :: TSRPError -> Text
 renderTSRPError TSRPNotImplementedError = "Implement me!"
 renderTSRPError (TSRPParamError e) = renderParamError e
 renderTSRPError (TSRPRequestError e) = Z.renderRequestError e
+renderTSRPError TSRPRequestNotVerifiedError = "Request not verified (everything was successful, but the request doesn't match the signature)."
+renderTSRPError TSRPVerificationError = "Verification error (unable to verify because something is malformed)."
 
 data ParamError =
     MissingRequiredParam !Text

@@ -35,4 +35,10 @@ authenticate re = do
 -- | Read an authenticated HTTP request on stdin and verify it with
 -- the key ID and secret key provided in the environment.
 verify :: EitherT TSRPError IO ()
-verify = left TSRPNotImplementedError
+verify = do
+  (TSRPParams sk kid) <- tsrpParamsFromEnv
+  bs <- liftIO BS.getContents
+  liftIO (verifyRawRequest kid sk bs) >>= \case
+    Verified -> pure ()
+    NotVerified -> left TSRPRequestNotVerifiedError
+    VerificationError -> left TSRPVerificationError
