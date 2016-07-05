@@ -4,38 +4,41 @@
 import           BuildInfo_ambiata_zodiac_cli
 import           DependencyInfo_ambiata_zodiac_cli
 
-import           Options.Applicative
+import qualified Data.ByteString as BS
 
 import           P
 
-import           System.IO
-import           System.Exit
-import           X.Options.Applicative
+import           System.IO (IO, BufferMode(..), putStrLn, print)
+import           System.IO (stdout, stderr, hSetBuffering)
+
+import           X.Control.Monad.Trans.Either.Exit (orDie)
+import           X.Options.Applicative (SafeCommand(..), RunType(..))
+import           X.Options.Applicative (dispatch, safeCommand)
+
+import qualified Zodiac.Cli.TSRP.Commands as TSRP
+import           Zodiac.Cli.TSRP.Data
+import           Zodiac.Cli.TSRP.Error
+import           Zodiac.Cli.TSRP.Parser
 
 main :: IO ()
 main = do
   hSetBuffering stdout LineBuffering
   hSetBuffering stderr LineBuffering
-  dispatch parser >>= \sc ->
+  dispatch (safeCommand tsrpCommandP) >>= \sc ->
     case sc of
       VersionCommand ->
-        putStrLn buildInfoVersion >> exitSuccess
+        putStrLn $ "tsrp: " <> buildInfoVersion
       DependencyCommand ->
         mapM_ putStrLn dependencyInfo
       RunCommand DryRun c ->
-        print c >> exitSuccess
+        print c
       RunCommand RealRun c ->
         run c
 
-parser :: Parser (SafeCommand Command)
-parser =
-  safeCommand $ pure Command
-
-run :: Command -> IO ()
+run :: TSRPCommand -> IO ()
 run c = case c of
-  Command ->
-    putStrLn "*implement me*" >> exitFailure
+  TSRPAuth re ->
+    BS.putStr =<< (orDie renderTSRPError $ TSRP.authenticate re)
+  TSRPVerify ->
+    orDie renderTSRPError TSRP.verify
 
-data Command =
-  Command
-  deriving (Eq, Show)

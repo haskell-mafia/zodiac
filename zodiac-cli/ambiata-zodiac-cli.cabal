@@ -16,11 +16,13 @@ library
                      , ambiata-hadron
                      , ambiata-p
                      , ambiata-tinfoil
+                     , ambiata-x-eithert
                      , ambiata-x-optparse
                      , ambiata-zodiac-core
                      , ambiata-zodiac-raw
                      , bytestring                      == 0.10.*
                      , deepseq-generics                == 0.2.0.*
+                     , optparse-applicative            == 0.12.*
                      , text                            == 1.2.*
                      , time                            >= 1.5        && < 1.7
                      , transformers                    >= 0.4        && < 0.6
@@ -34,6 +36,12 @@ library
   exposed-modules:
                        Paths_ambiata_zodiac_cli
                        Zodiac.Cli
+                       Zodiac.Cli.Request
+                       Zodiac.Cli.TSRP.Commands
+                       Zodiac.Cli.TSRP.Data
+                       Zodiac.Cli.TSRP.Env
+                       Zodiac.Cli.TSRP.Error
+                       Zodiac.Cli.TSRP.Parser
 
 executable             tsrp
   ghc-options:         -Wall -threaded -O2 -rtsopts -with-rtsopts=-N
@@ -45,12 +53,29 @@ executable             tsrp
                      , ambiata-p
                      , ambiata-tinfoil
                      , ambiata-x-optparse
+                     , ambiata-x-eithert
                      , ambiata-zodiac-cli
                      , ambiata-zodiac-core
                      , ambiata-zodiac-raw
                      , bytestring                      == 0.10.*
-                     , deepseq-generics                == 0.2.0.*
                      , optparse-applicative            == 0.12.*
                      , text                            == 1.2.*
                      , time                            >= 1.5        && < 1.7
                      , transformers                    >= 0.4        && < 0.6
+
+test-suite test-cli
+  type:
+                    exitcode-stdio-1.0
+
+  main-is:
+                    test-cli.hs
+
+  ghc-options:
+                    -Wall -threaded -O2
+
+  hs-source-dirs:
+                    test
+
+  build-depends:
+                    base                            >= 3          && < 5
+                  , ambiata-disorder-core

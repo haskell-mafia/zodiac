@@ -11,6 +11,7 @@ module Zodiac.Raw(
   , SymmetricKey
   , SymmetricProtocol(..)
 
+  , parseKeyId
   , parseSymmetricKey
   , parseSymmetricProtocol
   , renderKeyId
@@ -22,6 +23,9 @@ module Zodiac.Raw(
   , genSymmetricKey
 
   -- * Timestamps
+  , RequestExpiry(..)
+  , parseRequestExpiry
+  , renderRequestExpiry
   , timestampRequest
 
   -- * raw HTTP interface
@@ -37,6 +41,7 @@ import           Tinfoil.Data.Key (SymmetricKey, parseSymmetricKey, renderSymmet
 
 import           Zodiac.Core.Data.Key
 import           Zodiac.Core.Data.Protocol
+import           Zodiac.Core.Data.Time
 import           Zodiac.Core.Key
 import           Zodiac.Core.Time
 import           Zodiac.Raw.Error

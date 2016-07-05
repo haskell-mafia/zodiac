@@ -13,6 +13,7 @@ module Zodiac.HttpClient(
 
   , parseSymmetricKey
   , parseSymmetricProtocol
+  , parseKeyId
   , renderKeyId
   , renderSymmetricKey
   , renderSymmetricProtocol
@@ -22,6 +23,9 @@ module Zodiac.HttpClient(
   , genSymmetricKey
 
   -- * Timestamps
+  , RequestExpiry(..)
+  , parseRequestExpiry
+  , renderRequestExpiry
   , timestampRequest
 
   -- * http-client interface
@@ -37,6 +41,7 @@ import           Tinfoil.Data.Key (SymmetricKey, parseSymmetricKey, renderSymmet
 
 import           Zodiac.Core.Data.Key
 import           Zodiac.Core.Data.Protocol
+import           Zodiac.Core.Data.Time
 import           Zodiac.Core.Key
 import           Zodiac.Core.Time
 import           Zodiac.HttpClient.Error
