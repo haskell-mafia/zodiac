@@ -3,6 +3,9 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Test.IO.Zodiac.Raw.TSRP where
 
+import           Data.ByteString (ByteString)
+import           Data.Time (UTCTime)
+
 import           Disorder.Core.IO (testIO)
 import           Disorder.Core.Property (failWith)
 import           Disorder.Core.Run (ExpectedTestSpeed(..), disorderCheckEnvAll)
@@ -38,6 +41,15 @@ prop_verifyRawRequest' kid rt re cr sk =
       Right ar -> testIO $ do
         r <- verifyRawRequest' kid sk ar now
         pure $ r === Verified
+
+prop_verifyRawRequest_junk :: KeyId
+                           -> SymmetricKey
+                           -> UTCTime
+                           -> ByteString
+                           -> Property
+prop_verifyRawRequest_junk kid sk now ar = testIO $ do
+  r <- verifyRawRequest' kid sk ar now
+  pure $ r === NotVerified
 
 return []
 tests :: IO Bool
