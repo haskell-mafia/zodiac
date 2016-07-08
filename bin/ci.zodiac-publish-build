@@ -1,0 +1,20 @@
+#!/bin/sh -exu
+
+# Build executables for publication, i.e., with statically-linked libgmp.
+
+export LC_COLLATE=en_US.UTF-8
+export LANG=en_US.UTF-8
+export STATIC_GMP=/usr/lib64/libgmp.a
+CABAL_CONFIG_ARGS="-fstaticgmp"
+
+git submodule init
+git submodule sync
+git submodule update
+
+cd zodiac-cli
+
+export PATH="../bin:$PATH"
+
+./mafia update
+./mafia build ${CABAL_CONFIG_ARGS}
+./mafia testci ${CABAL_CONFIG_ARGS}
