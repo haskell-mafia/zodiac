@@ -10,6 +10,10 @@ cabal-version:         >= 1.8
 build-type:            Custom
 description:           ambiata-zodiac-cli
 
+flag staticgmp
+  description:         Statically link libgmp.
+  default:             False
+
 library
   build-depends:
                        base                            >= 3          && < 5
@@ -44,7 +48,10 @@ library
                        Zodiac.Cli.TSRP.Parser
 
 executable             tsrp
-  ghc-options:         -Wall -threaded -O2 -rtsopts -with-rtsopts=-N
+  if flag(staticgmp)
+    ghc-options:       -Wall -threaded -O2 -rtsopts -with-rtsopts=-N -pgml gcc-with-gmp.sh
+  else
+    ghc-options:       -Wall -threaded -O2 -rtsopts -with-rtsopts=-N
   hs-source-dirs:      gen
   main-is:             ../main/tsrp.hs
   build-depends:

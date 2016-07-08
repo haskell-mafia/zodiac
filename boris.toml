@@ -15,6 +15,7 @@
     , ["master", "build", "dist-7-10", "-C", "zodiac-http-client"]
     , ["master", "build", "dist-7-10", "-C", "zodiac-raw"]
     , ["master", "build", "dist-7-10", "-C", "zodiac-cli"]
+    , ["./bin/ci.zodiac-publish-build"]
     , ["master", "build", "dist-7-10", "-C", "zodiac-export"]
     ]
 
@@ -35,6 +36,7 @@
     , ["master", "build", "branches-7-10", "-C", "zodiac-http-client"]
     , ["master", "build", "branches-7-10", "-C", "zodiac-raw"]
     , ["master", "build", "branches-7-10", "-C", "zodiac-cli"]
+    , ["./bin/ci.zodiac-publish-build"]
     , ["master", "build", "branches-7-10", "-C", "zodiac-export"]
     ]
 
