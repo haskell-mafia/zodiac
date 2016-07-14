@@ -17,7 +17,7 @@ flag staticgmp
 library
   build-depends:
                        base                            >= 3          && < 5
-                     , ambiata-hadron
+                     , ambiata-hadron-core
                      , ambiata-p
                      , ambiata-tinfoil
                      , ambiata-x-eithert
@@ -56,7 +56,7 @@ executable             tsrp
   main-is:             ../main/tsrp.hs
   build-depends:
                        base                            >= 3          && < 5
-                     , ambiata-hadron
+                     , ambiata-hadron-core
                      , ambiata-p
                      , ambiata-tinfoil
                      , ambiata-x-optparse
