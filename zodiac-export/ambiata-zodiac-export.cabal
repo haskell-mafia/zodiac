@@ -18,6 +18,7 @@ library
                      , ambiata-zodiac-core
                      , ambiata-zodiac-raw
                      , bytestring                      >= 0.10.4     && < 0.10.7
+                     , time                            >= 1.5 && < 1.7
                      , transformers                    >= 0.4        && < 0.6
 
   ghc-options:
@@ -30,3 +31,4 @@ library
                        Paths_ambiata_zodiac_export
                        Zodiac.Export
                        Zodiac.Export.Key
+                       Zodiac.Export.Time
