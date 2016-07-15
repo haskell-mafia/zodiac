@@ -2,7 +2,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ForeignFunctionInterface #-}
-module Zodiac.Export.TSRP(
+module Zodiac.Export(
   )where
 
 import           Foreign.C.Types (CUChar)
