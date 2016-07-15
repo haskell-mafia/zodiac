@@ -18,6 +18,7 @@ library
                      , ambiata-zodiac-core
                      , ambiata-zodiac-raw
                      , bytestring                      >= 0.10.4     && < 0.10.7
+                     , text                            == 1.2.*
                      , time                            >= 1.5 && < 1.7
                      , transformers                    >= 0.4        && < 0.6
 
@@ -32,6 +33,7 @@ library
                        Zodiac.Export
                        Zodiac.Export.Key
                        Zodiac.Export.Time
+                       Zodiac.Export.TSRP
 
 test-suite test
   type:                exitcode-stdio-1.0

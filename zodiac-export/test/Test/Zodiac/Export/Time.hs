@@ -26,7 +26,6 @@ prop_tripping_CTime :: Property
 prop_tripping_CTime = forAll genCTime $
   tripping cTimeToTimestamp (Just' . timestampToCTime)
 
-
 return []
 tests :: IO Bool
 tests = $disorderCheckEnvAll TestRunMore
