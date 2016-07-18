@@ -5,6 +5,8 @@ module Zodiac.Core.Data.Key(
     KeyId(..)
   , parseKeyId
   , renderKeyId
+  , tsrpKeyIdLength
+  , tsrpSecretKeyLength
   ) where
 
 import           Control.DeepSeq.Generics (genericRnf)
@@ -36,7 +38,15 @@ renderKeyId = T.encodeUtf8 . hexEncode . unKeyId
 -- `hexDecode :: Int -> Text -> Maybe' ByteString`?
 parseKeyId :: ByteString -> Maybe' KeyId
 parseKeyId bs = case B16.decode bs of
-  (x, "") -> if BS.length x == 16
+  (x, "") -> if BS.length x == tsrpKeyIdLength
                then Just' $ KeyId x
                else Nothing'
   _ -> Nothing'
+
+-- | Key ID length in bytes (raw, not encoded).
+tsrpKeyIdLength :: Int
+tsrpKeyIdLength = 16
+
+-- | Key length in bytes (raw, not encoded).
+tsrpSecretKeyLength :: Int
+tsrpSecretKeyLength = 32
