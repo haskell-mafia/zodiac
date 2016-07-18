@@ -29,9 +29,8 @@ verifyRawRequest' :: Ptr CChar -- ^ Key ID, 16 bytes.
                   -> IO CInt
 verifyRawRequest' bufKid bufSK bufReq sizeReq ts =
   let vt = Z.unRequestTimestamp $ cTimeToTimestamp ts in do
-  -- FIXME: too many magic numbers
-  bsKid <- BS.packCStringLen (bufKid, 16)
-  bsSK <- BS.packCStringLen (bufSK, 32)
+  bsKid <- BS.packCStringLen (bufKid, Z.tsrpKeyIdLength)
+  bsSK <- BS.packCStringLen (bufSK, Z.tsrpSecretKeyLength)
   bsReq <- BS.packCStringLen (bufReq, fromIntegral sizeReq)
   let parsed = do
                  tsk <- either (const Nothing') Just' $ T.decodeUtf8' bsSK
