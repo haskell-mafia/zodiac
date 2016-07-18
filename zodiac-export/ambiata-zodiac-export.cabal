@@ -18,15 +18,49 @@ library
                      , ambiata-zodiac-core
                      , ambiata-zodiac-raw
                      , bytestring                      >= 0.10.4     && < 0.10.7
+                     , text                            == 1.2.*
+                     , time                            >= 1.5 && < 1.7
                      , transformers                    >= 0.4        && < 0.6
 
   ghc-options:
-                       -Wall -fasm -fPIC -shared -o libzodiac.so -dynamic
+                       -Wall -fPIC
 
   hs-source-dirs:
                        src
 
   exposed-modules:
                        Paths_ambiata_zodiac_export
+                       Zodiac.Export
                        Zodiac.Export.Key
+                       Zodiac.Export.Time
                        Zodiac.Export.TSRP
+
+test-suite test
+  type:                exitcode-stdio-1.0
+
+  main-is:             test.hs
+
+  ghc-options:         -Wall -threaded -O2
+
+  hs-source-dirs:
+                       test
+
+  build-depends:
+                       base                            >= 3          && < 5
+                     , QuickCheck                      >= 2.8.2      && < 2.9
+                     , ambiata-disorder-core
+                     , ambiata-disorder-corpus
+                     , ambiata-hadron-core
+                     , ambiata-p
+                     , ambiata-tinfoil
+                     , ambiata-tinfoil-test
+                     , ambiata-zodiac-core
+                     , ambiata-zodiac-core-test
+                     , ambiata-zodiac-export
+                     , ambiata-zodiac-raw
+                     , bytestring                      == 0.10.*
+                     , quickcheck-instances            == 0.3.*
+                     , semigroups                      >= 0.16       && < 0.19
+                     , text                            == 1.2.*
+                     , time                            >= 1.5        && < 1.7
+                     , transformers                    >= 0.4        && < 0.6

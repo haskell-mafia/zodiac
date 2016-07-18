@@ -15,9 +15,8 @@ import           Data.List.NonEmpty (NonEmpty(..))
 import           Data.Semigroup ((<>))
 import           Data.Time.Clock (UTCTime, getCurrentTime)
 
-import           Hadron (HTTPRequest(..))
-import qualified Hadron as H
-import qualified Hadron.Header as H
+import           Hadron.Core (HTTPRequest(..))
+import qualified Hadron.Core as H
 
 import           P hiding ((<>))
 

@@ -11,7 +11,7 @@ import           Control.DeepSeq.Generics (genericRnf)
 import           Data.ByteString (ByteString)
 import qualified Data.Text as T
 
-import qualified Hadron as H
+import qualified Hadron.Core as H
 
 import           GHC.Generics (Generic)
 

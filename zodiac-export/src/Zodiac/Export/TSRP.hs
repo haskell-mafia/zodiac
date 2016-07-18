@@ -1,18 +1,50 @@
 {-# LANGUAGE NoImplicitPrelude #-}
-{-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ForeignFunctionInterface #-}
-module Zodiac.Export.TSRP(
-  )where
+{-# LANGUAGE LambdaCase #-}
+module Zodiac.Export.TSRP (
+    verifyRawRequest'
+  ) where
 
-import           Foreign.C.Types (CUChar)
+import qualified Data.ByteString as BS
+import qualified Data.Text.Encoding as T
+
+import           Foreign.C.Types (CChar, CInt, CSize, CTime)
 import           Foreign.Ptr (Ptr)
+
+import           P
 
 import           System.IO (IO)
 
-import           Zodiac.Export.Key
+import qualified Zodiac.Core.Data as Z
+import           Zodiac.Raw (Verified(..))
+import qualified Zodiac.Raw as Z
+import           Zodiac.Export.Time
 
-foreign export ccall "_z_tsrp_gen_key_id" genKeyId :: Ptr CUChar -> IO ()
+-- FIXME: set errno
+verifyRawRequest' :: Ptr CChar -- ^ Key ID, 16 bytes.
+                  -> Ptr CChar -- ^ Secret key, 32 bytes.
+                  -> Ptr CChar -- ^ HTTP request, variable-length.
+                  -> CSize -- ^ Size of HTTP request buffer.
+                  -> CTime -- ^ Current time.
+                  -> IO CInt
+verifyRawRequest' bufKid bufSK bufReq sizeReq ts =
+  let vt = Z.unRequestTimestamp $ cTimeToTimestamp ts in do
+  bsKid <- BS.packCStringLen (bufKid, Z.tsrpKeyIdLength)
+  bsSK <- BS.packCStringLen (bufSK, Z.tsrpSecretKeyLength)
+  bsReq <- BS.packCStringLen (bufReq, fromIntegral sizeReq)
+  let parsed = do
+                 tsk <- either (const Nothing') Just' $ T.decodeUtf8' bsSK
+                 kid <- Z.parseKeyId bsKid
+                 sk <- Z.parseSymmetricKey tsk
+                 pure (kid, sk)
+  case parsed of
+    Nothing' ->
+      -- FIXME: errno
+      pure (-1)
+    Just' (kid, sk) ->
+      Z.verifyRawRequest' kid sk bsReq vt >>= \case
+        Verified -> pure 0
+        NotVerified -> pure 1
+        VerificationError -> pure (-1)
 
-foreign export ccall "_z_tsrp_gen_symmetric_key" genSymmetricKey :: Ptr CUChar -> IO ()
 

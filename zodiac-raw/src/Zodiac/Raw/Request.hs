@@ -21,11 +21,11 @@ import qualified Data.Map.Strict as M
 import           Data.Semigroup ((<>))
 import qualified Data.Text.Encoding as T
 
-import           Hadron (HTTPRequest(..), HTTPRequestV1_1(..), Header(..))
-import           Hadron (HTTPRequestHeaders(..), RequestTarget(..))
-import           Hadron (Fragment(..), QueryString(..), HTTPMethod(..))
-import           Hadron (RequestBody(..))
-import qualified Hadron as H
+import           Hadron.Core (HTTPRequest(..), HTTPRequestV1_1(..), Header(..))
+import           Hadron.Core (HTTPRequestHeaders(..), RequestTarget(..))
+import           Hadron.Core (Fragment(..), QueryString(..), HTTPMethod(..))
+import           Hadron.Core (RequestBody(..))
+import qualified Hadron.Core as H
 
 import           P hiding ((<>))
 

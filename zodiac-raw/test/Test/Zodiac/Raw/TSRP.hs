@@ -7,7 +7,7 @@ import qualified Data.List.NonEmpty as NE
 import           Disorder.Core.Property (failWith)
 import           Disorder.Core.Run (ExpectedTestSpeed(..), disorderCheckEnvAll)
 
-import qualified Hadron as H
+import qualified Hadron.Core as H
 
 import           P
 

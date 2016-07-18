@@ -13,7 +13,7 @@ description:           ambiata-zodiac-raw
 library
   build-depends:
                        base                            >= 3          && < 5
-                     , ambiata-hadron
+                     , ambiata-hadron-core
                      , ambiata-p
                      , ambiata-tinfoil
                      , ambiata-x-bytestring
@@ -54,7 +54,7 @@ test-suite test
                      , QuickCheck                      >= 2.8.2      && < 2.9
                      , ambiata-disorder-core
                      , ambiata-disorder-corpus
-                     , ambiata-hadron
+                     , ambiata-hadron-core
                      , ambiata-p
                      , ambiata-tinfoil
                      , ambiata-tinfoil-test
@@ -85,7 +85,7 @@ test-suite test-io
                      , QuickCheck                      >= 2.8.2      && < 2.9
                      , ambiata-disorder-core
                      , ambiata-disorder-corpus
-                     , ambiata-hadron
+                     , ambiata-hadron-core
                      , ambiata-p
                      , ambiata-tinfoil
                      , ambiata-tinfoil-test

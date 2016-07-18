@@ -9,7 +9,7 @@ import           Control.Monad.IO.Class (liftIO)
 
 import qualified Data.ByteString as BS
 
-import           Hadron (HTTPRequest)
+import           Hadron.Core (HTTPRequest)
 
 import           P
 
