@@ -1,10 +1,12 @@
-# zodiac - request signing
+zodiac - request signing
+========================
 
 `zodiac` sits on top of [tinfoil](https://github.com/ambiata/tinfoil)
 to provide a friendly interface for API servers and clients to
 implement request-signing.
 
-## Protocol
+Protocol
+========
 
 `zodiac` implements a HMAC-based protocol similar to
 [AWSv4](https://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html);
@@ -18,7 +20,8 @@ by the client, the signed request is sent to the server, which uses
 its copy of the secret key to perform the same signing algorithm and
 verifies that the two signatures match.
 
-## Implementation and scope
+Implementation and scope
+========================
 
 All cryptographic primitives used are implemented in `tinfoil`;
 `zodiac` handles the semantics of the protocol (what a request is,
@@ -28,7 +31,8 @@ implement key storage or retrieval.
 In particular, any operation which may be sensitive to timing attacks
 (e.g., HMAC comparison) belongs in `tinfoil`, not here.
 
-# Example usage
+Example usage
+=============
 
 ```haskell
 signRequest :: KeyId -> SymmetricKey -> RequestTimestamp -> RequestExpiry -> Request -> MAC
