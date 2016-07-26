@@ -1,14 +1,6 @@
 [boris]
   version = 1
 
-[build.dist-7-8]
-  command = [
-      ["master", "build", "dist-7-8", "-C", "zodiac-core"]
-    , ["master", "build", "dist-7-8", "-C", "zodiac-http-client"]
-    , ["master", "build", "dist-7-8", "-C", "zodiac-raw"]
-    , ["master", "build", "dist-7-8", "-C", "zodiac-export"]
-    ]
-
 [build.dist-7-10]
   command = [
       ["master", "build", "dist-7-10", "-C", "zodiac-core"]
@@ -21,14 +13,6 @@
 
 [build.dist-cabal-test]
   command = [["./bin/ci.cabal-test"]]
-
-[build.branches-7-8]
-  command = [
-      ["master", "build", "branches-7-8", "-C", "zodiac-core"]
-    , ["master", "build", "branches-7-8", "-C", "zodiac-http-client"]
-    , ["master", "build", "branches-7-8", "-C", "zodiac-raw"]
-    , ["master", "build", "branches-7-8", "-C", "zodiac-export"]
-    ]
 
 [build.branches-7-10]
   command = [
