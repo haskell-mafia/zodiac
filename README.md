@@ -39,3 +39,9 @@ signRequest :: KeyId -> SymmetricKey -> RequestTimestamp -> RequestExpiry -> Req
 
 verifyRequest :: Request -> MAC -> SymmetricKey -> IO (Either VerificationError Verified)
 ```
+
+Conceptual warriors
+===================
+
+ - Sharif
+ - Mark
