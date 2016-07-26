@@ -45,3 +45,6 @@
 
 [build.submodules-branches]
   git = "refs/heads/topic/*"
+
+[build.rebased]
+  git = "refs/heads/master"
