@@ -5,10 +5,17 @@ zodiac - request signing
 to provide a friendly interface for API servers and clients to
 implement request-signing.
 
-Protocol
-========
+Protocols
+=========
 
-`zodiac` implements a HMAC-based protocol similar to
+`zodiac` will implement two protocols: a symmetric protocol called
+TSRP and an asymmetric protocol called TARP.
+
+TSRP
+----
+
+TSRP (Trivial Symmetric Request-signing Protocol) is an HMAC-based
+protocol similar to
 [AWSv4](https://docs.aws.amazon.com/general/latest/gr/sigv4_signing.html);
 a chain of authenticated hashes is used to derive the message-signing
 key from the secret key, the current date, the key ID and the
@@ -19,6 +26,13 @@ the signing protocol, version and hash algorithms used. Once generated
 by the client, the signed request is sent to the server, which uses
 its copy of the secret key to perform the same signing algorithm and
 verifies that the two signatures match.
+
+TARP
+----
+
+TARP (Trivial Asymmetric Request-signing Protocol) is a public-key
+protocol based on the EdDSA primitive (Edwards-curve digital signature
+algorithm). It is a work in progress.
 
 Implementation and scope
 ========================
