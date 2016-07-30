@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Zodiac.Core.Symmetric(
+module Zodiac.TSRP.Symmetric(
     authenticationString
   , macRequest
   , verifyRequest
@@ -22,8 +22,8 @@ import           Tinfoil.Data (renderHash)
 import           Tinfoil.Hash (hash)
 import           Tinfoil.MAC (macBytes, verifyMAC)
 
-import           Zodiac.Core.Data
-import           Zodiac.Core.MAC
+import           Zodiac.TSRP.Data
+import           Zodiac.TSRP.MAC
 import           Zodiac.Core.Request
 import           Zodiac.Core.Time
 

@@ -1,6 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
-module Zodiac.Core.Key(
+module Zodiac.TSRP.Key(
     genKeyId
   , genSymmetricKey
   ) where
@@ -13,7 +13,7 @@ import           Tinfoil.Data (Entropy(..), SymmetricKey)
 import qualified Tinfoil.Key as Tinfoil
 import           Tinfoil.Random (entropy)
 
-import           Zodiac.Core.Data.Key
+import           Zodiac.TSRP.Data.Key
 
 -- | Generate a random key ID.
 genKeyId :: IO KeyId

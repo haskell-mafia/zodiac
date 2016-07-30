@@ -36,19 +36,12 @@ library
 
   exposed-modules:
                        Paths_ambiata_zodiac_core
-                       Zodiac.Core
                        Zodiac.Core.Data
-                       Zodiac.Core.Data.Error
-                       Zodiac.Core.Data.Key
                        Zodiac.Core.Data.Protocol
                        Zodiac.Core.Data.Request
-                       Zodiac.Core.Data.Symmetric
                        Zodiac.Core.Data.Time
                        Zodiac.Core.Header
-                       Zodiac.Core.Key
-                       Zodiac.Core.MAC
                        Zodiac.Core.Request
-                       Zodiac.Core.Symmetric
                        Zodiac.Core.Time
 
 test-suite test
@@ -72,66 +65,6 @@ test-suite test
                      , ambiata-zodiac-core
                      , bytestring                      == 0.10.*
                      , containers                      == 0.5.*
-                     , http-types                      >= 0.8        && < 0.10
-                     , quickcheck-instances            == 0.3.*
-                     , random                          == 1.1.*
-                     , semigroups                      >= 0.16       && < 0.19
-                     , text                            == 1.2.*
-                     , time                            >= 1.5        && < 1.7
-                     , transformers                    >= 0.4        && < 0.6
-
-test-suite test-io
-  type:                exitcode-stdio-1.0
-
-  main-is:             test-io.hs
-
-  ghc-options:         -Wall -threaded -O2
-
-  hs-source-dirs:
-                       test
-
-  build-depends:
-                       base                            >= 3          && < 5
-                     , QuickCheck                      >= 2.8.2      && < 2.9
-                     , ambiata-disorder-core
-                     , ambiata-disorder-corpus
-                     , ambiata-p
-                     , ambiata-tinfoil
-                     , ambiata-tinfoil-test
-                     , ambiata-zodiac-core
-                     , bytestring                      == 0.10.*
-                     , containers                      == 0.5.*
-                     , http-types                      >= 0.8        && < 0.10
-                     , quickcheck-instances            == 0.3.*
-                     , random                          == 1.1.*
-                     , semigroups                      >= 0.16       && < 0.19
-                     , text                            == 1.2.*
-                     , time                            >= 1.5        && < 1.7
-                     , transformers                    >= 0.4        && < 0.6
-
-benchmark bench
-  type:                exitcode-stdio-1.0
-
-  main-is:             bench.hs
-
-  ghc-options:         -Wall -threaded -O2
-
-  hs-source-dirs:
-                       bench
-                     , test
-
-  build-depends:
-                       base                            >= 3          && < 5
-                     , QuickCheck                      >= 2.8.2      && < 2.9
-                     , ambiata-disorder-core
-                     , ambiata-disorder-corpus
-                     , ambiata-p
-                     , ambiata-tinfoil
-                     , ambiata-tinfoil-test
-                     , ambiata-zodiac-core
-                     , bytestring                      == 0.10.*
-                     , containers                      == 0.5.*
-                     , criterion                       == 1.1.*
                      , http-types                      >= 0.8        && < 0.10
                      , quickcheck-instances            == 0.3.*
                      , random                          == 1.1.*

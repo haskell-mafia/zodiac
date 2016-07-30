@@ -4,8 +4,8 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 module Main where
 
-import qualified Bench.Zodiac.Core.MAC
-import qualified Bench.Zodiac.Core.Symmetric
+import qualified Bench.Zodiac.TSRP.MAC
+import qualified Bench.Zodiac.TSRP.Symmetric
 
 import           Criterion.Main
 import           Criterion.Types
@@ -14,7 +14,7 @@ import           P
 
 import           System.IO
 
-import           Test.Zodiac.Core.Arbitrary ()
+import           Test.Zodiac.TSRP.Arbitrary ()
 
 zodiacBench :: [Benchmark] -> IO ()
 zodiacBench = defaultMainWith cfg
@@ -26,6 +26,6 @@ zodiacBench = defaultMainWith cfg
 
 main :: IO ()
 main = zodiacBench $ join [
-    Bench.Zodiac.Core.MAC.benchmarks
-  , Bench.Zodiac.Core.Symmetric.benchmarks
+    Bench.Zodiac.TSRP.MAC.benchmarks
+  , Bench.Zodiac.TSRP.Symmetric.benchmarks
   ]

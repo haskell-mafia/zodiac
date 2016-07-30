@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
-module Zodiac.Core.Data.Symmetric(
+module Zodiac.TSRP.Data.Symmetric(
     SymmetricAuthHeader(..)
   , parseSymmetricAuthHeader
   , renderSymmetricAuthHeader
@@ -25,7 +25,7 @@ import           Tinfoil.Comparison (safeEq)
 import           Tinfoil.Data (MAC(..), parseMAC)
 import           Tinfoil.Encode (hexEncode)
 
-import           Zodiac.Core.Data.Key
+import           Zodiac.TSRP.Data.Key
 import           Zodiac.Core.Data.Protocol
 import           Zodiac.Core.Data.Request
 import           Zodiac.Core.Data.Time

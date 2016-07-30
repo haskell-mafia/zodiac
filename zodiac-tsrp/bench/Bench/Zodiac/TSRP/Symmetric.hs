@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# OPTIONS_GHC -fno-warn-missing-signatures #-}
-module Bench.Zodiac.Core.Symmetric where
+module Bench.Zodiac.TSRP.Symmetric where
 
 import           Bench.Zodiac
 
@@ -10,10 +10,10 @@ import           Criterion.Main
 import           P
 
 import           Test.QuickCheck (arbitrary)
-import           Test.Zodiac.Core.Arbitrary ()
+import           Test.Zodiac.TSRP.Arbitrary ()
 
-import           Zodiac.Core.Data
-import           Zodiac.Core.Symmetric
+import           Zodiac.TSRP.Data
+import           Zodiac.TSRP.Symmetric
 
 macRequestEnv = (,,,,) <$> arbitrary
                        <*> arbitrary
