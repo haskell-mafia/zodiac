@@ -4,6 +4,9 @@
 [build.dist-7-10-core]
   command = [["master", "build", "dist-7-10", "-C", "zodiac-core"]]
 
+[build.dist-7-10-tsrp]
+  command = [["master", "build", "dist-7-10", "-C", "zodiac-tsrp"]]
+
 [build.dist-7-10-http-client]
   command = [["master", "build", "dist-7-10", "-C", "zodiac-http-client"]]
 
@@ -20,6 +23,9 @@
   command = [["master", "build", "dist-7-10", "-C", "zodiac-export"]]
 
 [build.branches-7-10-core]
+  command = [["master", "build", "branches-7-10", "-C", "zodiac-core"]]
+
+[build.branches-7-10-tsrp]
   command = [["master", "build", "branches-7-10", "-C", "zodiac-core"]]
 
 [build.branches-7-10-http-client]
