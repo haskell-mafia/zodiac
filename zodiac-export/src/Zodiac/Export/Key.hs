@@ -18,8 +18,8 @@ import           System.IO (IO)
 
 import           Tinfoil.Data.Key (SymmetricKey(..))
 
-import           Zodiac.Core.Data.Key (KeyId(..))
-import qualified Zodiac.Core.Key as Z
+import           Zodiac.TSRP.Data.Key (KeyId(..))
+import qualified Zodiac.TSRP.Key as Z
 
 -- | Needs a 16B buffer.
 genKeyId :: Ptr CUChar -> IO ()
