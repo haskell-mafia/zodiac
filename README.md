@@ -130,13 +130,12 @@ zodiac-http-client
 sent on to a TSRP or TARP server.
 
 ```haskell
-let req = def { -- [ ... whatever ... -]
+let req = def { -- [ ... whatever ... ]
   } in do
-  now <- timestampRequest -- now
-  let re = RequestExpiry 600 -- ten minutes
-  let authed = authedHttpClientRequest keyId symmetricKey re req now
-  v <- verifyHttpClientRequest keyId symmetricKey authed -- v ==
-  Verified
+now <- timestampRequest -- now
+let re = RequestExpiry 600 -- ten minutes
+let authed = authedHttpClientRequest keyId symmetricKey re req now
+v <- verifyHttpClientRequest keyId symmetricKey authed -- v == Verified
 ```
 
 zodiac-export
