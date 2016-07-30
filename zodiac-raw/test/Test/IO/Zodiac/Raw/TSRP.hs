@@ -14,14 +14,14 @@ import           P
 
 import           System.IO (IO)
 
-import           Test.Zodiac.Core.Arbitrary ()
+import           Test.Zodiac.TSRP.Arbitrary ()
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 import           Test.Zodiac.Core.Gen
 
 import           Tinfoil.Data (Verified(..), SymmetricKey)
 
-import           Zodiac.Core.Data
+import           Zodiac.TSRP.Data
 import           Zodiac.Raw.Error
 import           Zodiac.Raw.Request
 import           Zodiac.Raw.TSRP

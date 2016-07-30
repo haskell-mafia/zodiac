@@ -18,6 +18,7 @@ library
                      , ambiata-tinfoil
                      , ambiata-x-bytestring
                      , ambiata-zodiac-core
+                     , ambiata-zodiac-tsrp
                      , bytestring                      == 0.10.*
                      , containers                      == 0.5.*
                      , deepseq-generics                == 0.2.0.*
@@ -61,6 +62,8 @@ test-suite test
                      , ambiata-zodiac-core
                      , ambiata-zodiac-core-test
                      , ambiata-zodiac-raw
+                     , ambiata-zodiac-tsrp
+                     , ambiata-zodiac-tsrp-test
                      , bytestring                      == 0.10.*
                      , containers                      == 0.5.*
                      , quickcheck-instances            == 0.3.*
@@ -92,6 +95,8 @@ test-suite test-io
                      , ambiata-zodiac-core
                      , ambiata-zodiac-core-test
                      , ambiata-zodiac-raw
+                     , ambiata-zodiac-tsrp
+                     , ambiata-zodiac-tsrp-test
                      , bytestring                      == 0.10.*
                      , containers                      == 0.5.*
                      , quickcheck-instances            == 0.3.*
