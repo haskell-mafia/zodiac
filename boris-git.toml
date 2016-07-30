@@ -4,6 +4,12 @@
 [build.dist-7-10-core]
   git = "refs/heads/master"
 
+[build.dist-7-10-tsrp]
+  git = "refs/heads/master"
+
+[build.dist-7-10-tarp]
+  git = "refs/heads/master"
+
 [build.dist-7-10-http-client]
   git = "refs/heads/master"
 
@@ -20,6 +26,12 @@
   git = "refs/heads/master"
 
 [build.branches-7-10-core]
+  git = "refs/heads/topic/*"
+
+[build.branches-7-10-tsrp]
+  git = "refs/heads/topic/*"
+
+[build.branches-7-10-tarp]
   git = "refs/heads/topic/*"
 
 [build.branches-7-10-http-client]
