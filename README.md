@@ -52,15 +52,37 @@ zodiac-core
 -----------
 
 `zodiac-core` contains request-signing logic and types, including the
-canonical request representation (`CRequest`). It wraps all
-cryptographic operations needed for handling keys, MACs and
-signatures. Rather than working with `CRequest`s directly, usually one
-would use one of the interface packages below.
+canonical request representation (`CRequest`), but no
+protocol-specific logic. Rather than working with `CRequest`s
+directly, usually one would use one of the interface packages below.
+
+Types example:
+
+```haskell
+-- | A canonical request for signing. Contains all data needed to generate
+-- a ByteString which can be signed or verified.
+data CRequest =
+  CRequest {
+      crMethod :: !CMethod
+    , crURI :: !CURI
+    , crQueryString :: !CQueryString
+    -- | HOST header always required.
+    , crHeaders :: !CHeaders
+    , crPayload :: !CPayload
+    } deriving (Show, Generic)
+```
+
+zodiac-tsrp
+-----------
+
+`zodiac-tsrp` contains logic for the Trivial Symmetric Request-signing
+Protocol. It wraps all cryptographic operations needed for handling
+keys, hashes and MACs.
 
 Usage example:
 
 ```haskell
-import qualified Zodiac.Core.Key as Z
+import qualified Zodiac.TSRP.Key as Z
 
 -- [ ... ]
   (keyId, secretKey) <- (,) <$> Z.genKeyId <*> Z.genSymmetricKey
