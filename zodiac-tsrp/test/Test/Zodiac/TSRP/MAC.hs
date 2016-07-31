@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.Zodiac.Core.MAC where
+module Test.Zodiac.TSRP.MAC where
 
 import           Disorder.Core.Property ((=/=))
 import           Disorder.Core.Run (ExpectedTestSpeed(..), disorderCheckEnvAll)
@@ -11,14 +11,14 @@ import           P
 
 import           System.IO (IO)
 
-import           Test.Zodiac.Core.Arbitrary ()
+import           Test.Zodiac.TSRP.Arbitrary ()
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 
 import           Tinfoil.Data.Key (SymmetricKey(..))
 
-import           Zodiac.Core.Data
-import           Zodiac.Core.MAC
+import           Zodiac.TSRP.Data
+import           Zodiac.TSRP.MAC
 
 prop_deriveRequestKey_timestamp :: SymmetricProtocol -> UniquePair RequestDate -> KeyId -> SymmetricKey -> Property
 prop_deriveRequestKey_timestamp p (UniquePair rt rt') kid sk =

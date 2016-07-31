@@ -4,5 +4,8 @@
 # Build zodiac test packages.
 #
 
-cd zodiac-core/test
-../mafia build
+for p in core tsrp; do
+    cd zodiac-${p}/test
+    ../mafia build
+    cd ../..
+done

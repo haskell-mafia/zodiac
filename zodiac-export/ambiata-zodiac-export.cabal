@@ -17,6 +17,7 @@ library
                      , ambiata-tinfoil
                      , ambiata-zodiac-core
                      , ambiata-zodiac-raw
+                     , ambiata-zodiac-tsrp
                      , bytestring                      >= 0.10.4     && < 0.10.7
                      , text                            == 1.2.*
                      , time                            >= 1.5 && < 1.7

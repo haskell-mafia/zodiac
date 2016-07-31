@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
-module Zodiac.Core.Data.Error(
+module Zodiac.TSRP.Data.Error(
     ProtocolError(..)
   , renderProtocolError
   ) where

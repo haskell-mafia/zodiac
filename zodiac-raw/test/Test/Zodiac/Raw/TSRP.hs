@@ -15,13 +15,13 @@ import qualified Prelude
 
 import           System.IO (IO)
 
-import           Test.Zodiac.Core.Arbitrary ()
+import           Test.Zodiac.TSRP.Arbitrary ()
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 
 import           Tinfoil.Data (SymmetricKey)
 
-import           Zodiac.Core.Data
+import           Zodiac.TSRP.Data
 import           Zodiac.Raw.Request
 import           Zodiac.Raw.TSRP
 

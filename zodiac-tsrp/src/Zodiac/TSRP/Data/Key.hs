@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
-module Zodiac.Core.Data.Key(
+module Zodiac.TSRP.Data.Key(
     KeyId(..)
   , parseKeyId
   , renderKeyId

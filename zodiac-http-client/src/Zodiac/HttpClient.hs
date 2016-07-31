@@ -41,10 +41,10 @@ module Zodiac.HttpClient(
 import           Tinfoil.Data (Verified(..), SymmetricKey)
 import           Tinfoil.Data (parseSymmetricKey, renderSymmetricKey)
 
-import           Zodiac.Core.Data.Key
 import           Zodiac.Core.Data.Protocol
 import           Zodiac.Core.Data.Time
-import           Zodiac.Core.Key
 import           Zodiac.Core.Time
 import           Zodiac.HttpClient.Error
 import           Zodiac.HttpClient.TSRP
+import           Zodiac.TSRP.Data.Key
+import           Zodiac.TSRP.Key

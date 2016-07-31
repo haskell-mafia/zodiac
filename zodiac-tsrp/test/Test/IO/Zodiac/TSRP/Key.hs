@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.IO.Zodiac.Core.Key where
+module Test.IO.Zodiac.TSRP.Key where
 
 import           Disorder.Core.IO (testIO)
 import           Disorder.Core.Property ((=/=))
@@ -14,7 +14,7 @@ import           System.IO (IO)
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 
-import           Zodiac.Core.Key
+import           Zodiac.TSRP.Key
 
 prop_genKeyId :: Property
 prop_genKeyId = testIO $ do

@@ -1,7 +1,7 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Test.IO.Zodiac.Core.Data.Symmetric where
+module Test.IO.Zodiac.TSRP.Data.Symmetric where
 
 import           Disorder.Core.IO (testIO)
 import           Disorder.Core.Property (failWith)
@@ -10,9 +10,9 @@ import           P
 
 import           System.IO (IO)
 
-import           Zodiac.Core.Data.Symmetric
+import           Zodiac.TSRP.Data.Symmetric
 
-import           Test.Zodiac.Core.Arbitrary ()
+import           Test.Zodiac.TSRP.Arbitrary ()
 import           Test.QuickCheck
 
 -- really need a SafeEq typeclass for this kind of thing

@@ -20,7 +20,6 @@ import           Zodiac.Core.Data
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 import           Test.Tinfoil.Arbitrary ()
-import           Test.Zodiac.Core.Gen
 
 instance Arbitrary CMethod where
   arbitrary = elements [minBound..maxBound]
@@ -102,17 +101,6 @@ instance Arbitrary RequestTimestamp where
 instance Arbitrary RequestDate where
   arbitrary = timestampDate <$> arbitrary
 
-instance Arbitrary KeyId where
-  arbitrary = genUBytes KeyId 16
-
 instance Arbitrary RequestExpiry where
   -- Uniform over valid expiry values.
   arbitrary = RequestExpiry <$> choose (1, maxRequestExpiry)
-
-instance Arbitrary SymmetricAuthHeader where
-  arbitrary = SymmetricAuthHeader <$> arbitrary
-                                  <*> arbitrary
-                                  <*> arbitrary
-                                  <*> arbitrary
-                                  <*> arbitrary
-                                  <*> arbitrary

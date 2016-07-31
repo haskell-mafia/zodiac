@@ -15,7 +15,7 @@ import           P
 
 import           System.IO (IO)
 
-import qualified Zodiac.Core.Data as Z
+import qualified Zodiac.TSRP.Data as Z
 import           Zodiac.Raw (Verified(..))
 import qualified Zodiac.Raw as Z
 import           Zodiac.Export.Time

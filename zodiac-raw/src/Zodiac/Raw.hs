@@ -41,10 +41,11 @@ module Zodiac.Raw(
 import           Tinfoil.Data (Verified(..), SymmetricKey)
 import           Tinfoil.Data (parseSymmetricKey, renderSymmetricKey)
 
-import           Zodiac.Core.Data.Key
+
 import           Zodiac.Core.Data.Protocol
 import           Zodiac.Core.Data.Time
-import           Zodiac.Core.Key
 import           Zodiac.Core.Time
 import           Zodiac.Raw.Error
 import           Zodiac.Raw.TSRP
+import           Zodiac.TSRP.Data.Key
+import           Zodiac.TSRP.Key
