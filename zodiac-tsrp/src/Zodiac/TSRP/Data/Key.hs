@@ -6,6 +6,10 @@ module Zodiac.TSRP.Data.Key(
   , parseKeyId
   , renderKeyId
   , tsrpKeyIdLength
+
+  , TSRPKey(..)
+  , parseTSRPKey
+  , renderTSRPKey
   , tsrpSecretKeyLength
   ) where
 
@@ -20,6 +24,8 @@ import           GHC.Generics (Generic)
 
 import           P
 
+import           Tinfoil.Data.Key (SymmetricKey(..))
+import           Tinfoil.Data.Key (parseSymmetricKey, renderSymmetricKey)
 import           Tinfoil.Encode (hexEncode)
 
 -- | Identifier for a TSRP key. Should be globally unique. Sixteen bytes long
@@ -60,3 +66,31 @@ tsrpKeyIdLength = 16
 -- representation, not the rendering.
 tsrpSecretKeyLength :: Int
 tsrpSecretKeyLength = 32
+
+newtype TSRPKey =
+  TSRPKey {
+    unTSRPKey :: SymmetricKey
+  } deriving (Eq, Generic)
+
+instance NFData TSRPKey where rnf = genericRnf
+
+-- | "TSRPV1" + "SECRET" mod 26 + 65.
+tsrpKeyTag :: ByteString
+tsrpKeyTag = "LWTGZD"
+
+renderTSRPKey :: TSRPKey -> ByteString
+renderTSRPKey (TSRPKey sk) =
+  tsrpKeyTag <> (T.encodeUtf8 $ renderSymmetricKey sk)
+
+parseTSRPKey :: ByteString -> Maybe' TSRPKey
+parseTSRPKey bs =
+  let (h, t) = BS.splitAt (BS.length tsrpKeyTag) bs in
+  case h == tsrpKeyTag of
+    True ->
+      case T.decodeUtf8' t of
+        Left _ ->
+          Nothing'
+        Right t' ->
+          fmap TSRPKey $ parseSymmetricKey t'
+    False ->
+      Nothing'
