@@ -16,8 +16,6 @@ import           Test.Zodiac.TSRP.Arbitrary ()
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 
-import           Tinfoil.Data (SymmetricKey)
-
 import           Zodiac.TSRP.Data
 import           Zodiac.HttpClient.Error
 import           Zodiac.HttpClient.Request
@@ -25,7 +23,7 @@ import           Zodiac.HttpClient.TSRP
 
 prop_authedHttpClientRequest :: CRequest
                              -> KeyId
-                             -> SymmetricKey
+                             -> TSRPKey
                              -> RequestExpiry
                              -> RequestTimestamp
                              -> Property

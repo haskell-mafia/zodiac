@@ -1,5 +1,6 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE StandaloneDeriving #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 module Test.Zodiac.TSRP.Arbitrary where
 
@@ -23,3 +24,8 @@ instance Arbitrary SymmetricAuthHeader where
                                   <*> arbitrary
                                   <*> arbitrary
                                   <*> arbitrary
+
+instance Arbitrary TSRPKey where
+  arbitrary = TSRPKey <$> arbitrary
+
+deriving instance Show TSRPKey

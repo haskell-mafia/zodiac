@@ -22,7 +22,7 @@ import           P hiding ((<>))
 
 import           System.IO (IO)
 
-import           Tinfoil.Data (Verified(..), MAC, SymmetricKey)
+import           Tinfoil.Data (Verified(..), MAC)
 
 import           Zodiac.Core.Request
 import           Zodiac.TSRP.Data
@@ -35,7 +35,7 @@ import           Zodiac.Raw.Request
 -- Authorization header added which can be sent directly to a server
 -- supporting TSRP.
 authedRawRequest :: KeyId
-                 -> SymmetricKey
+                 -> TSRPKey
                  -> RequestExpiry
                  -> ByteString
                  -> RequestTimestamp
@@ -53,14 +53,14 @@ authedRawRequest kid sk re bs rt = do
       HTTPV1_1Request $ req { H.hrqv1_1Headers = newHs }
 
 verifyRawRequest :: KeyId
-                 -> SymmetricKey
+                 -> TSRPKey
                  -> ByteString
                  -> IO Verified
 verifyRawRequest kid sk bs =
   getCurrentTime >>= verifyRawRequest' kid sk bs
 
 verifyRawRequest' :: KeyId
-                  -> SymmetricKey
+                  -> TSRPKey
                   -> ByteString
                   -> UTCTime
                   -> IO Verified
@@ -75,7 +75,7 @@ verifyRawRequest' kid sk bs now =
 
 -- | Create a detached MAC of a hadron 'HTTPRequest'.
 macHadronRequest :: KeyId
-                 -> SymmetricKey
+                 -> TSRPKey
                  -> RequestExpiry
                  -> H.HTTPRequest
                  -> RequestTimestamp

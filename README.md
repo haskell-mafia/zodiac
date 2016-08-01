@@ -157,8 +157,8 @@ designed for use in scripts (e.g., with `curl`).
 Example usage:
 
 ```sh
-export TSRP_KEY_ID="6451eb6f287b4d6b46ec13e36607653b"
-export TSRP_SECRET_KEY="89cf43bed574d6e6a54bf436b3a4ba8dc658973b85aa5bfc80f05e38e01d28d7"
+export TSRP_KEY_ID="DWPXY16451eb6f287b4d6b46ec13e36607653b"
+export TSRP_SECRET_KEY="LWTGZD89cf43bed574d6e6a54bf436b3a4ba8dc658973b85aa5bfc80f05e38e01d28d7"
 
 cat > req <<EOF
 GET /foo HTTP/1.1

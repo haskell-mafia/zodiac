@@ -15,7 +15,7 @@ import           Zodiac.Export.TSRP
 
 foreign export ccall "_z_tsrp_gen_key_id" genKeyId :: Ptr CUChar -> IO ()
 
-foreign export ccall "_z_tsrp_gen_symmetric_key" genSymmetricKey :: Ptr CUChar -> IO ()
+foreign export ccall "_z_tsrp_gen_tsrp_key" genTSRPKey :: Ptr CUChar -> IO ()
 
 foreign export ccall "_z_tsrp_verify" verifyRawRequest' :: Ptr CChar
                                                         -> Ptr CChar

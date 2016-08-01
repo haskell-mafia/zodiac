@@ -19,7 +19,7 @@ import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 import           Test.Zodiac.Core.Gen
 
-import           Tinfoil.Data (Verified(..), SymmetricKey)
+import           Tinfoil.Data (Verified(..))
 
 import           Zodiac.TSRP.Data
 import           Zodiac.Raw.Error
@@ -30,7 +30,7 @@ prop_verifyRawRequest' :: KeyId
                        -> RequestTimestamp
                        -> RequestExpiry
                        -> CRequest
-                       -> SymmetricKey
+                       -> TSRPKey
                        -> Property
 prop_verifyRawRequest' kid rt re cr sk =
   forAll (genTimeWithin rt re) $ \now ->
@@ -43,7 +43,7 @@ prop_verifyRawRequest' kid rt re cr sk =
         pure $ r === Verified
 
 prop_verifyRawRequest_junk :: KeyId
-                           -> SymmetricKey
+                           -> TSRPKey
                            -> UTCTime
                            -> ByteString
                            -> Property

@@ -8,6 +8,7 @@ module Zodiac.Cli.TSRP.Env(
 
 import           Control.Monad.IO.Class (liftIO)
 
+import           Data.ByteString (ByteString)
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 
@@ -25,14 +26,14 @@ import           Zodiac.Cli.TSRP.Error
 tsrpParamsFromEnv :: EitherT TSRPError IO TSRPParams
 tsrpParamsFromEnv = do
   sk <- getEnvParam "TSRP_SECRET_KEY" >>=
-          (parseParam "symmetric key" parseSymmetricKey)
+          (parseParam "symmetric key" parseTSRPKey)
   kid <- getEnvParam "TSRP_KEY_ID" >>=
-          (parseParam "key ID" (parseKeyId . T.encodeUtf8))
+          (parseParam "key ID" parseKeyId)
   pure $ TSRPParams sk kid
 
-parseParam :: Text -> (Text -> Maybe' a) -> Text -> EitherT TSRPError IO a
+parseParam :: Text -> (ByteString -> Maybe' a) -> Text -> EitherT TSRPError IO a
 parseParam var f t =
-  maybe' (left . TSRPParamError $ InvalidParam var t) pure $ f t
+  maybe' (left . TSRPParamError $ InvalidParam var t) pure $ (f . T.encodeUtf8) t
 
 getEnvParam :: Text -> EitherT TSRPError IO Text
 getEnvParam var =

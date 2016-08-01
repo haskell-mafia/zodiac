@@ -20,7 +20,7 @@ import           P
 
 import           System.IO (IO)
 
-import           Tinfoil.Data (Verified(..), MAC, SymmetricKey)
+import           Tinfoil.Data (Verified(..), MAC)
 
 import           Zodiac.Core.Request
 import           Zodiac.TSRP.Data
@@ -33,7 +33,7 @@ import           Zodiac.HttpClient.Request
 -- Authorization header added which can be sent directly to a server
 -- supporting TSRP.
 authedHttpClientRequest :: KeyId
-                        -> SymmetricKey
+                        -> TSRPKey
                         -> RequestExpiry
                         -> Request
                         -> RequestTimestamp
@@ -48,17 +48,17 @@ authedHttpClientRequest kid sk re r rt =
 -- | Works as 'verifyHttpClientRequest'', but uses the current time to verify
 -- the request.
 verifyHttpClientRequest :: KeyId
-                        -> SymmetricKey
+                        -> TSRPKey
                         -> Request
                         -> IO Verified
 verifyHttpClientRequest kid sk r =
   getCurrentTime >>= (verifyHttpClientRequest' kid sk r)
 
 -- | Verify an authenticated http-client request. The 'KeyId' parameter
--- can be extracted with 'httpClientKeyId'; the 'SymmetricKey' should be
+-- can be extracted with 'httpClientKeyId'; the 'TSRPKey' should be
 -- the one associated with the 'KeyId'.
 verifyHttpClientRequest' :: KeyId
-                         -> SymmetricKey
+                         -> TSRPKey
                          -> Request
                          -> UTCTime
                          -> IO Verified
@@ -107,7 +107,7 @@ httpAuthHeader TSRPv1 kid rt re cr mac =
 -- converted to an http-client-compatible Authorization header using
 -- 'httpAuthHeader'.
 macHttpClientRequest :: KeyId
-                     -> SymmetricKey
+                     -> TSRPKey
                      -> RequestExpiry
                      -> Request
                      -> RequestTimestamp

@@ -16,7 +16,7 @@ import           P
 
 import           System.IO (IO)
 
-import           Tinfoil.Data (Verified(..), MAC, SymmetricKey)
+import           Tinfoil.Data (Verified(..), MAC)
 import           Tinfoil.Data (KeyedHashFunction(..), HashFunction(..))
 import           Tinfoil.Data (renderHash)
 import           Tinfoil.Hash (hash)
@@ -33,7 +33,7 @@ macRequest :: SymmetricProtocol
            -> RequestTimestamp
            -> RequestExpiry
            -> CRequest
-           -> SymmetricKey
+           -> TSRPKey
            -> MAC
 macRequest TSRPv1 kid rts re cr sk =
   let authKey = deriveRequestKey TSRPv1 (timestampDate rts) kid sk
@@ -42,11 +42,11 @@ macRequest TSRPv1 kid rts re cr sk =
 
 -- | Verify a request and authentication header.
 --
--- The provided 'KeyId' and 'SymmetricKey' should be those stored by the
+-- The provided 'KeyId' and 'TSRPKey' should be those stored by the
 -- server. The key ID will be checked against the one contained in the
 -- 'SymmetricAuthHeader'.
 verifyRequest :: KeyId
-              -> SymmetricKey
+              -> TSRPKey
               -> CRequest
               -> SymmetricAuthHeader
               -> UTCTime
@@ -79,7 +79,7 @@ verifyRequest' :: SymmetricProtocol
                -> RequestTimestamp
                -> RequestExpiry
                -> StrippedCRequest
-               -> SymmetricKey
+               -> TSRPKey
                -> MAC
                -> UTCTime
                -> IO Verified

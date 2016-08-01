@@ -3,7 +3,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Zodiac.Export.Key (
     genKeyId
-  , genSymmetricKey
+  , genTSRPKey
   ) where
 
 import           Data.ByteString.Internal (toForeignPtr, memcpy)
@@ -18,7 +18,7 @@ import           System.IO (IO)
 
 import           Tinfoil.Data.Key (SymmetricKey(..))
 
-import           Zodiac.TSRP.Data.Key (KeyId(..))
+import           Zodiac.TSRP.Data.Key (KeyId(..), TSRPKey(..))
 import qualified Zodiac.TSRP.Key as Z
 
 -- | Needs a 16B buffer.
@@ -30,9 +30,9 @@ genKeyId buf = do
     memcpy (castPtr buf) (plusPtr p offs) len
 
 -- | Needs a 32B buffer.
-genSymmetricKey :: Ptr CUChar -> IO ()
-genSymmetricKey buf = do
-  bs <- unSymmetricKey <$> Z.genSymmetricKey
+genTSRPKey :: Ptr CUChar -> IO ()
+genTSRPKey buf = do
+  bs <- (unSymmetricKey . unTSRPKey) <$> Z.genTSRPKey
   let (fp, offs, len) = toForeignPtr bs
   withForeignPtr fp $ \p ->
     memcpy (castPtr buf) (plusPtr p offs) len

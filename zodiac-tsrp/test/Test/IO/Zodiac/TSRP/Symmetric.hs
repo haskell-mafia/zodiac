@@ -29,7 +29,7 @@ prop_verifyRequest' :: SymmetricProtocol
                     -> RequestTimestamp
                     -> RequestExpiry
                     -> CRequest
-                    -> SymmetricKey
+                    -> TSRPKey
                     -> Property
 prop_verifyRequest' sp kid rt re cr sk =
   forAll (genTimeWithin rt re) $ \now ->
@@ -42,7 +42,7 @@ prop_verifyRequest_key' :: SymmetricProtocol
                         -> RequestTimestamp
                         -> RequestExpiry
                         -> CRequest
-                        -> UniquePair SymmetricKey
+                        -> UniquePair TSRPKey
                         -> Property
 prop_verifyRequest_key' sp kid rt re cr (UniquePair sk1 sk2) =
   forAll (genTimeWithin rt re) $ \now ->
@@ -55,7 +55,7 @@ prop_verifyRequest_req' :: SymmetricProtocol
                         -> RequestTimestamp
                         -> RequestExpiry
                         -> UniquePair CRequest
-                        -> SymmetricKey
+                        -> TSRPKey
                         -> Property
 prop_verifyRequest_req' sp kid rt re (UniquePair cr1 cr2) sk =
   forAll (genTimeWithin rt re) $ \now ->
@@ -68,7 +68,7 @@ prop_verifyRequest_before' :: SymmetricProtocol
                            -> RequestTimestamp
                            -> RequestExpiry
                            -> CRequest
-                           -> SymmetricKey
+                           -> TSRPKey
                            -> Property
 prop_verifyRequest_before' sp kid rt re cr sk =
   forAll (genTimeBefore (RequestTimestamp $ addUTCTime (- maxClockSkew) (unRequestTimestamp rt))) $ \now ->
@@ -81,7 +81,7 @@ prop_verifyRequest_after' :: SymmetricProtocol
                           -> RequestTimestamp
                           -> RequestExpiry
                           -> CRequest
-                          -> SymmetricKey
+                          -> TSRPKey
                           -> Property
 prop_verifyRequest_after' sp kid rt re cr sk =
   forAll (genTimeExpired rt re) $ \now ->
@@ -94,7 +94,7 @@ prop_verifyRequest :: SymmetricProtocol
                    -> RequestTimestamp
                    -> RequestExpiry
                    -> CRequest
-                   -> SymmetricKey
+                   -> TSRPKey
                    -> Property
 prop_verifyRequest sp kid rt re cr sk =
   forAll (genTimeWithin rt re) $ \now ->
@@ -109,7 +109,7 @@ prop_verifyRequest_kid :: SymmetricProtocol
                        -> RequestTimestamp
                        -> RequestExpiry
                        -> CRequest
-                       -> SymmetricKey
+                       -> TSRPKey
                        -> Property
 prop_verifyRequest_kid sp (UniquePair kid kid') rt re cr sk =
   forAll (genTimeWithin rt re) $ \now ->

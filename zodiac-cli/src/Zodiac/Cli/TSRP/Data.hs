@@ -21,12 +21,12 @@ data TSRPCommand =
 -- variables on *nix, but due to potential need to support Windows we're
 -- keeping this abstract interface.
 data TSRPParams = TSRPParams {
-    tsrpSecretKey :: !SymmetricKey
+    tsrpSecretKey :: !TSRPKey
   , tsrpKeyId :: !KeyId
   } deriving (Eq)
 
 instance Show TSRPParams where
   showsPrec p (TSRPParams _sk kid) =
     showParen (p > 10) $
-      showString "TSRPParams (SymmetricKey \"<redacted>\") " .
+      showString "TSRPParams (TSRPKey \"<redacted>\") " .
       showsPrec 11 kid

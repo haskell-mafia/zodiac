@@ -2,14 +2,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Zodiac.TSRP.Key(
     genKeyId
-  , genSymmetricKey
+  , genTSRPKey
   ) where
 
 import           P
 
 import           System.IO (IO)
 
-import           Tinfoil.Data (Entropy(..), SymmetricKey)
+import           Tinfoil.Data (Entropy(..))
 import qualified Tinfoil.Key as Tinfoil
 import           Tinfoil.Random (entropy)
 
@@ -22,5 +22,5 @@ genKeyId = fmap (KeyId . unEntropy) $ entropy 16
 -- | Generate a symmetric key for use in the TSRP protocol. This key
 -- is shared between the server and client but kept secret from all
 -- other parties.
-genSymmetricKey :: IO SymmetricKey
-genSymmetricKey = Tinfoil.genSymmetricKey
+genTSRPKey :: IO TSRPKey
+genTSRPKey = TSRPKey <$> Tinfoil.genSymmetricKey

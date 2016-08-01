@@ -6,7 +6,6 @@ module Zodiac.Export.TSRP (
   ) where
 
 import qualified Data.ByteString as BS
-import qualified Data.Text.Encoding as T
 
 import           Foreign.C.Types (CChar, CInt, CSize, CTime)
 import           Foreign.Ptr (Ptr)
@@ -33,9 +32,8 @@ verifyRawRequest' bufKid bufSK bufReq sizeReq ts =
   bsSK <- BS.packCStringLen (bufSK, Z.tsrpSecretKeyLength)
   bsReq <- BS.packCStringLen (bufReq, fromIntegral sizeReq)
   let parsed = do
-                 tsk <- either (const Nothing') Just' $ T.decodeUtf8' bsSK
                  kid <- Z.parseKeyId bsKid
-                 sk <- Z.parseSymmetricKey tsk
+                 sk <- Z.parseTSRPKey bsSK
                  pure (kid, sk)
   case parsed of
     Nothing' ->
