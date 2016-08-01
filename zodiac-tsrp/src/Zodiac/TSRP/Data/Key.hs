@@ -22,8 +22,8 @@ import           P
 
 import           Tinfoil.Encode (hexEncode)
 
--- | Identifier for either a symmetric or asymmetric key. Should be
--- globally unique. Sixteen bytes long.
+-- | Identifier for a TSRP key. Should be globally unique. Sixteen bytes long
+-- plus six byte for the tag prefix.
 newtype KeyId =
   KeyId {
     unKeyId :: ByteString
