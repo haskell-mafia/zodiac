@@ -19,15 +19,13 @@ import           Test.Zodiac.TSRP.Arbitrary ()
 import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 
-import           Tinfoil.Data (SymmetricKey)
-
 import           Zodiac.TSRP.Data
 import           Zodiac.Raw.Request
 import           Zodiac.Raw.TSRP
 
 prop_authedRawRequest :: CRequest
                       -> KeyId
-                      -> SymmetricKey
+                      -> TSRPKey
                       -> RequestExpiry
                       -> RequestTimestamp
                       -> Property
