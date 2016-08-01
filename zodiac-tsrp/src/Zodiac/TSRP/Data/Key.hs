@@ -29,7 +29,7 @@ import           Tinfoil.Data.Key (parseSymmetricKey, renderSymmetricKey)
 import           Tinfoil.Encode (hexEncode)
 
 -- | Identifier for a TSRP key. Should be globally unique. Sixteen bytes long
--- plus six byte for the tag prefix.
+-- plus six bytes for the tag prefix.
 newtype KeyId =
   KeyId {
     unKeyId :: ByteString

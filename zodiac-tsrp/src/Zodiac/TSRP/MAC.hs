@@ -20,8 +20,8 @@ import           Zodiac.TSRP.Data
 -- | Derive the key we actually use to authenticate the request from the
 -- secret key, the key ID and the date part of the request timestamp
 -- via an iterated chain of keyed hashes.
-deriveRequestKey :: SymmetricProtocol -> RequestDate -> KeyId -> SymmetricKey -> SymmetricKey
-deriveRequestKey TSRPv1 rd (KeyId kid) (SymmetricKey sk) =
+deriveRequestKey :: SymmetricProtocol -> RequestDate -> KeyId -> TSRPKey -> SymmetricKey
+deriveRequestKey TSRPv1 rd (KeyId kid) (TSRPKey (SymmetricKey sk)) =
   let k0 = SymmetricKey $ sk <> renderRequestDate rd
       k1 = chainNext $ hmacSHA256 k0 kid
       k2 = chainNext $ hmacSHA256 k1 proto in
