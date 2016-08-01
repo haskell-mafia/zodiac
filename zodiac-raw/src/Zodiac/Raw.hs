@@ -8,20 +8,20 @@ TSRP requests with zodiac and should provide everything needed to do so.
 -}
 module Zodiac.Raw(
     KeyId
-  , SymmetricKey
+  , TSRPKey
   , SymmetricProtocol(..)
   , Verified(..)
 
   , parseKeyId
-  , parseSymmetricKey
+  , parseTSRPKey
   , parseSymmetricProtocol
   , renderKeyId
-  , renderSymmetricKey
+  , renderTSRPKey
   , renderSymmetricProtocol
 
   -- * Key generation
   , genKeyId
-  , genSymmetricKey
+  , genTSRPKey
 
   -- * Timestamps
   , RequestExpiry(..)
@@ -38,9 +38,7 @@ module Zodiac.Raw(
   , renderRequestError
   ) where
 
-import           Tinfoil.Data (Verified(..), SymmetricKey)
-import           Tinfoil.Data (parseSymmetricKey, renderSymmetricKey)
-
+import           Tinfoil.Data (Verified(..))
 
 import           Zodiac.Core.Data.Protocol
 import           Zodiac.Core.Data.Time
