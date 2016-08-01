@@ -20,7 +20,7 @@ import           Test.QuickCheck
 import           Test.QuickCheck.Instances ()
 import           Test.Zodiac.Core.Gen
 
-import           Tinfoil.Data (Verified(..), SymmetricKey)
+import           Tinfoil.Data (Verified(..))
 
 import           Zodiac.TSRP.Data
 import           Zodiac.Core.Request
@@ -31,7 +31,7 @@ import           Zodiac.HttpClient.TSRP
 -- FIXME: rewrite once https://github.com/ambiata/tinfoil/pull/47 is merged
 prop_httpClientAuthHeader :: CRequest
                           -> KeyId
-                          -> SymmetricKey
+                          -> TSRPKey
                           -> RequestExpiry
                           -> RequestTimestamp
                           -> Property
@@ -56,7 +56,7 @@ prop_verifyHttpClientRequest' :: KeyId
                               -> RequestTimestamp
                               -> RequestExpiry
                               -> CRequest
-                              -> SymmetricKey
+                              -> TSRPKey
                               -> Property
 prop_verifyHttpClientRequest' kid rt re cr sk =
   forAll (genTimeWithin rt re) $ \now ->
@@ -73,7 +73,7 @@ prop_httpClientKeyId :: KeyId
                      -> RequestTimestamp
                      -> RequestExpiry
                      -> CRequest
-                     -> SymmetricKey
+                     -> TSRPKey
                      -> Property
 prop_httpClientKeyId kid rt re cr sk =
   let req = fromCanonicalRequest cr
