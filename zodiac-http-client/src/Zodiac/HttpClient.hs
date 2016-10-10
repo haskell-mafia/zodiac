@@ -9,6 +9,7 @@ TSRP requests with zodiac and should provide everything needed to do so.
 module Zodiac.HttpClient(
     KeyId
   , TSRPKey
+  , RequestTimestamp(..)
   , SymmetricProtocol(..)
   , Verified(..)
 
