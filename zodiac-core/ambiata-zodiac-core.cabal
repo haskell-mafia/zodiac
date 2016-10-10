@@ -16,7 +16,7 @@ library
                      , ambiata-p
                      , ambiata-tinfoil
                      , ambiata-x-eithert
-                     , attoparsec                      >= 0.10 && < 0.13
+                     , attoparsec                      >= 0.10 && < 0.14
                      , base16-bytestring               == 0.1.1.*
                      , bytestring                      == 0.10.*
                      , containers                      == 0.5.*
