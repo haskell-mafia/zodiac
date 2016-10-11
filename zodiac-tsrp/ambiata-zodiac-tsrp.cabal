@@ -17,7 +17,7 @@ library
                      , ambiata-tinfoil
                      , ambiata-x-eithert
                      , ambiata-zodiac-core
-                     , attoparsec                      >= 0.10 && < 0.13
+                     , attoparsec                      >= 0.10 && < 0.14
                      , base16-bytestring               == 0.1.1.*
                      , bytestring                      == 0.10.*
                      , deepseq-generics                == 0.2.0.*
