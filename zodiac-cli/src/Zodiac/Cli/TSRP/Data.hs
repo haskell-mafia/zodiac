@@ -4,15 +4,17 @@
 module Zodiac.Cli.TSRP.Data(
     TSRPCommand(..)
   , TSRPParams(..)
+  , LineEndings(..)
   ) where
 
 import           P
 
+import           Zodiac.Cli.Data (LineEndings(..))
 import           Zodiac.Raw
 
 data TSRPCommand =
-    TSRPAuth !RequestExpiry
-  | TSRPVerify
+    TSRPAuth !LineEndings !RequestExpiry
+  | TSRPVerify !LineEndings
   deriving (Eq, Show)
 
 -- | Parameters required for auth/verification.
