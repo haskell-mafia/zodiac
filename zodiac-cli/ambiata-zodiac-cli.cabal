@@ -40,6 +40,8 @@ library
   exposed-modules:
                        Paths_ambiata_zodiac_cli
                        Zodiac.Cli
+                       Zodiac.Cli.Data
+                       Zodiac.Cli.Process
                        Zodiac.Cli.Request
                        Zodiac.Cli.TSRP.Commands
                        Zodiac.Cli.TSRP.Data

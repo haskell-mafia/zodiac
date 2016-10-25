@@ -13,6 +13,7 @@ import           P
 
 import           X.Options.Applicative
 
+import           Zodiac.Cli.Data
 import           Zodiac.Cli.TSRP.Data
 import           Zodiac.Raw
 
@@ -22,10 +23,10 @@ tsrpCommandP = subparser $
   <> command' "verify" "Verify the authentication of an HTTP request read from standard input." verifyP
 
 authP :: Parser TSRPCommand
-authP = TSRPAuth <$> requestExpiryP
+authP = TSRPAuth <$> lineEndingsP <*> requestExpiryP
 
 verifyP :: Parser TSRPCommand
-verifyP = pure TSRPVerify
+verifyP = TSRPVerify <$> lineEndingsP
 
 requestExpiryP :: Parser RequestExpiry
 requestExpiryP = option (eitherReader requestExpiryR) $
@@ -38,3 +39,9 @@ requestExpiryP = option (eitherReader requestExpiryR) $
     requestExpiryR x = case parseRequestExpiry (BSC.pack x) of
       Nothing' -> Left $ "invalid request expiry: " <> x
       Just' re -> pure re
+
+lineEndingsP :: Parser LineEndings
+lineEndingsP = flag CRLF LF $
+     short 'u'
+  <> long "unix-line-endings"
+  <> help "Convert UNIX line-endings into CRLF in the provided HTTP request."
