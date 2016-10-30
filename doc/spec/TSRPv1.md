@@ -176,7 +176,8 @@ Summary
 
 The *canonical request* is the form to which an HTTP request is
 converted before the MAC of the request is computed. The canonical
-request is computed from the following data:
+request is computed from the following data, which are each separated
+by a line-feed character (`\n`):
 
  - Request method.
  - Request URI.
