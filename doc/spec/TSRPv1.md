@@ -267,6 +267,30 @@ hexadecimal-encoded SHA256 hash of the unmodified payload.
 If the request does not have a body, the payload hash shall be
 computed as the hexadecimal-encoded SHA256 hash of the empty string.
 
+Example canonical request
+-------------------------
+
+```
+GET
+/foo/bar
+key1=value1&key2=value2
+example-name:example value1,example value2
+host:example.com
+user-agent:curl/7.50.3
+
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+```
+
+This example corresponds to the following `curl` command:
+
+```
+curl \
+  -X GET \
+  -H "Example-Name: example value1" \
+  -H "Example-Name: example value2" \
+  'example.com/foo/bar?key1=value1&key2=value2'
+```
+
 Constructing a string for authentication
 ========================================
 
