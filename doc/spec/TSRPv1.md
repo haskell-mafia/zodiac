@@ -182,7 +182,6 @@ request is computed from the following data:
  - Request URI.
  - Request query string.
  - Request headers.
- - List of authenticated headers.
  - Hash of request payload.
 
 Definitions
@@ -256,22 +255,6 @@ value" would be transformed to "example value".
 An example value for this field is
 "host:example.com\nexample-name:example value1,example value2\n".
 
-List of authenticated headers
------------------------------
-
-The list of *authenticated headers* is constructed from the header
-names of the headers included in the canonical request. The list is
-sorted lexicographically and all values are converted to lowercase;
-the list is rendered with values separated by commas.
-
-When computed by the *client*, this value shall be the header names of
-all headers included in the *Request headers* value described above.
-
-When computed by the *server*, this value shall be the list of
-authenticated headers described in the *Authentication header*
-section.
-
-An example value is "host,myheader1,myheader2,x-content-type".
 
 Hash of the request payload
 ---------------------------
@@ -472,10 +455,17 @@ string for authentication*.
 List of authenticated headers
 -----------------------------
 
-This value is a list of header names of headers included in the
-*canonical request*. The list is sorted lexicographically and all
-values are converted to lowercase; the list is rendered with values
-separated by commas.
+The list of *authenticated headers* is constructed from the header
+names of the headers included in the canonical request. The list is
+sorted lexicographically and all values are converted to lowercase;
+the list is rendered with values separated by commas.
+
+When computed by the *client*, this value shall be the header names of
+all headers included in the *Request headers* value described above.
+
+When computed by the *server*, this value shall be the list of
+authenticated headers described in the *Authentication header*
+section.
 
 An example value is "host,myheader1,myheader2,x-content-type".
 
