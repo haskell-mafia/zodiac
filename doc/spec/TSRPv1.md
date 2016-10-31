@@ -176,13 +176,13 @@ Summary
 
 The *canonical request* is the form to which an HTTP request is
 converted before the MAC of the request is computed. The canonical
-request is computed from the following data:
+request is computed from the following data, which are each separated
+by a line-feed character (`\n`):
 
  - Request method.
  - Request URI.
  - Request query string.
  - Request headers.
- - List of authenticated headers.
  - Hash of request payload.
 
 Definitions
@@ -256,22 +256,6 @@ value" would be transformed to "example value".
 An example value for this field is
 "host:example.com\nexample-name:example value1,example value2\n".
 
-List of authenticated headers
------------------------------
-
-The list of *authenticated headers* is constructed from the header
-names of the headers included in the canonical request. The list is
-sorted lexicographically and all values are converted to lowercase;
-the list is rendered with values separated by commas.
-
-When computed by the *client*, this value shall be the header names of
-all headers included in the *Request headers* value described above.
-
-When computed by the *server*, this value shall be the list of
-authenticated headers described in the *Authentication header*
-section.
-
-An example value is "host,myheader1,myheader2,x-content-type".
 
 Hash of the request payload
 ---------------------------
@@ -282,6 +266,30 @@ hexadecimal-encoded SHA256 hash of the unmodified payload.
 
 If the request does not have a body, the payload hash shall be
 computed as the hexadecimal-encoded SHA256 hash of the empty string.
+
+Example canonical request
+-------------------------
+
+```
+GET
+/foo/bar
+key1=value1&key2=value2
+example-name:example value1,example value2
+host:example.com
+user-agent:curl/7.50.3
+
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+```
+
+This example corresponds to the following `curl` command:
+
+```
+curl \
+  -X GET \
+  -H "Example-Name: example value1" \
+  -H "Example-Name: example value2" \
+  'example.com/foo/bar?key1=value1&key2=value2'
+```
 
 Constructing a string for authentication
 ========================================
@@ -472,10 +480,17 @@ string for authentication*.
 List of authenticated headers
 -----------------------------
 
-This value is a list of header names of headers included in the
-*canonical request*. The list is sorted lexicographically and all
-values are converted to lowercase; the list is rendered with values
-separated by commas.
+The list of *authenticated headers* is constructed from the header
+names of the headers included in the canonical request. The list is
+sorted lexicographically and all values are converted to lowercase;
+the list is rendered with values separated by commas.
+
+When computed by the *client*, this value shall be the header names of
+all headers included in the *Request headers* value described above.
+
+When computed by the *server*, this value shall be the list of
+authenticated headers described in the *Authentication header*
+section.
 
 An example value is "host,myheader1,myheader2,x-content-type".
 
