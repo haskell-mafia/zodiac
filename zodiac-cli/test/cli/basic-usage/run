@@ -16,6 +16,10 @@ $TSRP -h
 
 $TSRP --help
 
+$TSRP debug -h
+
+$TSRP debug --help
+
 TSRP="$TSRP --dry-run"
 
 $TSRP authenticate
@@ -23,6 +27,12 @@ $TSRP authenticate
 $TSRP authenticate -e 60
 
 $TSRP verify
+
+$TSRP debug auth-string
+
+$TSRP debug auth-string -e 100
+
+$TSRP debug auth-string -u -e 100
 
 banner REQTOOL Display Version
 #--------------------------

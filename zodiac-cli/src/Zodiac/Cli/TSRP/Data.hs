@@ -15,6 +15,7 @@ import           Zodiac.Raw
 data TSRPCommand =
     TSRPAuth !LineEndings !RequestExpiry
   | TSRPVerify !LineEndings
+  | TSRPDebugAuthString !LineEndings !RequestExpiry
   deriving (Eq, Show)
 
 -- | Parameters required for auth/verification.

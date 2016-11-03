@@ -1,0 +1,17 @@
+#!/bin/sh -eu
+
+. $(dirname $0)/../core/setup.sh
+
+banner debug: auth string
+#--------------------------
+
+auth_string=$(mktemp -p dist zodiac_cli_test_XXXXXX)
+trap "rm -rf ${auth_string}" EXIT
+
+export TSRP_KEY_ID="DWPXY16451eb6f287b4d6b46ec13e36607653b"
+export TSRP_SECRET_KEY="LWTGZD89cf43bed574d6e6a54bf436b3a4ba8dc658973b85aa5bfc80f05e38e01d28d7"
+
+cat test/data/basic-request | $TSRP debug auth-string -e 60 > $auth_string
+
+cat $auth_string | grep -q $TSRP_KEY_ID
+cat $auth_string | tail -n 1 | grep -q 181b0189614a8840c5031bcc652efe7153c337f46c67002c9fc7c0f65d0cdc0e
