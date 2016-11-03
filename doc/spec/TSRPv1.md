@@ -298,7 +298,7 @@ Summary
 
 This section deals with constructing the string from which the request
 MAC will be computed. It contains the following fields, each of which
-is terminated by a linefeed character:
+is separated by a linefeed character:
 
  - Protocol designator.
  - Request timestamp.
@@ -374,7 +374,7 @@ An example of the full string for authentication is as follows:
 "2016-01-23T01:23:45\n" +
 "60\n" +
 "DWPXY18c57b5cde3dc531dbfa19e781f24605e\n" +
-"7d865e959b2466918c9863afca942d0fb89d7c9ac0c99bafc3749504ded97730\n"
+"7d865e959b2466918c9863afca942d0fb89d7c9ac0c99bafc3749504ded97730"
 
 Authentication key
 ==================
