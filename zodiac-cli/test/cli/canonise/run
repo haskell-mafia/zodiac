@@ -1,0 +1,13 @@
+#!/bin/sh -eu
+
+. $(dirname $0)/../core/setup.sh
+
+banner Canonise request
+#----------------------
+
+canoned=$(mktemp -p dist zodiac_cli_test_XXXXXX)
+trap "rm -rf ${canoned}" EXIT
+
+cat test/data/basic-request | $REQTOOL canonise > $canoned
+
+cat $canoned | sha256sum | grep -q 181b0189614a8840c5031bcc652efe7153c337f46c67002c9fc7c0f65d0cdc0e
