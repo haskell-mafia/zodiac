@@ -231,7 +231,7 @@ The headers field is a lexicographically-sorted (by header name) list
 of the HTTP headers in the request in the form of the *header name*,
 followed by the colon character ':', followed by a comma-separated
 list of *header values* associated with the header in the order they
-appear in the request, and terminated with a linefeed character.
+appear in the request, and separated by a linefeed character.
 
 The list of headers computed by the *client* shall include all headers
 in the original request. In particular, canonical requests not
@@ -254,7 +254,7 @@ single space character. For example, the header value "  example
 value" would be transformed to "example value".
 
 An example value for this field is
-"host:example.com\nexample-name:example value1,example value2\n".
+"host:example.com\nexample-name:example value1,example value2".
 
 
 Hash of the request payload
@@ -277,7 +277,6 @@ key1=value1&key2=value2
 example-name:example value1,example value2
 host:example.com
 user-agent:curl/7.50.3
-
 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 ```
 
