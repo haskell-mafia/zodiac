@@ -5,6 +5,7 @@ module Zodiac.Cli.TSRP.Commands(
     authenticate
   , verify
   , stringToAuthenticate
+  , canonise
   ) where
 
 import           Control.Monad.IO.Class (liftIO)
@@ -18,6 +19,7 @@ import           System.IO (IO)
 
 import           X.Control.Monad.Trans.Either (EitherT, left, firstEitherT, hoistEither)
 
+import qualified Zodiac.Core.Request as Z
 import           Zodiac.Cli.Process (preprocess)
 import           Zodiac.Cli.TSRP.Data
 import           Zodiac.Cli.TSRP.Env
@@ -57,3 +59,11 @@ stringToAuthenticate le re = do
   cr <- firstEitherT TSRPRequestError . hoistEither $ Z.toCanonicalRequest bs
   pure $ Z.authenticationString TSRPv1 kid rt re cr
 
+-- | Read an HTTP request to authenticate from stdin and write the
+-- canonical form to stdout.
+canonise :: LineEndings -> EitherT TSRPError IO ByteString
+canonise le = do
+  bs <- liftIO . fmap (preprocess le) $ BS.getContents
+  cr <- firstEitherT TSRPRequestError . hoistEither $ Z.toCanonicalRequest bs
+  -- Not supposed to be a text document, doesn't have a newline terminator.
+  pure $ Z.renderCRequest cr

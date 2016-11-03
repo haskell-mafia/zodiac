@@ -43,3 +43,6 @@ run c = case c of
     orDie renderTSRPError $ TSRP.verify le
   TSRPDebugAuthString le re ->
     BS.putStr =<< (orDie renderTSRPError $ TSRP.stringToAuthenticate le re)
+  TSRPDebugCanonise le ->
+    BS.putStr =<< (orDie renderTSRPError $ TSRP.canonise le)
+

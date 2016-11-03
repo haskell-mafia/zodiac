@@ -34,23 +34,7 @@ $TSRP debug auth-string -e 100
 
 $TSRP debug auth-string -u -e 100
 
-banner REQTOOL Display Version
-#--------------------------
+$TSRP debug canonise
 
-$REQTOOL -v | grep -q reqtool
-
-$REQTOOL --version
-
-banner REQTOOL Display Help
-#-----------------------
-
-$REQTOOL -h
-
-$REQTOOL --help
-
-REQTOOL="$REQTOOL --dry-run"
-
-$REQTOOL canonise
-
-$REQTOOL canonise -u
+$TSRP debug canonise -u
 

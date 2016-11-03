@@ -47,11 +47,6 @@ library
                        Zodiac.Cli.Process
                        Zodiac.Cli.Request
 
-                       Zodiac.Cli.ReqTool.Commands
-                       Zodiac.Cli.ReqTool.Data
-                       Zodiac.Cli.ReqTool.Error
-                       Zodiac.Cli.ReqTool.Parser
-
                        Zodiac.Cli.TSRP.Commands
                        Zodiac.Cli.TSRP.Data
                        Zodiac.Cli.TSRP.Env
@@ -65,29 +60,6 @@ executable             tsrp
     ghc-options:       -Wall -threaded -O2 -rtsopts -with-rtsopts=-N
   hs-source-dirs:      gen
   main-is:             ../main/tsrp.hs
-  build-depends:
-                       base                            >= 3          && < 5
-                     , ambiata-hadron-core
-                     , ambiata-p
-                     , ambiata-tinfoil
-                     , ambiata-x-optparse
-                     , ambiata-x-eithert
-                     , ambiata-zodiac-cli
-                     , ambiata-zodiac-core
-                     , ambiata-zodiac-raw
-                     , bytestring                      == 0.10.*
-                     , optparse-applicative            == 0.12.*
-                     , text                            == 1.2.*
-                     , time                            >= 1.5        && < 1.7
-                     , transformers                    >= 0.4        && < 0.6
-
-executable             reqtool
-  if flag(staticgmp)
-    ghc-options:       -Wall -threaded -O2 -rtsopts -with-rtsopts=-N -pgml gcc-with-gmp.sh
-  else
-    ghc-options:       -Wall -threaded -O2 -rtsopts -with-rtsopts=-N
-  hs-source-dirs:      gen
-  main-is:             ../main/reqtool.hs
   build-depends:
                        base                            >= 3          && < 5
                      , ambiata-hadron-core
