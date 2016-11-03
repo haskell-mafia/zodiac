@@ -27,5 +27,3 @@ instance Arbitrary SymmetricAuthHeader where
 
 instance Arbitrary TSRPKey where
   arbitrary = TSRPKey <$> arbitrary
-
-deriving instance Show TSRPKey
