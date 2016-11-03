@@ -1,4 +1,5 @@
 TSRP=${1:-./dist/build/tsrp/tsrp}
+REQTOOL=${2:-./dist/build/reqtool/reqtool}
 
 banner () {
     echo

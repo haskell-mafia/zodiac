@@ -13,7 +13,7 @@ import           P
 
 import           X.Options.Applicative
 
-import           Zodiac.Cli.Data
+import           Zodiac.Cli.Parser
 import           Zodiac.Cli.TSRP.Data
 import           Zodiac.Raw
 
@@ -39,9 +39,3 @@ requestExpiryP = option (eitherReader requestExpiryR) $
     requestExpiryR x = case parseRequestExpiry (BSC.pack x) of
       Nothing' -> Left $ "invalid request expiry: " <> x
       Just' re -> pure re
-
-lineEndingsP :: Parser LineEndings
-lineEndingsP = flag CRLF LF $
-     short 'u'
-  <> long "unix-line-endings"
-  <> help "Convert UNIX line-endings into CRLF in the provided HTTP request."

@@ -2,15 +2,15 @@
 
 . $(dirname $0)/../core/setup.sh
 
-banner Display Version
-#---------------------
+banner TSRP Display Version
+#--------------------------
 
 $TSRP -v | grep -q tsrp
 
 $TSRP --version
 
-banner Display Help
-#------------------
+banner TSRP Display Help
+#-----------------------
 
 $TSRP -h
 
@@ -23,3 +23,24 @@ $TSRP authenticate
 $TSRP authenticate -e 60
 
 $TSRP verify
+
+banner REQTOOL Display Version
+#--------------------------
+
+$REQTOOL -v | grep -q reqtool
+
+$REQTOOL --version
+
+banner REQTOOL Display Help
+#-----------------------
+
+$REQTOOL -h
+
+$REQTOOL --help
+
+REQTOOL="$REQTOOL --dry-run"
+
+$REQTOOL canonise
+
+$REQTOOL canonise -u
+
