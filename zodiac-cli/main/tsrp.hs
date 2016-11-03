@@ -41,4 +41,5 @@ run c = case c of
     BS.putStr =<< (orDie renderTSRPError $ TSRP.authenticate le re)
   TSRPVerify le ->
     orDie renderTSRPError $ TSRP.verify le
-
+  TSRPDebugAuthString le re ->
+    BS.putStr =<< (orDie renderTSRPError $ TSRP.stringToAuthenticate le re)

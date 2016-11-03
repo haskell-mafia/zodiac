@@ -21,12 +21,17 @@ tsrpCommandP :: Parser TSRPCommand
 tsrpCommandP = subparser $
      command' "authenticate" "Authenticate an HTTP request read from standard input and write the authenticated request to standard output." authP
   <> command' "verify" "Verify the authentication of an HTTP request read from standard input." verifyP
+  <> command' "debug" "Access debugging information and intermediate results." debugCommandP
 
 authP :: Parser TSRPCommand
 authP = TSRPAuth <$> lineEndingsP <*> requestExpiryP
 
 verifyP :: Parser TSRPCommand
 verifyP = TSRPVerify <$> lineEndingsP
+
+debugCommandP :: Parser TSRPCommand
+debugCommandP = subparser $
+     command' "auth-string" "Derive string to authenticate and output it without computing the MAC." (TSRPDebugAuthString <$> lineEndingsP <*> requestExpiryP)
 
 requestExpiryP :: Parser RequestExpiry
 requestExpiryP = option (eitherReader requestExpiryR) $

@@ -24,6 +24,7 @@ library
                      , ambiata-x-optparse
                      , ambiata-zodiac-core
                      , ambiata-zodiac-raw
+                     , ambiata-zodiac-tsrp
                      , bytestring                      == 0.10.*
                      , deepseq-generics                == 0.2.0.*
                      , optparse-applicative            == 0.12.*
