@@ -493,6 +493,21 @@ section.
 
 An example value is "host,myheader1,myheader2,x-content-type".
 
+Request MAC
+-----------
+
+The *request MAC* is computed as the output of `HMAC_SHA256` with the
+*string for authentication* as the data to authenticate, and the
+*authentication key* as the secret key.
+
+Expressed in pseudocode, taking the first argument of the HMAC_SHA256
+function to be the key and the second argument to be the data to be
+authenticated:
+
+```
+requestMAC := HMAC_SHA256(authenticationKey, stringToAuthenticate)
+```
+
 Example
 -------
 
