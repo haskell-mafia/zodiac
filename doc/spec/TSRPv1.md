@@ -31,10 +31,11 @@ Definitions
  - *HMAC_SHA256* refers to HMAC computed using SHA256 as defined
    above.
 
-Definitions in specifications of message formats
-------------------------------------------------
+Definitions in specifications of message formats and code examples
+------------------------------------------------------------------
 
  - The symbol '+' shall refer to string concatenation.
+ - The symbol '<-' shall refer to variable assignment.
  - The term *hexadecimal encoding* shall refer to the representation
    of a string of bytes of length `n` as the hexadecimal
    representation of that string in lowercase ASCII characters of
