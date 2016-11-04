@@ -35,7 +35,7 @@ Definitions in specifications of message formats and code examples
 ------------------------------------------------------------------
 
  - The symbol '+' shall refer to string concatenation.
- - The symbol '<-' shall refer to variable assignment.
+ - The symbol ':=' shall refer to variable assignment.
  - The term *hexadecimal encoding* shall refer to the representation
    of a string of bytes of length `n` as the hexadecimal
    representation of that string in lowercase ASCII characters of
@@ -430,8 +430,8 @@ Expressed in pseudocode, taking the first argument of the HMAC_SHA256
 function to be the key and the second argument to be the data to be authenticated:
 
 ```
-temporaryKey <- HMAC_SHA256(secret_key + request_date, key_id)
-authenticationKey <- HMAC_SHA256(temporary_key, protocol_designator)
+temporaryKey := HMAC_SHA256(secret_key + request_date, key_id)
+authenticationKey := HMAC_SHA256(temporary_key, protocol_designator)
 ```
 
 Authentication header
