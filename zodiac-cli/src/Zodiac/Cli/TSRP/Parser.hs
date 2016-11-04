@@ -31,7 +31,14 @@ verifyP = TSRPVerify <$> lineEndingsP
 
 debugCommandP :: Parser TSRPCommand
 debugCommandP = subparser $
-     command' "auth-string" "Derive string to authenticate and output it without computing the MAC." (TSRPDebugAuthString <$> lineEndingsP <*> requestExpiryP)
+     command' "auth-string" "Derive string to authenticate and output it without computing the MAC." authStringP
+  <> command' "canonise" "Read an HTTP request from standard input and write its canonical representation to stdout." canoniseP
+
+authStringP :: Parser TSRPCommand
+authStringP = TSRPDebugAuthString <$> lineEndingsP <*> requestExpiryP
+
+canoniseP :: Parser TSRPCommand
+canoniseP = TSRPDebugCanonise <$> lineEndingsP
 
 requestExpiryP :: Parser RequestExpiry
 requestExpiryP = option (eitherReader requestExpiryR) $

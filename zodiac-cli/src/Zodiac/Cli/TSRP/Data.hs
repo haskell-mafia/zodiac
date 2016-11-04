@@ -16,6 +16,7 @@ data TSRPCommand =
     TSRPAuth !LineEndings !RequestExpiry
   | TSRPVerify !LineEndings
   | TSRPDebugAuthString !LineEndings !RequestExpiry
+  | TSRPDebugCanonise !LineEndings
   deriving (Eq, Show)
 
 -- | Parameters required for auth/verification.
