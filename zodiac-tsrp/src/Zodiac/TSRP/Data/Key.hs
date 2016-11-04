@@ -70,7 +70,7 @@ tsrpSecretKeyLength = 32
 newtype TSRPKey =
   TSRPKey {
     unTSRPKey :: SymmetricKey
-  } deriving (Eq, Generic)
+  } deriving (Eq, Show, Generic)
 
 instance NFData TSRPKey where rnf = genericRnf
 
