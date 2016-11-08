@@ -27,10 +27,4 @@ data TSRPCommand =
 data TSRPParams = TSRPParams {
     tsrpSecretKey :: !TSRPKey
   , tsrpKeyId :: !KeyId
-  } deriving (Eq)
-
-instance Show TSRPParams where
-  showsPrec p (TSRPParams _sk kid) =
-    showParen (p > 10) $
-      showString "TSRPParams (TSRPKey \"<redacted>\") " .
-      showsPrec 11 kid
+  } deriving (Eq, Show)
