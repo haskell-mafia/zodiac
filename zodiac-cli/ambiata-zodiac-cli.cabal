@@ -55,7 +55,7 @@ library
 
 executable             tsrp
   if flag(staticgmp)
-    ghc-options:       -Wall -threaded -O2 -rtsopts -with-rtsopts=-N -pgml gcc-with-gmp.sh
+    ghc-options:       -Wall -threaded -O2 -rtsopts -with-rtsopts=-N -pgml ../bin/gcc-with-gmp.sh
   else
     ghc-options:       -Wall -threaded -O2 -rtsopts -with-rtsopts=-N
   hs-source-dirs:      gen
