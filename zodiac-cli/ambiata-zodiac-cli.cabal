@@ -12,7 +12,7 @@ description:           ambiata-zodiac-cli
 
 flag staticgmp
   description:         Statically link libgmp.
-  default:             False
+  default:             True
 
 library
   build-depends:
