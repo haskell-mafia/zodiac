@@ -106,7 +106,7 @@ the scope of this protocol, e.g., coercing a requester into revealing
 it):
 
  - Learn a requester's secret key from network traffic.
- - Create a request which the server will authenticate as originating
+ - Create a request which the server will verify as originating
    from a valid requester.
  - Modify the canonical form of a valid request (as described in the
    section *Constructing a canonical request for authentication*)
