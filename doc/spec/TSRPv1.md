@@ -513,7 +513,7 @@ Example
 -------
 
 An example of the full header value is 
-"TSRPv1 8c57b5cde3dc531dbfa19e781f24605e 2016-01-23T01:23:45 60 host,myheader1,myheader2,x-content-type bf07a7fbb825fc0aae7bf4a1177b2b31fcf8a3feeaf7092761e18c859ee52a9c".
+"TSRPv1 DWPXY18c57b5cde3dc531dbfa19e781f24605e 2016-01-23T01:23:45 60 host,myheader1,myheader2,x-content-type bf07a7fbb825fc0aae7bf4a1177b2b31fcf8a3feeaf7092761e18c859ee52a9c".
 
 References
 ==========
