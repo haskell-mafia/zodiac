@@ -106,7 +106,7 @@ the scope of this protocol, e.g., coercing a requester into revealing
 it):
 
  - Learn a requester's secret key from network traffic.
- - Create a request which the server will authenticate as originating
+ - Create a request which the server will verify as originating
    from a valid requester.
  - Modify the canonical form of a valid request (as described in the
    section *Constructing a canonical request for authentication*)
@@ -485,13 +485,6 @@ names of the headers included in the canonical request. The list is
 sorted lexicographically and all values are converted to lowercase;
 the list is rendered with values separated by commas.
 
-When computed by the *client*, this value shall be the header names of
-all headers included in the *Request headers* value described above.
-
-When computed by the *server*, this value shall be the list of
-authenticated headers described in the *Authentication header*
-section.
-
 An example value is "host,myheader1,myheader2,x-content-type".
 
 Request MAC
@@ -513,7 +506,7 @@ Example
 -------
 
 An example of the full header value is 
-"TSRPv1 8c57b5cde3dc531dbfa19e781f24605e 2016-01-23T01:23:45 60 host,myheader1,myheader2,x-content-type bf07a7fbb825fc0aae7bf4a1177b2b31fcf8a3feeaf7092761e18c859ee52a9c".
+"TSRPv1 DWPXY18c57b5cde3dc531dbfa19e781f24605e 2016-01-23T01:23:45 60 host,myheader1,myheader2,x-content-type bf07a7fbb825fc0aae7bf4a1177b2b31fcf8a3feeaf7092761e18c859ee52a9c".
 
 References
 ==========
