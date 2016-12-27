@@ -1,0 +1,22 @@
+#!/bin/sh -eu
+
+. $(dirname $0)/../core/setup.sh
+
+banner TSRP shared object dependencies
+#-------------------------------------
+
+# What we're expecting here:
+#
+# - libc
+# - libdl
+# - libgmp
+# - libm
+# - libpthread
+# - librt
+# - libutil
+#
+# If this breaks, work out whether we're linking against something we
+# shouldn't be (e.g., something that's on CI but might not be on other
+# boxes); if not, the test can be updated.
+nso="$(objdump -p $TSRP | grep -E '^\s+NEEDED' | wc -l)"
+[ "$nso" = "7" ] || exit 10
