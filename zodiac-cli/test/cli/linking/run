@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/sh -eux
 
 . $(dirname $0)/../core/setup.sh
 
