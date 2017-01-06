@@ -18,5 +18,7 @@ banner TSRP shared object dependencies
 # If this breaks, work out whether we're linking against something we
 # shouldn't be (e.g., something that's on CI but might not be on other
 # boxes); if not, the test can be updated.
-nso="$(objdump -p $TSRP | grep -E '^\s+NEEDED' | wc -l)"
+foo=$(mktemp)
+nso="$(objdump -p $TSRP | grep -E '^\s+NEEDED' | tee $foo | wc -l)"
+cat $foo
 [ "$nso" = "7" ] || exit 10
