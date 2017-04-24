@@ -196,9 +196,3 @@ cat request | \
   tsrp authenticate | \
   socat openssl:example.com:443 - > response
 ```
-
-Conceptual warriors
-===================
-
- - Sharif
- - Mark
