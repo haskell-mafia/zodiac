@@ -176,6 +176,27 @@ cat req |\
 cat req-authed | tsrp verify
 ```
 
+### Authenticating `curl` requests
+
+As `curl` does not support writing a request to `stdout` or reading a
+request from `stdin`, this is a bit convoluted.
+
+```sh
+export TSRP_KEY_ID="DWPXY16451eb6f287b4d6b46ec13e36607653b"
+export TSRP_SECRET_KEY="LWTGZD89cf43bed574d6e6a54bf436b3a4ba8dc658973b85aa5bfc80f05e38e01d28d7"
+
+# Listen on port 8080, writing any data we receive to a file.
+nc -l 8080 > request &
+
+# Replace with your request path and options.
+curl -XPOST -H "foo: bar" localhost:8080/some/path
+
+# Sign the request and send it off; use your target host/port here.
+cat request | \
+  tsrp authenticate | \
+  socat openssl:example.com:443 - > response
+```
+
 Conceptual warriors
 ===================
 
