@@ -9,6 +9,7 @@ module Zodiac.HttpClient.Request (
   , toCanonicalRequest
   ) where
 
+import           Data.ByteString (ByteString)
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Lazy as BSL
 import qualified Data.CaseInsensitive as CI
@@ -34,12 +35,20 @@ import           Zodiac.HttpClient.Error
 toCanonicalRequest :: Request -> Either RequestError CRequest
 toCanonicalRequest r =
   -- URI part and query string are both already URL-encoded in http-client.
-  let uri = CURI $ HC.path r
+  let uri = toCURI $ HC.path r
       qs = CQueryString $ HC.queryString r in do
   method <- reqCMethod r
   payload <- reqCPayload r
   headers <- reqCHeaders r
   pure $ CRequest method uri qs headers payload
+
+-- | Canonicalise the request path. The paths "" and "/" are
+-- semantically identical in HTTP ("" is converted to "/" when
+-- building the request), so we don't differentiate between them.
+toCURI :: ByteString -> CURI
+toCURI p
+  | BS.null p = CURI "/"
+  | otherwise = CURI p
 
 fromCanonicalRequest :: CRequest -> Request
 fromCanonicalRequest (CRequest m u qs hs p) =
