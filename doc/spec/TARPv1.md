@@ -210,10 +210,16 @@ Request URI
 The *request URI* field shall consist of the part of the request URL
 between the last character of the host part of the URL and the '?'
 character preceding the query-string part of the URL, exclusive. This
-is also referred to as the request path. If the URL does not have a
-query-string part, the URI shall continue to the end of the URL string.
+is also referred to as the request path.
 
-The request URI field shall be URL-encoded.
+ - If the URL does not have a query-string part, the URI shall continue
+   to the end of the URL string.
+
+ - If the request path is empty (for example, in the URLs
+   "https://example.com" and "https://example.com?foo=bar"), the
+   *request URI* shall be "/" (the ASCII byte `0x2f`).
+
+ - The request URI field shall be URL-encoded.
 
 Example values for this field are "/" and "/example/page.html".
 
