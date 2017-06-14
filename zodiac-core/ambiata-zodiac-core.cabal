@@ -35,7 +35,6 @@ library
                        src
 
   exposed-modules:
-                       Paths_ambiata_zodiac_core
                        Zodiac.Core.Data
                        Zodiac.Core.Data.Protocol
                        Zodiac.Core.Data.Request
