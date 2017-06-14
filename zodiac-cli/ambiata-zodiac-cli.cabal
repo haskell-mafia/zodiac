@@ -39,8 +39,6 @@ library
                        src
 
   exposed-modules:
-                       Paths_ambiata_zodiac_cli
-
                        Zodiac.Cli
                        Zodiac.Cli.Data
                        Zodiac.Cli.Parser

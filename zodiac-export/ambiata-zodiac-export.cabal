@@ -30,7 +30,6 @@ library
                        src
 
   exposed-modules:
-                       Paths_ambiata_zodiac_export
                        Zodiac.Export
                        Zodiac.Export.Key
                        Zodiac.Export.Time

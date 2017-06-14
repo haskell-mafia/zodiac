@@ -34,7 +34,6 @@ library
                        src
 
   exposed-modules:
-                       Paths_ambiata_zodiac_raw
                        Zodiac.Raw
                        Zodiac.Raw.Error
                        Zodiac.Raw.Request
@@ -105,4 +104,3 @@ test-suite test-io
                      , text                            == 1.2.*
                      , time                            >= 1.5        && < 1.7
                      , transformers                    >= 0.4        && < 0.6
-
