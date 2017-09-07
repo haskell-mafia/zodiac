@@ -36,7 +36,7 @@ toCanonicalRequest :: Request -> Either RequestError CRequest
 toCanonicalRequest r =
   -- URI part and query string are both already URL-encoded in http-client.
   let uri = toCURI $ HC.path r
-      qs = CQueryString $ HC.queryString r in do
+      qs = toCQueryString $ HC.queryString r in do
   method <- reqCMethod r
   payload <- reqCPayload r
   headers <- reqCHeaders r
@@ -50,12 +50,27 @@ toCURI p
   | BS.null p = CURI "/"
   | otherwise = CURI p
 
+-- | Canonicalise the query string.
+-- Drop the leading '?' in the http-client query string
+--
+-- https://hackage.haskell.org/package/http-client-0.5.7.0/docs/src/Network-HTTP-Client-Request.html#setQueryString
+toCQueryString :: ByteString -> CQueryString
+toCQueryString p
+  | BS.null p = CQueryString ""
+  | BS.head p == 63 {- '?' -} = CQueryString . BS.drop 1 $ p
+  | otherwise = CQueryString p
+
+fromCQueryString :: CQueryString -> ByteString
+fromCQueryString (CQueryString p)
+  | BS.null p = ""
+  | otherwise = "?" <> p
+
 fromCanonicalRequest :: CRequest -> Request
 fromCanonicalRequest (CRequest m u qs hs p) =
   def {
     HC.method = renderCMethod m
   , HC.path = unCURI u
-  , HC.queryString = unCQueryString qs
+  , HC.queryString = fromCQueryString qs
   , HC.requestHeaders = hs'
   , HC.requestBody = HC.RequestBodyBS (unCPayload p)
   }
