@@ -18,7 +18,7 @@ import qualified Data.Foldable as F
 import           Data.List.NonEmpty (nonEmpty)
 import qualified Data.List.NonEmpty as NE
 import qualified Data.Map.Strict as M
-import           Data.Semigroup ((<>))
+import qualified Data.Semigroup as SG
 import qualified Data.Text.Encoding as T
 
 import           Hadron.Core (HTTPRequest(..), HTTPRequestV1_1(..), Header(..))
@@ -27,7 +27,7 @@ import           Hadron.Core (Fragment(..), QueryString(..), HTTPMethod(..))
 import           Hadron.Core (RequestBody(..))
 import qualified Hadron.Core as H
 
-import           P hiding ((<>))
+import           P
 
 import           Zodiac.Core.Data.Request
 import qualified Zodiac.Core.Header as Z
@@ -107,7 +107,7 @@ fromHadronHeaders (HTTPRequestHeaders hs) =
       -- Error can't happen, hadron validates the encoding.
       hn' <- first (const (HeaderNameInvalidUTF8 $ H.renderHeaderName hn)) .
         T.decodeUtf8' . asciiToLower $ H.renderHeaderName hn
-      pure $ M.insertWith (<>) (CHeaderName hn') (renderValues hvs) acc
+      pure $ M.insertWith (SG.<>) (CHeaderName hn') (renderValues hvs) acc
 
     renderValues hvs = join $ fmap (renderValue . H.unHeaderValue) hvs
 

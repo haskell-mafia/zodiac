@@ -13,8 +13,18 @@ git submodule update
 
 cd zodiac-cli
 
-export PATH="../bin:$PATH"
+# Need to hard code these here. When we switch compilers, these need to be updated.
+export GHC_PATH=/usr/local/ghc-7.10.2/bin
+export CABAL_PATH=/usr/local/cabal-8.0.1/bin
 
-./mafia update
-./mafia build ${CABAL_CONFIG_ARGS}
-./mafia testci ${CABAL_CONFIG_ARGS}
+export PATH="../bin:$GHC_PATH:$CABAL_PATH:$PATH"
+
+mafia update
+mafia build ${CABAL_CONFIG_ARGS}
+mafia testci ${CABAL_CONFIG_ARGS}
+
+if [ $(ldd dist/build/tsrp/tsrp | grep -c libgmp) -ne 0 ] ; then
+	echo "Error: tsrp executable dynamically links to libgmp."
+	ldd dist/build/tsrp/tsrp
+	exit 1
+fi
