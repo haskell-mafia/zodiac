@@ -3,6 +3,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Test.Zodiac.Core.Time where
 
+import qualified Data.ByteString.Char8 as BS
 import           Data.Time.Clock (addUTCTime)
 
 import           Disorder.Core.Run (ExpectedTestSpeed(..), disorderCheckEnvAll)
@@ -44,6 +45,14 @@ prop_expiresAt :: RequestTimestamp -> RequestExpiry -> Property
 prop_expiresAt rt re =
   let et = expiresAt rt re in
   (et > (unRequestTimestamp rt)) === True
+
+
+prop_timezones_are_rejected :: RequestTimestamp -> Property
+prop_timezones_are_rejected rt = do
+  let ts = renderRequestTimestamp rt
+  forAll (elements [ "UTC", "+1000", "-0900", "AEST" ]) $ \ tz ->
+     parseRequestTimestamp (BS.concat [ts, " ", tz]) === Nothing'
+
 
 return []
 tests :: IO Bool
