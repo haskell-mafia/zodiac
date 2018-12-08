@@ -22,7 +22,7 @@ library
                      , containers                      == 0.5.*
                      , data-default-class              < 0.2
                      , deepseq-generics                == 0.2.0.*
-                     , http-client                     == 0.4.18.*
+                     , http-client                     >= 0.4.18     && < 0.6
                      , http-types                      >= 0.8        && < 0.10
                      , semigroups                      >= 0.16       && < 0.19
                      , text                            == 1.2.*
@@ -66,7 +66,7 @@ test-suite test
                      , ambiata-zodiac-tsrp-test
                      , bytestring                      == 0.10.*
                      , containers                      == 0.5.*
-                     , http-client                     == 0.4.18.*
+                     , http-client
                      , http-types                      >= 0.8        && < 0.10
                      , quickcheck-instances            == 0.3.*
                      , random                          == 1.1.*
@@ -98,13 +98,13 @@ test-suite test-io
                      , ambiata-zodiac-http-client
                      , ambiata-zodiac-tsrp
                      , ambiata-zodiac-tsrp-test
-                     , bytestring                      == 0.10.*
-                     , containers                      == 0.5.*
-                     , http-client                     == 0.4.18.*
-                     , http-types                      >= 0.8        && < 0.10
-                     , quickcheck-instances            == 0.3.*
-                     , random                          == 1.1.*
-                     , semigroups                      >= 0.16       && < 0.19
-                     , text                            == 1.2.*
-                     , time                            >= 1.5        && < 1.7
-                     , transformers                    >= 0.4        && < 0.6
+                     , bytestring
+                     , containers
+                     , http-client
+                     , http-types
+                     , quickcheck-instances
+                     , random
+                     , semigroups
+                     , text
+                     , time
+                     , transformers
